@@ -35,7 +35,7 @@ class Wxauth {
 	 * @return void
 	 * @author niancode
 	 **/
-	function saveMenus($data, $debug = 0)
+	function saveMenus($data, $debug)
 	{
 		return $this->wechatObj->saveMenus($data, $debug);
 	}

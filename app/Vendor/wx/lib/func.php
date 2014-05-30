@@ -22,7 +22,7 @@ if (! function_exists('curlData'))
 			$curl['url'] = site_url($url);
 			$json = $cl->simple_post($curl['url'], $params, $options);
 		}
-		if ($debug) $cl->debug();		// debug
+		if ($debug) exit($cl->debug());	// debug
 		$json = json_decode($json, TRUE);
 		return $json;
 	}

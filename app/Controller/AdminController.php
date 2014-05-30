@@ -522,6 +522,22 @@ class AdminController extends AppController {
 						}
 					}
 					$this->render('/Admin/_mPicAddEvent');
+				} else if ($query['mod'] == 'product') {
+					if ($this->request->is('post')) {
+						$this->request->data['WxDataTw']['FType'] = 0;
+						$this->WxDataTw->set($this->request->data);
+						if ($this->WxDataTw->validates()) {
+							$this->WxDataTwEvent->set($this->request->data);
+							if ($this->WxDataTwEvent->validates()) {
+								$query = $this->WxDataTw->saveData($this->request->data, $this->uid, $id);
+								if ($query) {
+									$this->Session->setFlash('商品添加成功。');
+									return $this->redirect($this->rdWcURL);
+								}
+							}
+						}
+					}
+					$this->render('/Admin/_mPicAddProduct');
 				} else {
 					$this->set('data', $data);
 					$this->render('/Admin/_mPicAdd');
@@ -980,7 +996,6 @@ class AdminController extends AppController {
 				break;
 			default:
 				if ($this->request->isPost()) {
-					
 					$this->loadModel('WxReply');
 					$appid = $this->wcdata['WxWebchat']['FWxAppId'];
 					$appsecret = $this->wcdata['WxWebchat']['FWxAppSecret'];

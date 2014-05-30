@@ -227,6 +227,7 @@ class Curl {
         if(!isset($this->options[CURLOPT_RETURNTRANSFER]))    $this->options[CURLOPT_RETURNTRANSFER] = TRUE;
         if(!isset($this->options[CURLOPT_FOLLOWLOCATION]))    $this->options[CURLOPT_FOLLOWLOCATION] = TRUE;
         if(!isset($this->options[CURLOPT_FAILONERROR]))       $this->options[CURLOPT_FAILONERROR] = TRUE;
+		if(!isset($this->options[CURLOPT_SSL_VERIFYPEER]))    $this->options[CURLOPT_SSL_VERIFYPEER] = FALSE;
 
 		if(!empty($this->headers))
 		{
