@@ -52,6 +52,16 @@ $this->Form->inputDefaults(array('label' => true, 'div' => true));
         'after' => "<span class='help-inline col-xs-12 col-sm-2'><span class='middle maroon'>*</span></span></div></div>",
         'error' => array('attributes' => array('wrap' => 'div', 'class' => 'help-block col-xs-12 col-md-offset-2'))
         ));
+		echo $this->Main->formhr_input('FCate', array(
+        'div' => "form-group",
+        'label' => array('text' => "分类：", 'class' => "col-sm-2 control-label no-padding-right"),
+        'type' => "select",
+        'placeholder' => "",
+        'class' => "col-xs-10 col-sm-8",
+        'between' => "<div class='col-xs-12 col-sm-9'><div class='clearfix'>",
+        'after' => "<span class='help-inline col-xs-12 col-sm-2'><span class='middle maroon'>*</span></span></div></div>",
+        'error' => array('attributes' => array('wrap' => 'div', 'class' => 'help-block col-xs-12 col-md-offset-2'))
+        ));
         echo $this->Main->formhr_input('FAuthor', array(
         'div' => "form-group",
         'label' => array('text' => "作者：", 'class' => "col-sm-2 control-label no-padding-right"),

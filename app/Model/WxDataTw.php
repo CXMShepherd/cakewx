@@ -39,7 +39,7 @@ class WxDataTw extends AppModel {
 	);
 	
 	public $type = array('0' => "文章图文", '1' => "图文集");
-	public $conType = array('tw' => "单图文", 'twj' => "多图文", 'events' => '活动图文');
+	public $conType = array('tw' => "单图文", 'twj' => "多图文", 'events' => '活动');
 	
 	/**
 	 * undocumented function

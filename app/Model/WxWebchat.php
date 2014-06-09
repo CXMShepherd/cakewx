@@ -187,11 +187,6 @@ class WxWebchat extends AppModel {
 					'url' => "", 
 					'icon' => "icon-desktop", 
 					'child' => array(
-						'网站信息' => array(
-							'url' => Router::url(array('controller' => "admin", 'action' => "wBasic")), 
-							'icon' => "icon-double-angle-right",
-							'FIsAdmin' => 1
-						),
 						'基本信息' => array(
 							'url' => Router::url(array('controller' => "admin", 'action' => "basic")), 
 							'icon' => "icon-double-angle-right",
@@ -217,6 +212,65 @@ class WxWebchat extends AppModel {
 					),
 					'open' => 1,
 					'active' => 1
+				),
+				"用户中心" => array(
+					'url' => "", 
+					'icon' => "icon-group", 
+					'child' => array(
+						'用户管理' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "pUsers")), 
+							'icon' => "icon-double-angle-right",
+							'FIsAdmin' => 1
+						)
+					),
+					'FIsAdmin' => 1
+				),
+				"应用中心" => array(
+					'url' => "", 
+					'icon' => "icon-cloud-download", 
+					'child' => array(
+						'我的应用' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "yMapps")), 
+							'icon' => "icon-double-angle-right",
+							'FIsAdmin' => 1
+						),
+						'应用市场' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "yAppStore")), 
+							'icon' => "icon-double-angle-right",
+						)
+					),
+					'FIsAdmin' => 1
+				),
+				"系统设置" => array(
+					'url' => "", 
+					'icon' => "icon-cogs", 
+					'child' => array(
+						'网站信息' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "wBasic")), 
+							'icon' => "icon-double-angle-right",
+							'FIsAdmin' => 1
+						),
+						'模板管理' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "wBasic")), 
+							'icon' => "icon-double-angle-right",
+							'FIsAdmin' => 1
+						),
+						'模型管理' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "wBasic")), 
+							'icon' => "icon-double-angle-right",
+							'FIsAdmin' => 1
+						),
+						'数据备份' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "yMapps")), 
+							'icon' => "icon-double-angle-right",
+							'FIsAdmin' => 1
+						),
+						'在线升级' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "yAppStore")), 
+							'icon' => "icon-double-angle-right",
+						)
+					),
+					'FIsAdmin' => 1
 				)
 			),
 			'vmenu' => array(
@@ -298,9 +352,13 @@ class WxWebchat extends AppModel {
 							'icon' => "icon-double-angle-right",
 							'FIsActive' => 0
 						),
-						'图文' => array(
+						'内容' => array(
 							'url' => "{$baseURL}mPic", 
 							'icon' => "icon-double-angle-right"
+						),
+						'分类' => array(
+							'url' => "{$baseURL}mCate", 
+							'icon' => "icon-double-angle-right",
 						),
 						'图片' => array(
 							'url' => "{$baseURL}mPic", 
@@ -350,6 +408,40 @@ class WxWebchat extends AppModel {
 						),
 						'应用中心' => array(
 							'url' => "{$baseURL}hApp",
+							'icon' => "icon-double-angle-right"
+						)
+					)
+				),
+				"微商铺" => array(
+					'url' => "", 
+					'icon' => "icon-food",
+					'FIsActive' => 1,
+					'child' => array(
+						'店铺管理' => array(
+							'url' => "{$baseURL}wStores",
+							'icon' => "icon-double-angle-right"
+						),
+						'订单管理' => array(
+							'url' => "{$baseURL}wOrders",
+							'icon' => "icon-double-angle-right"
+						)
+					)
+				),
+				"微官网" => array(
+					'url' => "", 
+					'icon' => "icon-globe",
+					'FIsActive' => 1,
+					'child' => array(
+						'模板预览' => array(
+							'url' => "{$baseURL}wStores",
+							'icon' => "icon-double-angle-right"
+						),
+						'微官网设置' => array(
+							'url' => "{$baseURL}wOrders",
+							'icon' => "icon-double-angle-right"
+						),
+						'菜单导航设置' => array(
+							'url' => "{$baseURL}wOrders",
 							'icon' => "icon-double-angle-right"
 						)
 					)

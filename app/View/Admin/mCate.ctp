@@ -7,19 +7,21 @@
 		"Action/webchat",
 		"Action/twPreview",
 	), array('block' => "script_extra", 'inline' => false));
+	// echo '<pre>';print_r($data['category']);exit;
+	// echo $WC_query['value'];exit;
 ?>
 <div style="margin-bottom:15px">
 	<button class="btn btn-sm btn-primary" onclick="location.href='<?= "{$WC_URL}?_a=add" ?>'">
 		<i class="icon-pencil align-top bigger-125"></i>
-		添加内容
+		添加分类
 	</button>
 </div>
 <div class="a_types">
     <ul class="ttp cl">
-		<?php $css = (!$WC_query['value']) ? 'class="a"' : ''; ?>
+		<?php $css = ($WC_query['value'] == '') ? 'class="a"' : ''; ?>
         <li id="ttp_all" <?php echo $css; ?>><a href="<?php echo $WC_URL; ?>">全部</a></li>
 		<?php foreach ($data['category'] as $key => $vals): ?>
-			<?php $css = ($WC_query['value'] == $vals['key']) ? 'class="a"' : ''; ?>
+			<?php $css = ($WC_query['value'] != '' && $WC_query['value'] == $vals['key']) ? 'class="a"' : ''; ?>
 			 <?php echo "<li {$css}>"; ?>
 				<a href="<?php echo $vals['link']; ?>"><?php echo $vals['name']; ?>
 					<?php if ($vals['count']): ?>
@@ -36,10 +38,9 @@
 			<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 				<thead>
 					<tr>
-                        <th>图文名称</th>
-						<th>图文类型</th>
+                        <th>分类名称</th>
+						<th>类型</th>
 						<th>创建时间</th>
-						<th>更新时间</th>
 						<th>
 							<i class="icon-time bigger-110 hidden-480"></i>
 							操作
@@ -52,31 +53,23 @@
 						<? foreach ($data['datalist'] as $key => $vals): ?>
 							<tr>
 								<td>
-									<?= $vals['WxDataTw']['FTitle'] ?>
+									<?= $vals['WxDataCate']['FName'] ?>
 								</td>
 								<td>
-                                   <?= $vals['WxDataTw']['C_FType'] ?>
+                                   <?= $vals['WxDataCate']['C_FType'] ?>
                                 </td>
 								<td class="hidden-480">
-									<p><?= $vals['WxDataTw']['FCreatedate'] ?></p>
+									<p><?= $vals['WxDataCate']['FCreatedate'] ?></p>
 								</td>
-								<td>
-									<p><?= $vals['WxDataTw']['FUpdatedate'] ?></p>
-								</td>
-
 								<td>
 									<div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
 
-										<button class="btn btn-xs btn-info" onclick="parent.location.href='<?php echo "{$WC_URL}?_a=edit&_id={$vals['WxDataTw']['Id']}" ?>'">
+										<button class="btn btn-xs btn-info" onclick="parent.location.href='<?php echo "{$WC_URL}?_a=edit&_id={$vals['WxDataCate']['Id']}" ?>'">
 											<i class="icon-edit bigger-120" title="编辑"></i>
 										</button>
 
-										<button class="btn btn-xs btn-danger bootbox-confirm" alt="<?php echo "{$WC_URL}?_a=del&_id={$vals['WxDataTw']['Id']}" ?>">
+										<button class="btn btn-xs btn-danger bootbox-confirm" alt="<?php echo "{$WC_URL}?_a=del&_id={$vals['WxDataCate']['Id']}" ?>">
 											<i class="icon-trash bigger-120" title="删除"></i>
-										</button>
-										<?php $previewJS = ($vals['WxDataTw']['FType'] == 0 && $vals['WxDataTw']['FTwType'] != null) ? Router::url("/mob/tw/events/{$vals['WxDataTw']['Id']}") : Router::url("/mob/tw/{$vals['WxDataTw']['Id']}"); ?>
-										<button class="btn btn-xs btn-warning twPreview" id="<?php echo $vals['WxDataTw']['Id'] ?>" data-url="<?php echo $previewJS; ?>">
-											<i class="icon-search bigger-120" title="预览"></i>
 										</button>
 									</div>
 								</td>

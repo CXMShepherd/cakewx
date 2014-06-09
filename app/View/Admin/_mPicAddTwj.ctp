@@ -34,6 +34,21 @@ echo $this->Main->formhr_input('FTitle', array(
 		'error' => array('attributes' => array('wrap' => 'div', 'class' => 'help-block col-xs-12 col-md-offset-3'))
 	));
 ?>
+<?php
+$this->Form->inputDefaults(array('label' => true, 'div' => true));
+echo $this->Form->create('WxDataTw', array('name' => "form1", 'role' => "form", 'class' => "form-horizontal"));
+echo $this->Main->formhr_input('FTwType', array(
+		'div' => "form-group", 
+		'options' => array('文章', '商品'),
+		'label' => array('text' => "名称：", 'class' => "col-sm-3 control-label no-padding-right"), 
+		'type' => "select", 
+		'placeholder' => "", 
+		'class' => "col-xs-10 col-sm-5",
+		'between' => "<div class='col-xs-12 col-sm-9'><div class='clearfix'>",
+		'after' => "<span class='help-inline col-xs-12 col-sm-7'><span class='middle maroon'></span></span></div></div>",
+		'error' => array('attributes' => array('wrap' => 'div', 'class' => 'help-block col-xs-12 col-md-offset-3'))
+	));
+?>
 <div class="row">
 	<div class="col-sm-3 control-label no-padding-right">
 		图文集：

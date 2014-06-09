@@ -766,6 +766,227 @@ class AdminController extends AppController {
 	 * @return void
 	 * @author apple
 	 */
+	function _mCate($id, $query) {
+		$this->loadModel('WxDataCate');
+		switch ($query['action']) {
+			case 'add':
+				if ($this->request->is('post')) {
+					$this->WxDataCate->set($this->request->data);
+					if ($this->WxDataCate->validates()) {
+						$query = $this->WxDataCate->saveData($this->request->data, $this->uid, $id);
+						if ($query) {
+							$this->Session->setFlash('图文添加成功。');
+							return $this->redirect($this->rdWcURL);
+						}
+					}
+				} 
+				$this->render('/Admin/_mCateAdd');
+				break;
+			case 'edit':
+				if (!$this->WxDataCate->checkId($id, $query['id'])) {
+					return $this->redirect($this->rdWcURL);
+				}
+				if ($this->request->is('post') || $this->request->is('put')) {
+					$this->WxDataCate->set($this->request->data);
+					if ($this->WxDataCate->validates()) {
+						$this->WxDataCate->id = $query['id'];
+						$query = $this->WxDataCate->saveData($this->request->data, $this->uid, $id);
+						if ($query) {
+							$this->Session->setFlash('图文编辑成功。');
+							return $this->redirect($this->rdWcURL);
+						}
+					}
+				} else {
+					if (!$this->request->data) {
+						$data = $this->WxDataCate->getDataList($id, $query['id']);
+						$this->request->data = $data;
+				    }
+
+				}
+				$this->set('data', $data);
+				$this->render('/Admin/_mCateAdd');
+				break;
+			case 'del':
+				if (!$this->WxDataCate->checkId($id, $query['id'])) {
+					return $this->redirect($this->rdWcURL);
+				} 
+				if ($this->WxDataCate->delete($query['id'])) {
+					$this->Session->setFlash('图文删除成功。');
+				}
+				return $this->redirect($this->rdWcURL);
+				break;
+			default:
+				$this->paginate['limit'] = 9;
+				$this->Paginator->settings = $this->paginate;
+				$conditions = array('FWebchat' => $id);
+				if ($query['value']) {
+					switch ($query['value']) {
+						default:
+							$conditions['FType'] = $query['value'];
+					}
+				}
+				$data['datalist'] = $this->Paginator->paginate('WxDataCate', $conditions);
+				$data['category'] = $this->WxDataCate->getCategories($id, $this->rdWcURL);
+				$this->set('data', $data);
+				$this->render('/Admin/mCate');
+			
+		}
+	}
+	
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author niancode
+	 **/
+	function _wStores($id, $query) {
+		$this->loadModel('WxDataCate');
+		switch ($query['action']) {
+			case 'add':
+				if ($this->request->is('post')) {
+					$this->WxDataCate->set($this->request->data);
+					if ($this->WxDataCate->validates()) {
+						$query = $this->WxDataCate->saveData($this->request->data, $this->uid, $id);
+						if ($query) {
+							$this->Session->setFlash('图文添加成功。');
+							return $this->redirect($this->rdWcURL);
+						}
+					}
+				} 
+				$this->set('data', $data);
+				$this->render('/Admin/_wStoreAdd');
+				break;
+			case 'edit':
+				if (!$this->WxDataCate->checkId($id, $query['id'])) {
+					return $this->redirect($this->rdWcURL);
+				}
+				if ($this->request->is('post') || $this->request->is('put')) {
+					$this->WxDataCate->set($this->request->data);
+					if ($this->WxDataCate->validates()) {
+						$this->WxDataCate->id = $query['id'];
+						$query = $this->WxDataCate->saveData($this->request->data, $this->uid, $id);
+						if ($query) {
+							$this->Session->setFlash('图文编辑成功。');
+							return $this->redirect($this->rdWcURL);
+						}
+					}
+				} else {
+					if (!$this->request->data) {
+						$data = $this->WxDataCate->getDataList($id, $query['id']);
+						$this->request->data = $data;
+				    }
+
+				}
+				$this->set('data', $data);
+				$this->render('/Admin/_wStoreAdd');
+				break;
+			case 'del':
+				if (!$this->WxDataCate->checkId($id, $query['id'])) {
+					return $this->redirect($this->rdWcURL);
+				} 
+				if ($this->WxDataCate->delete($query['id'])) {
+					$this->Session->setFlash('图文删除成功。');
+				}
+				return $this->redirect($this->rdWcURL);
+				break;
+			default:
+				$this->paginate['limit'] = 9;
+				$this->Paginator->settings = $this->paginate;
+				$conditions = array('FWebchat' => $id);
+				if ($query['value']) {
+					switch ($query['value']) {
+						default:
+							$conditions['FType'] = $query['value'];
+					}
+				}
+				$data['datalist'] = $this->Paginator->paginate('WxDataCate', $conditions);
+				$data['category'] = $this->WxDataCate->getCategories($id, $this->rdWcURL);
+				$this->set('data', $data);
+				$this->render('/Admin/wStore');
+			
+		}
+	}
+	
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author niancode
+	 **/
+	function _wOrders($id, $query) {
+		$this->loadModel('WxDataCate');
+		switch ($query['action']) {
+			case 'add':
+				if ($this->request->is('post')) {
+					$this->WxDataCate->set($this->request->data);
+					if ($this->WxDataCate->validates()) {
+						$query = $this->WxDataCate->saveData($this->request->data, $this->uid, $id);
+						if ($query) {
+							$this->Session->setFlash('图文添加成功。');
+							return $this->redirect($this->rdWcURL);
+						}
+					}
+				} 
+				$this->set('data', $data);
+				$this->render('/Admin/_wOrderAdd');
+				break;
+			case 'edit':
+				if (!$this->WxDataCate->checkId($id, $query['id'])) {
+					return $this->redirect($this->rdWcURL);
+				}
+				if ($this->request->is('post') || $this->request->is('put')) {
+					$this->WxDataCate->set($this->request->data);
+					if ($this->WxDataCate->validates()) {
+						$this->WxDataCate->id = $query['id'];
+						$query = $this->WxDataCate->saveData($this->request->data, $this->uid, $id);
+						if ($query) {
+							$this->Session->setFlash('图文编辑成功。');
+							return $this->redirect($this->rdWcURL);
+						}
+					}
+				} else {
+					if (!$this->request->data) {
+						$data = $this->WxDataCate->getDataList($id, $query['id']);
+						$this->request->data = $data;
+				    }
+
+				}
+				$this->set('data', $data);
+				$this->render('/Admin/_wOrderAdd');
+				break;
+			case 'del':
+				if (!$this->WxDataCate->checkId($id, $query['id'])) {
+					return $this->redirect($this->rdWcURL);
+				} 
+				if ($this->WxDataCate->delete($query['id'])) {
+					$this->Session->setFlash('图文删除成功。');
+				}
+				return $this->redirect($this->rdWcURL);
+				break;
+			default:
+				$this->paginate['limit'] = 9;
+				$this->Paginator->settings = $this->paginate;
+				$conditions = array('FWebchat' => $id);
+				if ($query['value']) {
+					switch ($query['value']) {
+						default:
+							$conditions['FType'] = $query['value'];
+					}
+				}
+				$data['datalist'] = $this->Paginator->paginate('WxDataCate', $conditions);
+				$data['category'] = $this->WxDataCate->getCategories($id, $this->rdWcURL);
+				$this->set('data', $data);
+				$this->render('/Admin/wOrder');
+			
+		}
+	}
+	
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author apple
+	 */
 	function _mPicGary($id, $query) {
 		$this->loadModel('WxDataTw');
 		switch ($query['action']) {
@@ -898,7 +1119,7 @@ class AdminController extends AppController {
 	 * @return void
 	 * @author apple
 	 **/
-	public function _areply() {
+	public function _areply($id, $query, $wxId) {
 		$this->render('/Admin/areply');
 	}
 	
@@ -908,7 +1129,7 @@ class AdminController extends AppController {
 	 * @return void
 	 * @author apple
 	 **/
-	public function _txtreply() {
+	public function _txtreply($id, $query, $wxId) {
 		$this->render('/Admin/txtreply');
 	}
 	
@@ -918,7 +1139,7 @@ class AdminController extends AppController {
 	 * @return void
 	 * @author apple
 	 **/
-	public function _info() {
+	public function _info($id, $query, $wxId) {
 		$this->render('/Admin/info');
 	}
 	
@@ -928,7 +1149,7 @@ class AdminController extends AppController {
 	 * @return void
 	 * @author apple
 	 **/
-	public function _picreply() {
+	public function _picreply($id, $query, $wxId) {
 		$this->render('/Admin/picreply');
 	}
 	
@@ -1224,6 +1445,36 @@ class AdminController extends AppController {
 	 **/
 	public function webchat_index()
 	{
+	}
+	
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author apple
+	 **/
+	public function yMapps() {
+		$this->render('/Admin/yMapps');
+	}
+	
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author apple
+	 **/
+	public function yAppStore() {
+		$this->render('/Admin/yAppStore');
+	}
+	
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author apple
+	 **/
+	public function pUsers() {
+		$this->render('/Admin/pUsers');
 	}
 	
 //======================Private
