@@ -1,0 +1,21 @@
+{% extends ":Layouts:mobile.html.twig" %}
+
+{% block wrap %}
+<div class="page-bizinfo">
+    <div class="header">
+        <h1 id="activity-name">{{ data['title'] }}</h1>
+        <p class="activity-info">
+            <span id="post-date" class="activity-meta no-extra">{{ data['dateline'] }}</span>
+            <a href="javascript:viewProfile();" id="post-user" class="activity-meta">
+                <span class="text-ellipsis">{{ data['author'] }}</span><i class="icon_link_arrow"></i>
+            </a>
+        </p>
+    </div>
+</div>
+<div id="page-content" class="page-content">
+    <div id="img-content">
+        <div class="text">{{ data['content']|raw }}</div>
+    </div>
+    <div class="mtm copyright text-center">©2014 <a href="http://cakewx.com/" target="_blank">CakeWX</a></div>
+</div>
+{% endblock %}

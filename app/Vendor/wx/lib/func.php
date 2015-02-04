@@ -8,7 +8,7 @@ if (! function_exists('curlData'))
 	 * @return void
 	 * @author apple
 	 **/
-	function curlData($url, $params = array(), $type = 'GET', $debug = 0, $options = array())
+	function curlData($url, $params = array(), $type = 'GET', $debug = 0, $options = array(), $force = 1)
 	{
 		$cl = new Curl();
 		if ($type == 'GET')
@@ -20,9 +20,9 @@ if (! function_exists('curlData'))
 		else
 		{
 			$curl['url'] = site_url($url);
-			$json = $cl->simple_post($curl['url'], $params, $options);
+			$json = $cl->simple_post($curl['url'], $params, $options, $force);
 		}
-		if ($debug) $cl->debug();		// debug
+		if ($debug) exit($cl->debug());	// debug
 		$json = json_decode($json, TRUE);
 		return $json;
 	}

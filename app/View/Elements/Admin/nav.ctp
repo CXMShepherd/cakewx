@@ -8,7 +8,7 @@
 
 	<div class="navbar-container" id="navbar-container">
 		<div class="navbar-header pull-left">
-			<a href="<?= $uid ? Router::url(array('controller' => "admin", 'action' => "index")) : Router::url("/") ?>" class="navbar-brand">
+			<a href="<?= $uid ? Router::url(array('controller' => "admin", 'action' => "index")) : Router::url(array('controller' => "user", 'action' => "login")) ?>" class="navbar-brand">
 				<small>
 					<i class="icon-comments"></i>
 					<?= $navTitle ?>

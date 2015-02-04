@@ -1,0 +1,26 @@
+{% extends ":Layouts:store.html.twig" %}
+
+{% block wrap %}
+<header class="bar bar-nav st-hd">
+	<a class="icon iconfont pull-left goback" href="{{ data['plUrl'] }}"></a>
+	<h1 class="title">{{ data['store']['WxDataPlStore']['FName'] }}</h1>
+</header>
+<div id="store" class="content single">
+	<div class="scrollbox">
+		<div class="store-hd">
+			<div class="store-ft">
+				<img src="{{ data['store']['WxDataPlStore']['FPicUrl'] }}" class="logo">
+				<h2>{{ data['store']['WxDataPlStore']['FName'] }}</h2>
+			</div>
+		</div>
+		<div class="stin mtm">
+			<h4><i class="iconfont mrm">&#xe62d</i>{{ data['store']['WxDataPlStore']['FAddress'] }}</h4>
+			<ul>
+				<li><span>营业时间：</span>{% if data['store']['WxDataPlStore']['FOrderTime'] %}{{ data['store']['WxDataPlStore']['FOrderTime']}}{% else %}早9:00 - 晚8:00{% endif %}</li>
+				<li><span>联系电话：</span>{{ data['store']['WxDataPlStore']['C_FPhone'] }}    <a class="fr iconfont hphone" href="tel:{{ data['WxDataStore']['FPhone'] }}">&#xe62e</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block footer %}{% endblock %}

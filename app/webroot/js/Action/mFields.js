@@ -219,7 +219,7 @@ function createNode(name, nodetag, attr,itemid) {
     }
     if(itemid){
         tempnode.html("<div class='dd-handle'><span id='item"+itemid+"' class='firmenu'>"+name+"</span><div class='pull-right action-buttons'><a class='blue' href='#'><i class='icon-pencil bigger-130'></i></a><a class='red' href='#'><i class='icon-trash bigger-130'></i></a></div>");
-    } else{
+    } else {
         tempnode.html("<div class='dd-handle'><span>"+name+"</span><div class='pull-right action-buttons'><a class='blue' href='#'><i class='icon-pencil bigger-130'></i></a><a class='red' href='#'><i class='icon-trash bigger-130'></i></a></div>");
     }
     return tempnode;

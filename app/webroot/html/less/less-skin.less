@@ -1,0 +1,217 @@
+/* Color CSS File */
+
+@theme			: #51d466;
+@theme-dark		: #42c557;
+
+/* Default Theme Color Class */
+
+.color { color: @theme !important; }
+.br-color { background: @theme !important; }
+
+/* Theme Default Button */
+
+.btn-theme {
+	background: @theme;
+	&:hover {
+		background: @theme-dark;
+	}
+}
+
+/* Border */
+
+.bor{
+	background: @theme;
+}
+
+/* Navigation Menu */
+.header {
+	.navbar {
+		.navbar-brand>h1>i{
+			color: @theme;
+		}	
+		.navbar-nav>li>a {
+			&:hover {
+				background:@theme !important;
+			}
+			&:focus {
+				background:@theme !important;
+			}
+		}
+		.navbar-nav>li.active>a {
+				background:@theme !important;
+		}
+		.navbar-toggle {
+			background:@theme;
+		}
+	}
+}
+
+/* Default Heading */
+
+.default-heading{
+	.dh-icon i {
+		color: @theme;
+	}
+}
+
+/* Slider */
+
+.tp-banner-container{
+	background:@theme url("../img/overlay.png") repeat;
+	background-size:252px 230px;		
+}
+
+/* Services Block */
+
+.services {
+	background:@theme url("../img/overlay.png") repeat;
+	background-size:252px 230px;
+}
+
+/* Team */
+
+.team{
+	.tlinks{
+		a{
+			color:@theme;
+			&:hover{
+				color:@theme-dark;
+			}
+		}	
+	}
+}
+
+/* Pricing Block */
+
+.pricing {
+	.ptable-star {
+		i {
+			color: @theme;
+		}
+	}
+	.pricing-table {
+		.ptable-icon{
+			color: @theme;
+		}
+		.ptable-title i {
+			color: @theme;
+		}
+	}
+}
+
+/* Testimonial Block */
+
+.testimonial {
+	.quote span{
+		background:@theme;
+	}	
+}
+
+/* Quote two */
+
+.quote-two {
+	.btn-xtra{
+		background:@theme !important;
+		border-color:@theme !important;
+		&:hover{
+			background:@theme-dark !important;
+			border-colro:@theme-dark !important;
+		}
+	}
+}
+
+/* Portfolio Block */
+
+.portfolio {
+	.portfolio-content {
+		.p-hover i {
+			background: @theme;
+		}
+	}
+}
+
+/* About Us Block */
+
+.about {
+	.about-heading{
+		background:@theme url("../img/overlay.png") repeat;
+		background-size:252px 230px;
+	}
+	.about-logo i{
+		color:@theme-dark;
+	}
+	.about-inner {
+		background:@theme url("../img/overlay.png") repeat;
+		background-size:252px 230px;
+		.per{
+			color: @theme;
+		}
+	}
+}
+
+/* Subscribe */
+
+.subscribe{
+	.heading i{
+		background:@theme;
+	}
+}
+
+/* Blog Block */
+
+.blog {
+	.grid {
+		.grid-entry {
+			.grid-img i{
+				background: @theme !important;
+			}
+			.grid-quote{
+				background: @theme;
+			}	
+			.read-more i{
+				color: @theme !important;
+			}
+		}
+	}
+}
+
+/* CTA Block */
+
+.cta{
+	background:@theme url("../img/overlay.png") repeat;
+	background-size:252px 230px;
+}
+
+/* Who should buy this */
+
+.whobuy{
+	background:@theme url("../img/overlay.png") repeat;
+	background-size:252px 230px;
+}
+
+/* Client */
+
+.client{
+	.popover h3{
+		background:@theme;
+	}
+}
+
+/* Contact Block */
+
+.contact{
+	.contact-info .info-item i {
+		color: @theme;
+	}
+	form{
+		label{
+			color:@theme;
+		}
+		input.error{
+			border-color:@theme;
+		}
+		textarea.error{
+			border-color:@theme;
+		}
+	}
+}
