@@ -1,0 +1,71 @@
+{% extends ":Layouts:store.html.twig" %}
+
+{% block wrap %}
+<header class="bar bar-nav hd">
+	<h1 class="title">分店列表</h1>
+</header>
+<div class="content" id="stores" style="padding-bottom: 0;">
+	{% if data['stores']['cate'] %}
+	<div id="stypes" class="bar bar-standard bar-header-secondary bgwhite">
+		<div class="typescroll">
+			<span class="on" data-type="t_all">全部</span>
+			{% for key,cate in data['stores']['cate'] %}
+			<span data-type="t_{{ cate }}">{{ cate }}</span>
+			{% endfor %}
+		</div>
+	</div>
+	{% endif %}
+    <div class="store-list" {% if data['stores']['cate'] %}style="top:88px"{% endif %}>
+		<div id="scroller3">
+			<ul>
+				{% for store in data['stores']['datalist'] %}
+					{% set isopen = ''  %}
+					{% set opentips = '营业' %}
+					{% if store['FStatus'] == 0 %}
+						{% set isopen = 'tag-close' %}
+						{% set opentips = '停业' %}
+					{% endif %}
+					<li class="st_{{ store['C_cate']['FName'] }}">
+						<div class="st-item cl">
+							<a class="disblock" data-ignore="push" href="{{ baseurlAction }}{{ md5(store['Id']) }}">
+								<span class="iconfont tag tag2 {{ isopen }}">&#xe60a <i>{{ opentips }}</i></span>
+								{{ image(store['FSignPicUrl']) }}
+								<h2>{{ store['FName'] }}</h2>
+								<p>营业时间：{% if store['FOrderTime'] %}{{store['FOrderTime']}}{% else %}早9:00 - 晚8:00{% endif %}</p>
+								<p>地址：{{ store['FAddress'] }}</p>
+							</a>
+						</div>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+    </div>
+	<script class="js-custom">
+		$("#stypes").on("tap", "span", function(){
+			$("#stypes span").removeClass("on");
+			$(this).addClass("on");
+			var typec = $(this).attr("data-type");
+			if(typec == "t_all") {
+				$(".store-list li").show();
+			} else {
+				$(".store-list li").hide();
+				$(".store-list").find(".s"+typec).show();
+			}
+			intscroll();
+		});
+		$(".store-list").on("tap", "a", function(){
+			document.location.href = $(this).attr("href");
+		});
+		var StoreIScroll,StoreTypeIScroll;
+		function intscroll() {
+			StoreIScroll = new IScroll(".store-list", {disableMouse: !0,disablePointer: !0}),
+			StoreTypeIScroll = new IScroll("#stypes", {scrollX: !0,scrollY: !1,mouseWheel: !0,disableMouse: !0,disablePointer: !0})
+		}
+		intscroll();
+	</script>
+</div>
+{% endblock %}
+{% block footer %}
+&nbsp;
+{% endblock %}
+
