@@ -63,6 +63,39 @@ class ArrayHelper extends AppHelper {
 	}
 	
 	/**
+	 * 提取数组
+	 *
+	 * @return void
+	 * @author niancode
+	 **/
+	function MY_arrayMerge($arr, $keys = '', $depth = 1) {
+		if (!is_array($arr) || empty($arr)) {
+			return $arr;
+		}
+		if (empty($keys)) {
+			foreach($arr[0] as $key => $vals) {
+				$keys = $key;
+			}
+		}
+		$newarr = array();
+		foreach($arr as $key => $vals) {
+			if ($depth == 2) {
+				foreach ($vals as $k => $v) {
+					if ($v[$keys]) {
+					$newarr[$key] = $v[$keys];
+				}
+				}
+			} else {
+				if ($vals[$keys]) {
+					$newarr[$key] = $vals[$keys];
+				}
+			}
+		}
+		// print_r($newarr);exit;
+		return $newarr;
+	}
+	
+	/**
 	 * undocumented function
 	 *
 	 * @return void

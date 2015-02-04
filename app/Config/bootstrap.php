@@ -164,6 +164,7 @@ Configure::write('Dispatcher.filters', array(
 	'AssetDispatcher',
 	'CacheDispatcher'
 ));
+CakePlugin::load('AssetCompress', array('bootstrap' => true));
 
 /**
  * Configures default file logging options
@@ -187,3 +188,5 @@ App::uses('Upcdn', 'Lib');
 App::uses('Wxauth', 'Lib');
 
 CakePlugin::load('Croogo', array('bootstrap' => true));
+CakePlugin::load('Twig', array('bootstrap' => true));
+CakePlugin::load('liunian', array('bootstrap' => false, 'routes' => false));

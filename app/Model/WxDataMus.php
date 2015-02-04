@@ -71,7 +71,7 @@ class WxDataMus extends AppModel {
 		}
 		if (!$this->id) $this->set('FCreatedate', date('Y-m-d H:i:s'));
 		$this->set('FUpdatedate', date('Y-m-d H:i:s'));
-		$this->set('FWebchat', $id);
+		$this->set('FWebchat', md5($id));
 		$this->set($data);
 		$query = $this->save($this->data, FALSE);
 		if ($query) return $this->id;

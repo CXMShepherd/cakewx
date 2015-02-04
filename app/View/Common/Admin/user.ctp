@@ -1,14 +1,4 @@
-<?php
-	
-	// echo '<pre>'; print_r($vmenu);
-	
-	// nav
-	$this->start('nav');
-	echo $this->element('Admin/nav');;
-	$this->end();
-?>
-
-<?= $this->fetch('nav'); ?>
+<?php echo $this->element('Admin/nav', array(), array('cache' => array('config' => "short"))); ?>
 <div class="main-container" id="main-container">
 	<div class="main-container-inner">
 		<div class="page-content">
@@ -20,6 +10,6 @@
 		<i class="icon-double-angle-up icon-only bigger-110"></i>
 	</a>
 </div>
-<div class="mtm copyright_normal text-center">©2014 <a href="http://cakewx.com/" target="_blank">CakeWX</a>&nbsp;<?php echo $version; ?></div>
+<div class="mtm copyright_normal text-center">©2014 <?php echo $version; ?></div>
 <!-- /.main-container
 </div><!-- /.main-container -->

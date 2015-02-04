@@ -1,0 +1,60 @@
+{% extends ":Layouts:base.html.twig" %} 
+{% block title %}{{ title }}{% endblock %} 
+{% block head %} 
+	{{ css('Mobile/ratchet.min', {'block': 'css_basic'}) }}
+	{{ script('Store/ratchet', {'block': 'js_basic'}) }}
+	{{ script('Store/zepto', {'block': 'js_basic'}) }}
+	{{ script('Store/common', {'block': 'js_basic'}) }}
+	{{ script('Store/jsorder', {'block': 'js_basic'}) }}
+	{{ script('Store/swipe', {'block': 'js_basic'}) }}
+	{{ script('Store/iscroll.min', {'block': 'js_basic'}) }}
+	{{ script('Store/checkform', {'block': 'js_basic'}) }}
+	{{ parent() }}
+	<script type="text/javascript">
+		var BASE_URL = "{{ url('/', true) }}";
+		(function ($) {
+			$.dstore = {
+				state : "{{ data['WxDataStore']['FStatus'] }}",
+				storeid : "{{ storeid }}",
+				userid : "{{ user['FOpenId'] }}",
+				orderapi : "{{ rooturl }}api/wxOrder",
+				startprice : "{{ data['WxDataStore']['FSendPrice'] }}",
+				sendprice : "{{ data['WxDataStore']['FDevCost'] }}",
+				freeprice : "{{ data['WxDataStore']['C_FOvFreeDc'] }}",
+				openfirst : "{{ data['WxDataStore']['FIsCouponsFirst'] }}",
+				isfirst: "{{ user['isFirstOrder'] }}",
+				firstcut: "{{ data['WxDataStore']['FCouponsFirst'] }}"
+			};
+			var intaddress = JSON.stringify({"webchatid":"{{ user['FOpenId'] }}","fullname":"{{ user['FullName'] }}","phone":"{{ user['FPhone'] }}","address":"{{ user['FAddress'] }}"});
+			storage.setItem("address", intaddress);
+		}(Zepto));
+	</script>
+{% endblock %}
+
+{% block content %} 
+	{{ block ('wrap') }}
+{% endblock %}
+{% block footer %}
+	<nav id="footer" class="bar bar-tab">
+		<a class="tab-item {% if action == '' %}active{% endif %}" href="{{ baseurlAction }}">
+			<span class="icon iconfont">&#xe62a</span>
+			<span class="tab-label">首页</span>
+		</a>
+		<a class="tab-item {% if action == 'shopping' %}active {% endif %}" href="{{ baseurlAction }}/shopping">
+			<span class="icon iconfont">&#xe61c</span>
+			<span class="tab-label">选购</span>
+		</a>
+	    <a class="tab-item {% if action == 'cart' %}active{% endif %}" href="{{ baseurlAction }}/cart">
+	        <span class="icon iconfont">&#xe612</span>
+	        <span class="tab-label">购物车</span>
+	    </a>
+	    <a class="tab-item {% if action == 'ucenter' %}active{% endif %}" href="{{ baseurlAction }}/ucenter">
+	        <span class="icon iconfont">&#xe60e</span>
+	        <span class="badge disno">5</span>
+	        <span class="tab-label">个人中心</span>
+	    </a>
+	</nav>
+	{{ parent() }}
+	<div class="ui-mask"></div>
+	<div id="attention-dialog" class="attention-layout"></div>
+{% endblock %}

@@ -42,9 +42,10 @@ class AppController extends Controller {
 	public $snsurl = '';
 	public $wxAPI = '';
 	public $wxToken = 'liunian';
+	public $site_key = "CakeWX";
 	public $site_cx = "Powered by CakeWX";
-	public $version = "1.1";
-	public $verdate = "Wed May 28 23:35:59 CST 2014";
+	public $version = "1.5";
+	public $verdate = "三  2  4 12:39:34 CST 2015";
 	
 	/**
 	 * undocumented function
@@ -58,7 +59,7 @@ class AppController extends Controller {
 		$this->Auth->authError = "Accend deny";
 		$this->Auth->loginError = "Login failed";
 		$this->Auth->loginRedirect = array('controller' => "admin", 'action' => "index");
-		$this->Auth->loginAction = array('controller' => "user", 'action' => "login");
+		$this->Auth->loginAction = array('plugin' => "", 'controller' => "user", 'action' => "login");
 		$this->Auth->authorize = array('Controller');
 		$this->Auth->authenticate = array('Form');
 		$this->Auth->authenticate = array(
@@ -159,7 +160,7 @@ class AppController extends Controller {
 
 	function checkLogin() {
 		if ($this->isLogin()) {
-			$this->redirect(array('controller' => "admin", 'action' => "index"));
+			$this->redirect(array('plugin' => "", 'controller' => "admin", 'action' => "index"));
 		}
 	}
 	
@@ -189,17 +190,76 @@ class AppController extends Controller {
 	 * undocumented function
 	 *
 	 * @return void
+	 * @author niancode
+	 **/
+	function LNRender($data = null, $view = null, $ext = '', $debug = 0, $caction = 'wc')
+	{
+		$tview = "";
+		$backendDir = "/Admin/";
+		$frontendDir = ":Mobile/";
+		$uri = Router::getParams();
+		
+		// Check
+		if ($data) {
+			$this->set('data', $data);
+		}
+		if ($debug == 1) {
+			echo '<pre>';print_r($this->data);exit;
+		}
+		
+		
+		// Case 
+		switch ($uri['controller']) {
+			case 'admin':
+				if ($uri['action'] == 'index') {
+					$tview = "{$backendDir}Webchat";
+				} else if ($uri['action'] == 'wc') {
+					$action = $uri['pass'][1];
+					if ($action == 'index') {
+						$tview = "{$backendDir}Wc/wHome";
+					} else {
+						$tview = "{$backendDir}Wc/{$action}";
+					}
+				} else {
+					$action = ucfirst($uri['action']);
+					$tview = "{$backendDir}{$action}";	
+				}
+				break;
+			case 'mob':
+				$action = ucfirst($uri['action']);
+				$tview = "{$frontendDir}{$action}";
+				break;
+			default:
+				$action = ucfirst($uri['action']);
+				$tview = "{$backendDir}{$action}";
+				break;
+		}
+		
+		// Load View
+		$split = $ext == 'twig' ? ':' : '/';
+		$ext = $ext == 'twig' ? ".html.{$ext}" : $ext;
+		$tview = $view ? "{$tview}{$split}{$view}{$ext}" : "{$tview}{$split}index{$ext}";
+		// echo $tview;exit;
+		return $this->render($tview);
+	}
+	
+	/**
+	 * undocumented function
+	 *
+	 * @return void
 	 * @author apple
 	 **/
 	function _setGlobalViews() {	
 		$conf = $this->_getSiteConf();
 		$settings['site_sign'] = $conf['Site']['name'];
-		$settings['site_name'] = "{$conf['Site']['title']} - {$this->site_cx}";
+		$settings['site_name'] = $conf['Site']['title'];
+		$settings['site_title'] = "{$conf['Site']['title']}";
 		$settings['site_keywords'] = $conf['Site']['keywords'];
 		$settings['site_description'] = $conf['Site']['description'];
 		$this->set('settings', $settings);
 		$this->set('cakeSign', $settings['site_sign']);
-		$this->set('cakeTitle', $settings['site_name']);
+		$this->set('cakeTitle', $settings['site_title']);
+		$this->set('cakeSiteName', $settings['site_name']);
 		$this->set('cakeKeywords', $settings['site_keywords']);
 		$this->set('cakeDescription', $settings['site_description']);
 		$this->set('uid', $this->uid);
@@ -207,7 +267,8 @@ class AppController extends Controller {
 		$this->set('user', $this->user);
 		$this->set('name', $this->user['FullName']);
 		$this->set('WC_BASE', "");
-		$this->set('version', "V{$this->version}");
+		$this->set('version', "<a href=\"http://cakewx.com\">{$this->site_key}</a>&nbsp;V{$this->version}");
+		$this->set('cakeStats', $conf['Site']['FSiteStats']);
 	}
 	
 	/**
@@ -218,7 +279,7 @@ class AppController extends Controller {
 	 **/
 	function _getSiteConf()
 	{
-		$sets = array('Site' => array("title" => array('default' => "开源免费的微信公众平台开发框架"), "name" => array('default' => "CakeWX"), "keywords" => array(), "description" => array()));
+		$sets = array('Site' => array("title" => array('default' => "开源免费的微信公众平台开发框架"), "name" => array('default' => "CakeWX"), "keywords" => array(), "description" => array(), "FSiteStats" => array()));
 		$conf = array();
 		foreach ($sets as $key => $value) {
 			foreach ($value as $k  => $v) {

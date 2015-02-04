@@ -1,0 +1,23 @@
+{% extends ":Layouts:base.html.twig" %} 
+{% block title %}{{ title }}{% endblock %} 
+{% block head %} 
+	{{ css('Mobile/client-page1d90ea', {'block': 'css_basic'}) }}
+	{{ css('Mobile/pc-page1d90ea', {'block': 'css_basic'}) }}
+	{{ parent() }}
+	<script type="text/javascript">
+		var BASE_URL = "{{ url('/', true) }}";
+		var UPLOAD_URL = "{{ url('/lib/picUpload') }}";
+		var ADMIN_URL = "{{ url('/admin/', true) }}";
+		var ADMIN_WC_URL = "{{ url(WC_BASE) }}";
+	</script>
+	<style>
+		.copyright{text-align: center;margin:10px 0;font-size:10px;}
+		.copyright a{text-decoration: none;color:#393939;}
+	</style>
+{% endblock %} 
+{% block content %} 
+	{{ block ('wrap') }}
+{% endblock %}
+{% block footer %}
+	{{ parent() }}
+{% endblock %}

@@ -37,10 +37,13 @@ class MainHelper extends AppHelper {
 	 **/
 	function menuSearch($arr, $type = 'hmenu', $router = 0)
 	{
+		//echo '<pre>';print_r($this->request);exit;
 		if ($type == 'hmenu')
 		{
 			$action = $this->request->params['action'] == 'index' ? '' : '/'.$this->request->params['action'];
-			$url = Router::url('/'.$this->request->params['controller'].$action);
+			$psac = reset($this->request->params['pass']);
+			$psac = $psac ? "/{$psac}" : ''; 
+			$url = Router::url('/'.$this->request->params['controller'].$action.$psac);
 		}
 		else
 		{
@@ -111,6 +114,116 @@ class MainHelper extends AppHelper {
 	}
 	
 	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author apple
+	 **/
+	function formhr_checkbox($name, $arr = array())
+	{
+		$arvs = $arr;
+		unset($arr['label']);
+		unset($arr['div']);
+		unset($arr['between']);
+		unset($arr['after']);
+		$input = $this->Form->checkbox($name, $arr);
+		if (isset($arvs['label']) && isset($arvs['between']) && isset($arvs['after'])) {
+			$html .= "<div class=\"{$arvs['div']}\">";
+			$html .= $this->Form->label($name, '', array('class' => $arvs['label']['class']));
+			$html .= $arvs['between'];
+			$html .= $input;
+			$html .= $this->Form->label($name, $arvs['label']['text']);
+			$html .= $arvs['after']."</div>";
+		}
+		$html .= "<div class=\"space-4\"></div>";
+		return $html;
+	}
+	
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author apple
+	 **/
+	function formhr_radio($name, $arr = array())
+	{
+		$arvs = $arr;
+		unset($arr['label']);
+		unset($arr['div']);
+		unset($arr['between']);
+		unset($arr['after']);
+		unset($arr['options']);
+		// unset($arr['beforce']);
+		// unset($arr['separator']);
+		$input = $this->Form->radio($name, $arvs['options'], $arr);
+		if (isset($arvs['label']) && isset($arvs['between']) && isset($arvs['after'])) {
+			$html .= "<div class=\"{$arvs['div']}\">";
+			$html .= $this->Form->label($name, '', array('class' => $arvs['label']['class']));
+			$html .= $input;
+			$html .= $this->Form->label($name, $arvs['label']['text']);
+			$html .= $arvs['after']."</div>";
+		}
+		$html .= "<div class=\"space-4\"></div>";
+		return $html;
+	}
+	
+	/**************************************************************
+       *
+       *    使用特定function对数组中所有元素做处理
+       *    @param  string  &$array     要处理的字符串
+       *    @param  string  $function   要执行的函数
+       *    @return boolean $apply_to_keys_also     是否也应用到key上
+       *    @access public
+       *
+     *************************************************************/
+    function arrayRecursive(&$array, $function, $apply_to_keys_also = false)
+    {
+        static $recursive_counter = 0;
+        if (++$recursive_counter > 1000) {
+            die('possible deep recursion attack');
+        }
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $this->Main->arrayRecursive($array[$key], $function, $apply_to_keys_also);
+            } else {
+                $array[$key] = $function($value);
+            }
+
+            if ($apply_to_keys_also && is_string($key)) {
+                $new_key = $function($key);
+                if ($new_key != $key) {
+                    $array[$new_key] = $array[$key];
+                    unset($array[$key]);
+                }
+            }
+        }
+        $recursive_counter--;
+    }
+
+	function decodeUnicode($str)
+	{
+		function replace_unicode_escape_sequence($match) {
+	    	return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
+		}
+		$str = preg_replace_callback('/\\\u([0-9a-f]{4})/i', 'replace_unicode_escape_sequence', $str);
+		return $str;
+	}
+
+    /**************************************************************
+     *
+     *    将数组转换为JSON字符串（兼容中文）
+     *    @param  array   $array      要转换的数组
+     *    @return string      转换得到的json字符串
+     *    @access public
+     *
+     *************************************************************/
+    function chs_json_encode($array, $decode = 1) {
+        $this->Main->arrayRecursive($array, 'urlencode', true);
+        $json = json_encode($array);
+        return $decode ? urldecode($json) : $json;
+    }
+	
+	/**
 	 * json 编码
 	 * 
 	 * 解决中文经过 json_encode() 处理后显示不直观的情况
@@ -121,10 +234,10 @@ class MainHelper extends AppHelper {
 	 * @param array|object $data
 	 * @return array|object
 	 */
-	function ch_json_encode($data) {	
+	function ch_json_encode($data, $decode = 1) {	
 		$ret = $this->Main->wphp_urlencode($data);
 		$ret = json_encode($ret);
-		return urldecode($ret);
+		return $decode ? urldecode($ret) : $ret;
 	}
 	
 	
@@ -152,5 +265,14 @@ class MainHelper extends AppHelper {
 			}
 		}
 		return $data;
+	}
+	
+	function randomkeys($length) {
+		$pattern='1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLOMNOPQRSTUVWXYZ';
+	 	$key = '';
+	 	for($i=0; $i<$length; $i++) {
+	   		$key .= $pattern{mt_rand(0,35)};    //生成php随机数
+	 	}
+	 	return $key;
 	}
 }

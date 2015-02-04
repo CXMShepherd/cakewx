@@ -22,11 +22,11 @@ class WxWebchat extends AppModel {
 	
 	public $validate = array(
 	    'FName' => array(
-			'rule' => "alphaNumeric",
+			'rule' => "notEmpty",
 			'message' => "必须填写",
 			'required' => true
 	    ),
-		'FWxopenId' => array(
+		/*'FWxopenId' => array(
 			'rule' => "notEmpty",
 			'message' => "必须填写",
 			'required' => true
@@ -35,7 +35,7 @@ class WxWebchat extends AppModel {
 			'rule' => "notEmpty",
 			'message' => "必须填写",
 			'required' => true
-	    ),
+	    ),*/
 		'FIcon' => array(
 			'rule' => "notEmpty",
 			'message' => "必须填写",
@@ -187,28 +187,27 @@ class WxWebchat extends AppModel {
 					'url' => "", 
 					'icon' => "icon-desktop", 
 					'child' => array(
-						'网站信息' => array(
-							'url' => Router::url(array('controller' => "admin", 'action' => "wBasic")), 
-							'icon' => "icon-double-angle-right",
-							'FIsAdmin' => 1
-						),
 						'基本信息' => array(
 							'url' => Router::url(array('controller' => "admin", 'action' => "basic")), 
 							'icon' => "icon-double-angle-right",
 						),
-						'公众账号管理' => array(
+						'移动应用管理' => array(
 							'url' => Router::url(array('controller' => "admin", 'action' => "index")), 
 							'icon' => "icon-double-angle-right",
 							'action' => array(
-								'添加公众账号' => array(
-									'url' => Router::url(array('controller' => "admin", 'action' => "webchatAdd")), 
+								'添加一个移动应用' => array(
+									'url' => Router::url(array('controller' => "admin", 'action' => "webchat", 'add')), 
 									'icon' => "icon-double-angle-right",
 								),
-								'编辑公众账号' => array(
-									'url' => Router::url(array('controller' => "admin", 'action' => "webchatEdit")), 
+								'编辑一个移动应用' => array(
+									'url' => Router::url(array('controller' => "admin", 'action' => "webchat", 'edit')), 
 									'icon' => "icon-double-angle-right",
 								),
 							)
+						),
+						'短信设置' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "message")), 
+							'icon' => "icon-double-angle-right"
 						),
 						'修改密码' => array(
 							'url' => Router::url(array('controller' => "admin", 'action' => "repwd")), 
@@ -217,6 +216,91 @@ class WxWebchat extends AppModel {
 					),
 					'open' => 1,
 					'active' => 1
+				),
+				"用户中心" => array(
+					'url' => "", 
+					'icon' => "icon-group", 
+					'child' => array(
+						'用户管理' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "pUsers")), 
+							'icon' => "icon-double-angle-right",
+							'action' => array(
+								'添加新用户' => array(
+									'url' => Router::url(array('controller' => "admin", 'action' => "pUsers", 'add')), 
+									'icon' => "icon-double-angle-right",
+								),
+								'编辑用户' => array(
+									'url' => Router::url(array('controller' => "admin", 'action' => "pUsers", 'edit')), 
+									'icon' => "icon-double-angle-right",
+								),
+							),
+							'FIsAdmin' => 1
+						)
+					),
+					'FIsAdmin' => 1
+				),
+				"应用中心" => array(
+					'url' => "", 
+					'icon' => "icon-cloud-download", 
+					'child' => array(
+						'我的应用' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "yMapps")), 
+							'icon' => "icon-double-angle-right",
+							'FIsAdmin' => 1
+						),
+						'应用市场' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "yAppStore")), 
+							'icon' => "icon-double-angle-right",
+						)
+					),
+					'FIsActive' => 0
+				),
+				"系统设置" => array(
+					'url' => "", 
+					'icon' => "icon-cogs", 
+					'child' => array(
+						'网站信息' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "wBasic")), 
+							'icon' => "icon-double-angle-right",
+							'FIsAdmin' => 1
+						),
+						'邀请注册' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "wInvite")), 
+							'icon' => "icon-double-angle-right",
+							'FIsAdmin' => 1,
+							'action' => array(
+								'添加邀请码' => array(
+									'url' => Router::url(array('controller' => "admin", 'action' => "wInvite", 'add')), 
+									'icon' => "icon-double-angle-right",
+								),
+								'编辑邀请码' => array(
+									'url' => Router::url(array('controller' => "admin", 'action' => "wInvite", 'edit')), 
+									'icon' => "icon-double-angle-right",
+								),
+							)
+						),
+						'模板管理' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "wBasic")), 
+							'icon' => "icon-double-angle-right",
+							'FIsActive' => 0
+						),
+						'模型管理' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "wBasic")), 
+							'icon' => "icon-double-angle-right",
+							'FIsActive' => 0
+						),
+						'数据备份' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "yMapps")), 
+							'icon' => "icon-double-angle-right",
+							'FIsActive' => 0
+						),
+						'在线升级' => array(
+							'url' => Router::url(array('controller' => "admin", 'action' => "yAppStore")), 
+							'icon' => "icon-double-angle-right",
+							'FIsActive' => 0
+						)
+					),
+					'FIsAdmin' => 1
 				)
 			),
 			'vmenu' => array(
@@ -236,7 +320,7 @@ class WxWebchat extends AppModel {
 						'默认设置' => array(
 							'url' => "{$baseURL}bCtg", 
 							'icon' => "icon-double-angle-right",
-						),
+						)
 					)
 				),
 				"自动回复" => array(
@@ -262,33 +346,6 @@ class WxWebchat extends AppModel {
 						)
 					)
 				),
-				"高级设置" => array(
-					'url' => "", 
-					'icon' => "icon-cogs",
-					'child' => array(
-						'自定义菜单' => array(
-							'url' => "{$baseURL}sMenu", 
-							'icon' => "icon-double-angle-right"
-						),
-						'二维码营销' => array(
-							'url' => "{$baseURL}sCode", 
-							'icon' => "icon-double-angle-right"
-						),
-						'语音识别' => array(
-							'url' => "{$baseURL}sVoice", 
-							'icon' => "icon-double-angle-right"
-						),
-						'粉丝管理' => array(
-							'url' => "{$baseURL}sFans", 
-							'icon' => "icon-double-angle-right"
-						),
-						'微客服' => array(
-							'url' => "{$baseURL}sCuts", 
-							'icon' => "icon-double-angle-right"
-						)
-					),
-					'FIsActive' => 0
-				),
 				"素材库" => array(
 					'url' => "", 
 					'icon' => "icon-picture",
@@ -301,6 +358,24 @@ class WxWebchat extends AppModel {
 						'图文' => array(
 							'url' => "{$baseURL}mPic", 
 							'icon' => "icon-double-angle-right"
+						),
+						'分类' => array(
+							'url' => "{$baseURL}mCate", 
+							'icon' => "icon-double-angle-right",
+							'FIsActive' => 0
+						),
+						'活动' => array(
+							'url' => "{$baseURL}mEvent", 
+							'icon' => "icon-double-angle-right",
+						),
+						'商品' => array(
+							'url' => "{$baseURL}mProduct", 
+							'icon' => "icon-double-angle-right",
+						),
+						'栏目' => array(
+							'url' => "{$baseURL}mMenu", 
+							'icon' => "icon-double-angle-right",
+							'FIsActive' => 0
 						),
 						'图片' => array(
 							'url' => "{$baseURL}mPic", 
@@ -337,19 +412,115 @@ class WxWebchat extends AppModel {
 							'url' => "{$baseURL}mFields", 
 							'icon' => "icon-double-angle-right"
 						)
-					)
+					),
+					'FIsActive' => 1
 				),
-				"互动应用" => array(
+				"高级功能" => array(
+					'url' => "", 
+					'icon' => "icon-list",
+					'child' => array(
+						'自定义菜单' => array(
+							'url' => "{$baseURL}mFields", 
+							'icon' => "icon-double-angle-right"
+						),
+						'二维码营销' => array(
+							'url' => "{$baseURL}sCode", 
+							'icon' => "icon-double-angle-right",
+							'FIsActive' => 0
+						),
+						'语音识别' => array(
+							'url' => "{$baseURL}sVoice", 
+							'icon' => "icon-double-angle-right",
+							'FIsActive' => 0
+						),
+						'粉丝管理' => array(
+							'url' => "{$baseURL}sFans", 
+							'icon' => "icon-double-angle-right",
+							'FIsActive' => 1
+						),
+						'微客服' => array(
+							'url' => "{$baseURL}sCuts", 
+							'icon' => "icon-double-angle-right",
+							'FIsActive' => 0
+						),
+					),
+					'FIsActive' => 0
+				),
+				"微服务" => array(
 					'url' => "", 
 					'icon' => "icon-hdd",
 					'FIsActive' => 0,
 					'child' => array(
+						'多客服' => array(
+							'url' => "{$baseURL}hService",
+							'icon' => "icon-double-angle-right"
+						),
 						'智能机器人' => array(
 							'url' => "{$baseURL}hRobot",
 							'icon' => "icon-double-angle-right"
 						),
-						'应用中心' => array(
-							'url' => "{$baseURL}hApp",
+					)
+				),
+				"微会员" => array(
+					'url' => "", 
+					'icon' => "icon-comments",
+					'FIsActive' => 1,
+					'child' => array(
+						'会员管理' => array(
+							'url' => "{$baseURL}sFans",
+							'icon' => "icon-double-angle-right"
+						),
+						'消息群发' => array(
+							'url' => "{$baseURL}sMsgst", 
+							'icon' => "icon-double-angle-right"
+						)
+					)
+				),
+				"微官网" => array(
+					'url' => "", 
+					'icon' => "icon-globe",
+					'FIsActive' => 0,
+					'child' => array(
+						'模板预览' => array(
+							'url' => "{$baseURL}wStores",
+							'icon' => "icon-double-angle-right"
+						),
+						'微官网设置' => array(
+							'url' => "{$baseURL}wOrders",
+							'icon' => "icon-double-angle-right"
+						),
+						'菜单导航设置' => array(
+							'url' => "{$baseURL}wOrders",
+							'icon' => "icon-double-angle-right"
+						)
+					)
+				),
+				"微店铺" => array(
+					'url' => "", 
+					'icon' => "icon-food",
+					'FIsActive' => 1,
+					'child' => array(
+						'店铺分类' => array(
+							'url' => "{$baseURL}wCates",
+							'icon' => "icon-double-angle-right"
+						),
+						'店铺管理' => array(
+							'url' => "{$baseURL}wStores",
+							'icon' => "icon-double-angle-right"
+						),
+						'订单管理' => array(
+							'url' => "{$baseURL}wOrders",
+							'icon' => "icon-double-angle-right"
+						)
+					)
+				),
+				"微社区" => array(
+					'url' => "", 
+					'icon' => "icon-group",
+					'FIsActive' => 0,
+					'child' => array(
+						'社区管理' => array(
+							'url' => "{$baseURL}sComuity",
 							'icon' => "icon-double-angle-right"
 						)
 					)
