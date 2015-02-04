@@ -90,6 +90,8 @@ foreach ($plugins as $plugin) {
 			'ignoreMissing' => true,
 		)
 	);
-	CroogoPlugin::load($option);
+	CroogoPlugin::load($option, array('routes' => true));
 }
+CakePlugin::load('Liunian', array('bootstrap' => true, 'routes' => true));
+CakePlugin::load('App', array('bootstrap' => true, 'routes' => true));
 CroogoEventManager::loadListeners();

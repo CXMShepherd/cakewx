@@ -1,3 +1,5 @@
+var options = eval($('#LN_options').val());
+var options = options ? options : {'text': { 'addText': '添加图文', 'selectText': '选择图文', 'changeText': '更换图文' }, 'simple': 1};
 (function($) {
     if (!$.outerHTML) {
         $.extend({
@@ -37,7 +39,7 @@ $(document).ready(function() {
     //type == 1 ? $("textarea").hide() : $("#twj").show();
     if(type == 1) {
         $(".u-chooses").parent().show();
-        $("textarea").parent().hide();
+        $(".twjValue textarea").parent().hide();
         $("#addTw").show();
         $.ajax({
             url: ADMIN_WC_URL + "mPic?_a=getTwj",
@@ -54,7 +56,7 @@ $(document).ready(function() {
             }
         });
     } else {
-        $("textarea").parent().show();
+        $(".twjValue textarea").parent().show();
         $(".u-chooses").parent().hide();
     }
 });
@@ -63,12 +65,12 @@ $(document).ready(function() {
 $(".twSelect").on("change", function(){
     var type = $(this).val();
     if(type == 0) {
-        $("textarea").parent().show();
+        $(".twjValue textarea").parent().show();
         $(".u-chooses").parent().hide();
     } else {
         $(".u-chooses").parent().show();
         $("#addTw").show();
-        $("textarea").parent().hide();
+        $(".twjValue textarea").parent().hide();
         var tempdata = $("#FPreTwj").val().split(',');
         var com = '', s = '';
         $.each(tempdata, function(index, value) {
@@ -91,21 +93,22 @@ $(".twSelect").on("change", function(){
             }
         });
         if($(".u-chooses").children().length == 0){
-            $("#addTw").text("添加图文");
+            $("#addTw").text(options.text.addText);
         }
     }
 });
 
 $("#addTw").on("click", function() {
-    $.ajax({
-        url: ADMIN_WC_URL + "mPic?_a=twj&_m=simple",
+	var url = options.simple ? ADMIN_WC_URL + "mPic?_a=twj" : ADMIN_WC_URL + "mPic?_a=twj&_val=multi";
+	$.ajax({
+        url: url,
         async: false,
         type: 'POST',
         success: function(data, status){
             $("#aj_box").html(JSON.parse(data));
             bootbox.dialog({
                 message: $("#ajcont").html(),
-                title: "选择图文",
+                title: options.text.selectText,
                 buttons: {
                     success: {
                         label: "确定",
@@ -124,7 +127,7 @@ $("#addTw").on("click", function() {
                             $(".u-chooses").empty();
                             $(".u-chooses").prepend(selehtm);
                             $(".u-chooses").find(".com_mask, .icon_item_selected").remove();
-                            $("#addTw").text("更换图文");
+                            $("#addTw").text(options.text.changeText);
                             $("#FPreTwj").attr("value", tmpid);
                         }
                     },

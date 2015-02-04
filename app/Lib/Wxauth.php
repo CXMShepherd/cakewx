@@ -1,5 +1,6 @@
 <?php
 App::import('Vendor', 'wx/Oauth');
+App::uses('CakeSession', 'Model/Datasource');
 class Wxauth {
 	
 	/**
@@ -8,13 +9,14 @@ class Wxauth {
 	 * @return void
 	 * @author apple
 	 **/
-	function __construct($token = 'liunian', $appid = null, $appsecret = null)
+	function __construct($token = 'liunian', $webchat = null, $appid = null, $appsecret = null)
 	{
 		$this->wechatObj = new wechatCallbackapiTest();
 		$this->wechatObj->setGloabl(array(
 						'token' => $token,
 						'appid' => $appid,
-						'appsecret' => $appsecret
+						'appsecret' => $appsecret,
+						'webchat' => $webchat
 					));
 	}
 	
@@ -35,9 +37,52 @@ class Wxauth {
 	 * @return void
 	 * @author niancode
 	 **/
-	function saveMenus($data, $debug = 0)
+	function saveMenus($data, $debug)
 	{
 		return $this->wechatObj->saveMenus($data, $debug);
+	}
+	
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author niancode
+	 **/
+	function getFollows($debug)
+	{
+		return $this->wechatObj->getFollows($debug);
+	}
+	
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author niancode
+	 **/
+	function sendMsgText($data, $debug)
+	{
+		return $this->wechatObj->sendMsgText($data, $debug);
+	}
+	
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author niancode
+	 **/
+	function sendMsgTw($data, $debug)
+	{
+		return $this->wechatObj->sendMsgTw($data, $debug);
+	}
+	
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author niancode
+	 **/
+	function getWpUserInfo($type, $code) {
+		return $this->wechatObj->getWpUserInfo($type, $code);
 	}
 	
 	/**

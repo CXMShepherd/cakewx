@@ -46,11 +46,12 @@ class Curl {
  
     // Send a post request on its way with optional parameters (and get output)
     // $url = '', $params = array(), $options = array()
-    public function simple_post($url, $params = array(), $options = array())
+    public function simple_post($url, $params = array(), $options = array(), $force = 1)
     { 
+	
 		$this->create($url);
         
-		$this->post($params, $options);
+		$this->post($params, $options, $force);
         
 		return $this->execute();
     }
@@ -112,10 +113,10 @@ class Curl {
      * Use these methods to build up more complex queries
      * ================================================================================= */
      
-    public function post($params = array(), $options = array()) { 
+    public function post($params = array(), $options = array(), $force = 1) { 
         
         // If its an array (instead of a query string) then format it correctly
-        if(is_array($params)) {
+        if(is_array($params) && $force) {
             $params = http_build_query($params);
         }
         
@@ -227,6 +228,7 @@ class Curl {
         if(!isset($this->options[CURLOPT_RETURNTRANSFER]))    $this->options[CURLOPT_RETURNTRANSFER] = TRUE;
         if(!isset($this->options[CURLOPT_FOLLOWLOCATION]))    $this->options[CURLOPT_FOLLOWLOCATION] = TRUE;
         if(!isset($this->options[CURLOPT_FAILONERROR]))       $this->options[CURLOPT_FAILONERROR] = TRUE;
+		if(!isset($this->options[CURLOPT_SSL_VERIFYPEER]))    $this->options[CURLOPT_SSL_VERIFYPEER] = FALSE;
 
 		if(!empty($this->headers))
 		{

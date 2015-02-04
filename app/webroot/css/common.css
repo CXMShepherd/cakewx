@@ -1,5 +1,5 @@
 @charset "utf-8";
-body,h1,h2,h3,h4,h5,h6,p{font-family: "ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Hiragino Sans GB","Hiragino Sans GB W3", "Microsoft Yahei"}
+body,h1,h2,h3,h4,h5,h6,p{font-family: "ff-tisa-web-pro-1","ff-tisa-web-pro-2","Lucida Grande","Hiragino Sans GB","Hiragino Sans GB W3","Microsoft Yahei","微软雅黑"}
 .cl:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; } .cl { zoom: 1; }
 .fl{float: left;}.fr{float: right;}
 ul li{list-style:none;}
@@ -210,7 +210,7 @@ ul li{list-style:none;}
     top: 50%;
     left: 50%;
     margin-top: -30px;
-    margin-left: -33px;
+    margin-left: -50px;
     line-height: 999em;
     overflow: hidden;
     z-index: 1
@@ -466,3 +466,16 @@ ul li{list-style:none;}
 .form-group input,.form-group select,.form-group textarea {
 	width:320px;
 }
+.bmdh textarea {
+	width: 100%;
+}
+.form-group input[type="checkbox"], .form-group input[type="radio"] {
+	width:15px;
+}
+input[type="checkbox"].ace.ace-switch.ace-switch-5 + .lbl::before {
+	content:"ON\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0OFF";
+}
+
+/*添加商品*/
+.waresbox .media_preview_area{width: 22%;}
+.waresbox .appmsg{border-radius: 0;}
