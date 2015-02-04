@@ -118,7 +118,8 @@ class WxWcdata extends AppModel {
 					$WX_twj = $data['WxWcdata']['FDefaultId'];
 					$msg = ClassRegistry::init('WxDataTw')->getMsg($WX_twj, 'news');
 				} else {
-					$msg = isset($data['WxWcdata']['FDefaultContent']) ? $data['WxWcdata']['FDefaultContent'] : FALSE;
+					$msg['data'] = isset($data['WxWcdata']['FDefaultContent']) ? $data['WxWcdata']['FDefaultContent'] : FALSE;
+					$msg['type'] = "text";
 				}
 				break;
 		}

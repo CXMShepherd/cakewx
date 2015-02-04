@@ -92,9 +92,6 @@ class TPerson extends AppModel {
 			'rule' => "notEmpty",
 			'message' => "必须填写",
 			'required' => true
-	    ),
-		'FInvCode' => array(
-			'rule' => 'validInvCode'
 	    )
 	);
 	
@@ -428,7 +425,6 @@ class TPerson extends AppModel {
 		if ($query) return $data['Id'];
 	}
 	
-	
 	/**
 	 * undocumented function
 	 *
@@ -461,6 +457,19 @@ class TPerson extends AppModel {
 		$step = !empty($config['step']) ? $config['step'] : 1;
 		$user_id = intval($max_id) + intval($step);
 		return $user_id;
+	}
+	
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author apple
+	 **/
+	function getUserInfo($uid)
+	{
+		$pd = ClassRegistry::init('TPerson')->find('first', array('conditions' => array('Id' => $uid), 'recursive' => 0));
+		$data = isset($pd['TPerson']) ? $pd['TPerson'] : '';
+		return $data;
 	}
 	
 	
@@ -543,58 +552,6 @@ class TPerson extends AppModel {
 	// ============ webchat
 	
 	/**
-	 * Overridden paginate method - group by week, away_team_id and home_team_id
-	 */
-	public function paginate($conditions, $fields, $order, $limit, $page = 1, $recursive = null, $extra = array()) 
-	{
-	    $recursive = -1;
-		$data = $this->find(
-	        'all',
-	        compact('conditions', 'fields', 'order', 'limit', 'page', 'recursive', 'group')
-	    );
-		foreach ($data as $key => &$vals)
-		{	
-			$start = ($page == 1) ? 0 : ($page - 1) * $limit;
-			$vals['TPerson']['FNumberId'] = $start + $key + 1;
-		}
-	    return $data;
-	}
-	
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author apple
-	 **/
-	function getUserInfo($uid)
-	{
-		$pd = ClassRegistry::init('TPerson')->find('first', array('conditions' => array('Id' => $uid), 'recursive' => 0));
-		$data = isset($pd['TPerson']) ? $pd['TPerson'] : '';
-		return $data;
-	}
-	
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author niancode
-	 **/
-	function saveUser($data)
-	{
-		App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
-		$sp = new SimplePasswordHasher();
-		if ($this->id) {
-			$user = $this->getUserInfo($this->id);
-			$this->set($data);
-			if (isset($this->data['TPerson']['FPassWord']) && $user['FPassWord'] != $this->data['TPerson']['FPassWord']) {
-				$this->data['TPerson']['FPassWord'] = $sp->hash($this->data['TPerson']['FPassWord']);
-			}
-			$query = $this->save($this->data, FALSE);
-			if ($query) return $this->id;
-		}
-	}
-	
-	/**
 	 * undocumented function
 	 *
 	 * @return void
@@ -656,20 +613,6 @@ class TPerson extends AppModel {
 	}
 	
 	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author niancode
-	 **/
-	public function validInvCode($check) {
-		$count = ClassRegistry::init('WxInvite')->checkInvCode($check);
-		if (!$count) {
-			return __d('croogo', '邀请码不正确');
-		}
-		return true;
-	}
-	
-	/**
 	 * validIdentical
 	 *
 	 * @param string $check
@@ -684,4 +627,5 @@ class TPerson extends AppModel {
 		}
 		return true;
 	}
+
 }

@@ -21,6 +21,6 @@
  * reason why a ghost model cannot be used instead
  */
 class SchemaMigration extends Model {
-	var $useDbConfig = 'default';
+
 }
 ?>

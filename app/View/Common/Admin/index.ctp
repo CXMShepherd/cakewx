@@ -1,4 +1,50 @@
-<?php echo $this->element('Admin/nav', array(), array('cache' => array('config' => "short"))); ?>
+<?php
+	
+	// echo '<pre>'; print_r($vmenu);
+	
+	// nav
+	$this->start('nav');
+	echo $this->element('Admin/nav');
+	$this->end();
+?>
+
+<!-- sidebar -->
+<? $this->start('sidebar'); ?>
+	<? foreach ($vmenu['menu'] as $key => $vals): ?>
+		<?
+		 	$toggle = isset($vals['child']) ? TRUE : FALSE; 
+			$active = isset($vals['active']) ? TRUE : FALSE;
+			$view['toggle'] = $toggle ? 'class="dropdown-toggle"' : '';
+			$view['down'] = $toggle ? '<b class="arrow icon-angle-down"></b>' : '';
+			$view['avop'] = $active && $toggle ? 'class="active open"' : ($active ? 'class="active"' : '');
+		?>
+		<li <?= $view['avop'] ?>>
+			<a href="<?= $vals['url'] ?>" <?= $view['toggle'] ?>>
+				<i class="<?= $vals['icon'] ?>"></i>
+				<span class="menu-text"><?= $key ?></span>
+				<?= $view['down'] ?>
+			</a>
+			<? if ($toggle): ?>
+				<ul class="submenu">
+					<? foreach ($vals['child'] as $k => $v): ?>
+						<?
+							$c_active = isset($v['active']) ? TRUE : FALSE;
+							$view['cavop'] = $c_active ? 'class="active"' : '';
+						?>
+						<li <?= $view['cavop'] ?>>
+							<a href="<?= $v['url'] ?>">
+								<i class="<?= $v['icon'] ?>"></i>
+								<?= $k ?>
+							</a>
+						</li>
+					<? endforeach ?>
+				</ul>
+			<? endif ?>
+		</li>
+	<? endforeach ?>
+<? $this->end(); ?>
+
+<?= $this->fetch('nav'); ?>
 <div class="main-container" id="main-container">
 	<script type="text/javascript">
 		try{ace.settings.check('main-container' , 'fixed')}catch(e){}
@@ -44,6 +90,6 @@
 		<i class="icon-double-angle-up icon-only bigger-110"></i>
 	</a>
 </div>
-<div class="mtm copyright text-center">©2014 <?php echo $version; ?></div>
+<div class="mtm copyright text-center">©2014 <a href="http://cakewx.com/" target="_blank">CakeWX</a>&nbsp;<?php echo $version; ?></div>
 <!-- /.main-container
 </div><!-- /.main-container -->

@@ -158,18 +158,6 @@ class FirstMigrationWebchat extends CakeMigration {
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 				),
-				'wcdata_cates' => array(
-					'Id' => array('type' => 'integer', 'null' => false, 'length' => 11, 'key' => 'primary'),
-					'FWebchat' => array('type' => 'string', 'length' => 38, 'null' => false),
-					'FName' => array('type' => 'string', 'length' => 100, 'null' => false),
-					'FType' => array('type' => 'string', 'length' => 200, 'null' => false, 'default' => 0),
-					'FOrder' => array('type' => 'integer', 'length' => 11, 'default' => 0),
-					'FCreatedate' => array('type' => 'datetime'),
-					'indexes' => array(
-						'PRIMARY' => array('column' => 'Id', 'unique' => 1),
-					),
-					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
-				),
 			),
 		),
 		'down' => array(

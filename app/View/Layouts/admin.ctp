@@ -1,19 +1,17 @@
 <?php
 	$layout = isset($layout) ? $layout : '';
 
-	$this->AssetCompress->css('backend_combined', array('block' => "css_combined", 'inline' => false));
-	$this->AssetCompress->script('backend_combined', array('block' => "script_combined", 'inline' => false));
-
 	// CSS block
 	$this->Html->css(array(
+		'/assets/css/bootstrap.min',
 		'/assets/css/font-awesome.min'
 	), null, array('block' => "css_basic", 'inline' => false));
-	// $this->Html->css(array(
-	// 	"/assets/css/ace-fonts",
-	// 	"/assets/css/ace.min",
-	// 	"/assets/css/ace-rtl.min",
-	// 	"/assets/css/ace-skins.min"
-	// ), null, array('block' => "css_font", 'inline' => false));
+	$this->Html->css(array(
+		"/assets/css/ace-fonts",
+		"/assets/css/ace.min",
+		"/assets/css/ace-rtl.min",
+		"/assets/css/ace-skins.min"
+	), null, array('block' => "css_font", 'inline' => false));
 	$this->Html->css(array(
 		"/assets/css/font-awesome-ie7.min"
 	), null, array('block' => "css_ie7", 'inline' => false));
@@ -67,7 +65,7 @@
 	echo $this->Html->meta(array('name' => "author", 'content' => "liunian.CakeWX"));
 	echo $this->Html->meta(array('name' => "generator", 'content' => "www.cakewx.com"));
 	echo $this->Html->meta(array('viewport' => "width=device-width, initial-scale=1.0"));
-	echo '<!-- basic styles -->'.$this->fetch('css_combined').$this->fetch('css_basic');
+	echo '<!-- basic styles -->'.$this->fetch('css_basic');
 	echo '<!--[if IE 7]>'.$this->fetch('css_ie7').'<![endif]-->';
 	echo '<!-- fonts -->'.$this->fetch('css_font');
 	echo '<!--[if lte IE 8]>'.$this->fetch('css_ie8').'<![endif]-->';
@@ -101,15 +99,14 @@ var ADMIN_WC_URL = '<?= Router::url($WC_BASE) ?>';
 			echo '<script type="text/javascript">
 					if("ontouchend" in document) document.write("<script src=\''.$this->Html->url('/assets/js/jquery.mobile.custom.min.js').'\'>"+"<"+"/script>");
 				</script>';
-			//echo $this->fetch('script_basic');
+			echo $this->fetch('script_basic');
 			echo '<!--[if lte IE 8]>'.$this->fetch('script_ie8').'<![endif]-->';
-			echo $this->fetch('script_combined');
+			echo $this->fetch('script_aceos');
 			echo $this->fetch('script_common');
 			echo $this->fetch('script_extra');
 		?>
 		<div id='ajcont' style="display:none">
 			<div id="aj_box"></div>
 		</div>
-		<?php echo $cakeStats; ?>
 	</body>
 </html>

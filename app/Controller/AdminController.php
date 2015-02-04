@@ -8,7 +8,7 @@ App::uses('AppController', 'Controller');
 class AdminController extends AppController {
 	
 	public $components = array('Paginator');
-	public $helpers = array('Array', 'Main', 'Html', 'AssetCompress.AssetCompress');
+	public $helpers = array('Array', 'Main', 'Html');
 	public $layout = "admin";
 	public $paginate = array(
 		'maxLimit' => 500,
@@ -19,12 +19,9 @@ class AdminController extends AppController {
 		)
     );
 	var $validate = array();
-	var $toAccount = 1;
+	var $toAccount = 5;
 	var $wxId = '';
 	var $rdBaseURL = '';
-	var $wcdata;
-	var $appid = '';		// appid
-	var $appsecret = '';		// appsecret
 	
 	/**
 	 * undocumented function
@@ -68,17 +65,13 @@ class AdminController extends AppController {
 		$action = $this->request->params['pass'][1];
 		$this->rdBaseURL = Router::url("/admin/wc/{$id}/", TRUE);
 		$this->rdWcURL = Router::url("/admin/wc/{$id}/{$action}", TRUE);
-		$this->rdMobURL = Router::url("/mob/", TRUE);
 		$this->wcdata = $wcdata;
-		$this->appid = $this->wcdata['WxWebchat']['FWxAppId'];		// appid
-		$this->appsecret = $this->wcdata['WxWebchat']['FWxAppSecret'];		// app secret
 		$query['mod'] = isset($this->request->query['_m']) ? $this->request->query['_m'] : '';
 		$query['action'] = isset($this->request->query['_a']) ? $this->request->query['_a'] : '';
 		$query['id'] = isset($this->request->query['_id']) ? $this->request->query['_id'] : '';
 		$query['value'] = isset($this->request->query['_val']) ? $this->request->query['_val'] : '';
 		$this->set('WC_BASE', $this->rdBaseURL);
 		$this->set('WC_URL', $this->rdWcURL);
-		$this->set('WC_MOBURL', $this->rdMobURL);
 		$this->set('WC_query', $query);
 		$this->set('WC_data', $wcdata);
 		$this->set('WC_wxId', $wxId);
@@ -105,11 +98,11 @@ class AdminController extends AppController {
 		$this->paginate['limit'] = 5;
 		$this->Paginator->settings = $this->paginate;
 		$data['datalist'] = $this->Paginator->paginate('WxWebchat', array('FPerson' => $this->uid));
-		$this->toAccount = $this->isAdmin ? "1314" : $this->toAccount;
 		$data['leavecount'] = $this->toAccount - intval(count($data['datalist']));
 		$this->vmenu = $this->WxWebchat->getmenus('hmenu');
 		$this->vurl = Router::url(array('controller' => "admin", 'action' => "basic"));
-		$this->LNRender($data);
+		$this->set('data', $data);
+		$this->render('/Admin/webchat');
 	}
 	
 	/**
@@ -120,7 +113,7 @@ class AdminController extends AppController {
 	 **/
 	public function _center($id) {
 		return $this->redirect($this->rdBaseURL.'sAroz');
-		$this->LNRender($data);
+		$this->render('/Admin/index');
 	}
 	
 	/**
@@ -148,7 +141,7 @@ class AdminController extends AppController {
 				$this->request->data = $this->wcdata;
 			}
 		}
-		$this->LNRender($data);
+		$this->render('/Admin/sAroz');
 	}
 	
 	/**
@@ -158,7 +151,7 @@ class AdminController extends AppController {
 	 * @author apple
 	 **/
 	function _sLayout() {
-		$this->LNRender($data);
+		$this->render('/Admin/sLayout');
 	}
 	
 	/**
@@ -221,7 +214,7 @@ class AdminController extends AppController {
 					}
 				}
 		}
-		$this->LNRender($data);
+		$this->render('/Admin/bCtg');
 	}
 	
 	/**
@@ -255,7 +248,7 @@ class AdminController extends AppController {
 						// echo '<pre>';print_r($this->request->data);exit;
 					}
 				}
-				$this->LNRender($data);
+				$this->render('/Admin/bFllow');
 		}
 	}
 	
@@ -288,8 +281,10 @@ class AdminController extends AppController {
 						$this->request->data['WxWcdata']['FPreTwj'] = $datalist['WxWcdata']['FDefaultId'];
 					}
 				}
-				$this->LNRender($data);
+				$this->set('data', $data);
+				$this->render('/Admin/bMch');
 		}
+		$this->render('/Admin/bMch');
 	}
 	
 	/**
@@ -316,7 +311,8 @@ class AdminController extends AppController {
 						$this->request->data = array('WxWebchat' => array('FWxApi' => $this->wxAPI, 'FWxToken' => $this->wxToken));
 					}
 				}
-				$this->LNRender($data, 'add');
+				$this->set('data', $data);
+				$this->render('/Admin/_bKeyAdd');
 				break;
 			case 'edit':
 				if (!$this->WxDataKds->checkId($id, $query['id'])) {
@@ -339,7 +335,8 @@ class AdminController extends AppController {
 				    }
 
 				}
-				$this->LNRender($data, 'add');
+				$this->set('data', $data);
+				$this->render('/Admin/_bKeyAdd');
 				break;
 			case 'del':
 				if (!$this->WxDataKds->checkId($id, $query['id'])) {
@@ -354,7 +351,8 @@ class AdminController extends AppController {
 				$this->paginate['limit'] = 9;
 				$this->Paginator->settings = $this->paginate;
 				$data['datalist'] = $this->Paginator->paginate('WxDataKds', array('FWebchat' => $id));
-				$this->LNRender($data);
+				$this->set('data', $data);
+				$this->render('/Admin/bKey');
 		}
 	}
 	
@@ -365,7 +363,7 @@ class AdminController extends AppController {
 	 * @author apple
 	 */
 	function _bLbs() {
-		$this->LNRender($data);
+		$this->render('/Admin/bLbs');
 	}
 	
 	/**
@@ -375,7 +373,7 @@ class AdminController extends AppController {
 	 * @author apple
 	 */
 	function _bSvc() {
-		$this->LNRender($data);
+		$this->render('/Admin/bSvc');
 	}
 	
 	/**
@@ -402,7 +400,8 @@ class AdminController extends AppController {
 						$this->request->data = array('WxWebchat' => array('FWxApi' => $this->wxAPI, 'FWxToken' => $this->wxToken));
 					}
 				}
-				$this->LNRender($data, 'add');
+				$this->set('data', $data);
+				$this->render('/Admin/_mTxtAdd');
 				break;
 			case 'edit':
 				$this->loadModel('WxDataWb');
@@ -424,10 +423,10 @@ class AdminController extends AppController {
 				    }
 
 				}
-				$this->LNRender($data, 'add');
+				$this->render('/Admin/_mTxtAdd');
 				break;
 			default:
-				$this->LNRender($data);
+				$this->render('/Admin/mTxt');
 		}
 	}
 	
@@ -440,8 +439,6 @@ class AdminController extends AppController {
 	function _mPic($id, $query) {
 		$this->loadModel('WxDataTw');
 		$this->loadModel('WxDataTwEvent');
-		$this->loadModel('WxDataCate');
-		$this->loadModel('WxDataMenu');
 		$twTpl = array(
 			'tw' => '<div class="media_preview_area" id="%s">
                         <div class="appmsg editing">
@@ -458,7 +455,7 @@ class AdminController extends AppController {
                                 </div>
                             </div>
                             <div class="com_mask"></div>
-                             <i class="icon_item_selected"><span class="delitem">删除</span><span class="pipe">|</span><span class="editem">修改</span></i>
+                            <i class="icon_item_selected">修改</i>
                        </div>
                     </div>&nbsp;',
 			'twj_header' => '<div class="media_preview_area" id="%s">
@@ -482,15 +479,6 @@ class AdminController extends AppController {
 			            	</div>',
 			'twj_footer' => '</div><div class="com_mask"></div><i class="icon_item_selected">修改</i></div></div>&nbsp;'
 		);
-		
-		// Left Nav
-		$data['leftNav'] = array(
-			//'lhome' => array('name' => "分类设置", 'default' => TRUE, 'icon' => "pink icon-dashboard bigger-110"), 
-			//'ldp001' => array('name' => "菜单设置", 'icon' => "blue icon-user bigger-110"), 
-			//'ldp002' => array('name' => "评论设置", 'icon' => "icon-rocket bigger-110"),
-		);
-		
-		// Action Start
 		switch ($query['action']) {
 			case 'add':
 				if ($query['mod'] == 'tw') {
@@ -505,8 +493,7 @@ class AdminController extends AppController {
 							}
 						}
 					}
-					$data['cates'] = $this->WxDataCate->getOptionsCates($id);
-					$this->LNRender($data, 'addTw');
+					$this->render('/Admin/_mPicAddTw');
 				} else if ($query['mod'] == 'twj') {
 					if ($this->request->is('post')) {
 						$this->WxDataTw->set($this->request->data);
@@ -518,7 +505,7 @@ class AdminController extends AppController {
 							}
 						}
 					}
-					$this->LNRender($data, 'addTwj');
+					$this->render('/Admin/_mPicAddTwj');
 				} else if ($query['mod'] == 'event') {
 					if ($this->request->is('post')) {
 						$this->request->data['WxDataTw']['FType'] = 0;
@@ -534,27 +521,10 @@ class AdminController extends AppController {
 							}
 						}
 					}
-					$data['cates'] = $this->WxDataCate->getOptionsCates($id, 1);
-					$this->LNRender($data, 'addEvent');
-				} else if ($query['mod'] == 'product') {
-					if ($this->request->is('post')) {
-						$this->request->data['WxDataTw']['FType'] = 0;
-						$this->WxDataTw->set($this->request->data);
-						if ($this->WxDataTw->validates()) {
-							$this->WxDataTwEvent->set($this->request->data);
-							if ($this->WxDataTwEvent->validates()) {
-								$query = $this->WxDataTw->saveData($this->request->data, $this->uid, $id);
-								if ($query) {
-									$this->Session->setFlash('商品添加成功。');
-									return $this->redirect($this->rdWcURL);
-								}
-							}
-						}
-					}
-					$data['cates'] = $this->WxDataCate->getOptionsCates($id, 2);
-					$this->LNRender($data, 'addProduct');
+					$this->render('/Admin/_mPicAddEvent');
 				} else {
-					$this->LNRender($data, 'add');
+					$this->set('data', $data);
+					$this->render('/Admin/_mPicAdd');
 				}
 				break;
 			case 'edit':
@@ -609,24 +579,20 @@ class AdminController extends AppController {
 						$this->request->data = $data;
 				    }
 				}
-				$opsType = 0;
 				if ($data['WxDataTw']['FType'] == 0) {
 					switch ($data['WxDataTw']['FTwType']) {
 						case 'events':
-							$tpl = "addEvent";
-							$opsType = 1;
+							$tpl = "_mPicAddEvent";
 							break;
-						case 'product':
-							$tpl = "addProduct";
-							$opsType = 2;
 						default:
-							$tpl = "addTw";
+							$tpl = "_mPicAddTw";
 					}
 				} else {
-					$tpl = "addTwj";
+					$tpl = "_mPicAddTwj";
 				}
-				$data['cates'] = $this->WxDataCate->getOptionsCates($id, $opsType);
-				$this->LNRender($data, $tpl);
+				
+				$this->set('data', $data);
+				$this->render("/Admin/{$tpl}");
 				break;
 			case 'del':
 				if (!$this->WxDataTw->checkId($id, $query['id'])) {
@@ -687,78 +653,35 @@ class AdminController extends AppController {
 							}
 						}
                     }
-
                     // 单图文
-					if ($query['value'] == 'multi') {
-						$html .= '<script>
-	                            $.fn.clicktoggle = function(a, b) {
-	                                return this.each(function() {
-	                                    var clicked = false;
-	                                    $(this).bind("click", function() {
-	                                        if (clicked) {
-	                                            clicked = false;
-	                                            return b.apply(this, arguments);
-	                                        }
-	                                        clicked = true;
-	                                        return a.apply(this, arguments);
-	                                    });
-	                                });
-	                            };
-	                            Atempids = [];
-	                            function odd() {
-	                                $(this).removeClass("selected");
-	                                var hva = $(this).attr("id");
-	                                var index = Atempids.indexOf(hva);
-	                                if (index === -1) {
-	                                    Atempids.push(hva);
-	                                } else {
-	                                    Atempids.splice(index, 1);
-	                                }
-	                            }
-
-	                            function even() {
-	                                $(this).addClass("selected");
-	                                var hva = $(this).attr("id");
-	                                var index = Atempids.indexOf(hva);
-	                                if (index === -1) {
-	                                    Atempids.push(hva);
-	                                } else {
-	                                    Atempids.splice(index, 1);
-	                                }
-	                            }
-
-	                           $("#aj_box .media_preview_area").clicktoggle(even, odd);
-	                           </script>';
-					} else {
-						$html .= '<script>
-	                        $.fn.clicktoggle = function(a, b) {
-	                            return this.each(function() {
-	                                var clicked = false;
-	                                $(this).bind("click", function() {
-	                                    if (clicked) {
-	                                        clicked = false;
-	                                        return b.apply(this, arguments);
-	                                    }
-	                                    clicked = true;
-	                                    return a.apply(this, arguments);
-	                                });
-	                            });
-	                        };
-	                        var Atempids = [];
-	                        function odd() {
-	                            $(this).removeClass("selected");
-	                        }
-	                        function even() {
-	                            $(this).addClass("selected");
-	                        }
-	                        $("#aj_box .media_preview_area").clicktoggle(even, odd);
-	                        $("#aj_box .media_preview_area").click(function(){
-	                            $("#aj_box .media_preview_area").removeClass("selected");
-	                            $(this).addClass("selected");
-	                            Atempids = [$(this).attr("id")];
-	                        });
-	                    </script>';
-					}
+                    $html .= '<script>
+                        $.fn.clicktoggle = function(a, b) {
+                            return this.each(function() {
+                                var clicked = false;
+                                $(this).bind("click", function() {
+                                    if (clicked) {
+                                        clicked = false;
+                                        return b.apply(this, arguments);
+                                    }
+                                    clicked = true;
+                                    return a.apply(this, arguments);
+                                });
+                            });
+                        };
+                        var Atempids = [];
+                        function odd() {
+                            $(this).removeClass("selected");
+                        }
+                        function even() {
+                            $(this).addClass("selected");
+                        }
+                        $("#aj_box .media_preview_area").clicktoggle(even, odd);
+                        $("#aj_box .media_preview_area").click(function(){
+                            $("#aj_box .media_preview_area").removeClass("selected");
+                            $(this).addClass("selected");
+                            Atempids = [$(this).attr("id")];
+                        });
+                    </script>';
                 } else {
                     $html = '<p style="text-align: center;margin-top: 80px;">亲,您的图文太少了，<a href="'.Router::url($data['WxDataTw']['FUrl']).'">马上去添加</a> 吧！</p>';
                 }
@@ -798,7 +721,7 @@ class AdminController extends AppController {
 			default:
 				$this->paginate['limit'] = 9;
 				$this->Paginator->settings = $this->paginate;
-				$conditions = array('FWebchat' => $id, 'FTwType' => NULL);
+				$conditions = array('FWebchat' => $id);
 				if ($query['value']) {
 					switch ($query['value']) {
 						case 'tw':	
@@ -813,769 +736,11 @@ class AdminController extends AppController {
 					}
 				}
 				$data['datalist'] = $this->Paginator->paginate('WxDataTw', $conditions);
-				$data['category'] = $this->WxDataTw->getCategories($id);
-				$this->LNRender($data);
-		}
-	}
-	
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author niancode
-	 **/
-	function _mEvent($id, $query) {
-		$this->loadModel('WxDataTw');
-		$this->loadModel('WxDataTwEvent');
-		$data = array();
-		switch ($query['action']) {
-			case 'add':
-				if ($this->request->is('post')) {
-					$this->request->data['WxDataTw']['FType'] = 0;
-					$this->WxDataTw->set($this->request->data);
-					if ($this->WxDataTw->validates()) {
-						$this->WxDataTwEvent->set($this->request->data);
-						if ($this->WxDataTwEvent->validates()) {
-							$query = $this->WxDataTw->saveData($this->request->data, $this->uid, $id);
-							if ($query) {
-								$this->Session->setFlash('添加成功。');
-								return $this->redirect($this->rdWcURL);
-							}
-						}
-					}
-				}
-				$this->LNRender($data, 'add');
-				break;
-			case 'edit':
-				if (!$this->WxDataTw->checkId($id, $query['id'])) {
-					return $this->redirect($this->rdWcURL);
-				}
-				
-				if ($this->request->is('post') || $this->request->is('put')) {
-					$this->request->data['WxDataTw']['FType'] = 0;
-					$this->WxDataTw->set($this->request->data);
-					if ($this->WxDataTw->validates()) {
-						$this->WxDataTwEvent->set($this->request->data);
-						if ($this->WxDataTwEvent->validates()) {
-							$this->WxDataTw->id = $query['id'];
-							$query = $this->WxDataTw->saveData($this->request->data, $this->uid, $id);
-							if ($query) {
-								$this->Session->setFlash('图文编辑成功。');
-								return $this->redirect($this->rdWcURL);
-							}
-						}
-					}
-				} else {
-					if (!$this->request->data) {
-						$data = $this->WxDataTw->getDataList($id, $query['id']);
-						$this->request->data = $data;
-				    }
-
-				}
-				$this->LNRender($data, 'add');
-				break;
-			case 'del':
-				if (!$this->WxDataTw->checkId($id, $query['id'])) {
-					return $this->redirect($this->rdWcURL);
-				} 
-				if ($this->WxDataTw->delete($query['id'])) {
-					$this->Session->setFlash('删除成功。');
-				}
-				return $this->redirect($this->rdWcURL);
-				break;
-			default:
-				$this->paginate['limit'] = 9;
-				$this->Paginator->settings = $this->paginate;
-				$conditions = array('FWebchat' => $id, 'FType' => 0, 'FTwType' => "events");
-				if ($query['value'] != '') {
-					switch ($query['value']) {
-						default:
-							$conditions['FTwType'] = $query['value'];
-					}
-				}
-				$data['datalist'] = $this->Paginator->paginate('WxDataTw', $conditions);
-				$data['category'] = $this->WxDataTw->getCategories($id, 'events');
-				$this->LNRender($data);
-			
-		}
-	}
-	
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author apple
-	 */
-	function _mCate($id, $query) {
-		$this->loadModel('WxDataCate');
-		switch ($query['action']) {
-			case 'add':
-				if ($query['mod'] == 'tw') {
-					if ($this->request->is('post')) {
-						$this->WxDataCate->set($this->request->data);
-						if ($this->WxDataCate->validates()) {
-							$query = $this->WxDataCate->saveData($this->request->data, $this->uid, $id);
-							if ($query) {
-								$this->Session->setFlash('添加成功。');
-								return $this->redirect($this->rdWcURL);
-							}
-						}
-					}
-					$this->LNRender(null, 'addTw');
-				} else if ($query['mod'] == 'event') {
-					if ($this->request->is('post')) {
-						$this->WxDataCate->set($this->request->data);
-						if ($this->WxDataCate->validates()) {
-							$query = $this->WxDataCate->saveData($this->request->data, $this->uid, $id);
-							if ($query) {
-								$this->Session->setFlash('添加成功。');
-								return $this->redirect($this->rdWcURL);
-							}
-						}
-					}
-					$this->LNRender(null, 'addEvent');
-				} else if ($query['mod'] == 'product') {
-					if ($this->request->is('post')) {
-						$this->WxDataCate->set($this->request->data);
-						if ($this->WxDataCate->validates()) {
-							$query = $this->WxDataCate->saveData($this->request->data, $this->uid, $id);
-							if ($query) {
-								$this->Session->setFlash('添加成功。');
-								return $this->redirect($this->rdWcURL);
-							}
-						}
-					}
-					$this->LNRender(null, 'addProduct');
-				} else {
-					$this->LNRender($data, 'add');
-				}
-				break;
-			case 'edit':
-				if (!$this->WxDataCate->checkId($id, $query['id'])) {
-					return $this->redirect($this->rdWcURL);
-				}
-				
-				if ($this->request->is('post') || $this->request->is('put')) {
-					$this->WxDataCate->set($this->request->data);
-					if ($this->WxDataCate->validates()) {
-						$this->WxDataCate->id = $query['id'];
-						$query = $this->WxDataCate->saveData($this->request->data, $this->uid, $id);
-						if ($query) {
-							$this->Session->setFlash('编辑成功。');
-							return $this->redirect($this->rdWcURL);
-						}
-					}
-				} else {
-					if (!$this->request->data) {
-						$data = $this->WxDataCate->getDataList($id, $query['id']);
-						$this->request->data = $data;
-				    }
-
-				}
-
-				switch ($data['WxDataCate']['FType']) {
-					case '1':
-						$tpl = "addEvent";
-						break;
-					case '2':
-						$tpl = 'addProduct';
-						break;
-					default:
-						$tpl = "addTw";
-				}
-				$this->LNRender($data, $tpl);
-				break;
-			case 'del':
-				if (!$this->WxDataCate->checkId($id, $query['id'])) {
-					return $this->redirect($this->rdWcURL);
-				} 
-				if ($this->WxDataCate->delete($query['id'])) {
-					$this->Session->setFlash('删除成功。');
-				}
-				return $this->redirect($this->rdWcURL);
-				break;
-			default:
-				$this->paginate['limit'] = 9;
-				$this->Paginator->settings = $this->paginate;
-				$conditions = array('FWebchat' => $id);
-				if ($query['value'] != '') {
-					switch ($query['value']) {
-						default:
-							$conditions['FType'] = $query['value'];
-					}
-				}
-				$data['datalist'] = $this->Paginator->paginate('WxDataCate', $conditions);
-				$data['category'] = $this->WxDataCate->getCategories($id, $this->rdWcURL);
-				$this->LNRender($data);
-			
-		}
-	}
-	
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author niancode
-	 **/
-	function _mProduct($id, $query) {
-		$this->loadModel('WxDataTw');
-		$this->loadModel('WxDataTwProduct');
-		switch ($query['action']) {
-			case 'add':
-				if ($this->request->is('post')) {
-					$this->request->data['WxDataTw']['FType'] = 0;
-					$this->WxDataTw->set($this->request->data);
-					if ($this->WxDataTw->validates()) {
-						$this->WxDataTwProduct->set($this->request->data);
-						if ($this->WxDataTwProduct->validates()) {
-							$query = $this->WxDataTw->saveData($this->request->data, $this->uid, $id);
-							if ($query) {
-								$this->Session->setFlash('添加成功。');
-								return $this->redirect($this->rdWcURL);
-							}
-						}
-					}
-				}
-				$this->LNRender($data, 'add');
-				break;
-			case 'edit':
-				if (!$this->WxDataTw->checkId($id, $query['id'])) {
-					return $this->redirect($this->rdWcURL);
-				}
-				if ($this->request->is('post') || $this->request->is('put')) {
-					$this->request->data['WxDataTw']['FType'] = 0;
-					$this->WxDataTw->set($this->request->data);
-					if ($this->WxDataTw->validates()) {
-						$this->WxDataTwProduct->set($this->request->data);
-						if ($this->WxDataTwProduct->validates()) {
-							$this->WxDataTw->id = $query['id'];
-							$query = $this->WxDataTw->saveData($this->request->data, $this->uid, $id);
-							if ($query) {
-								$this->Session->setFlash('编辑成功。');
-								return $this->redirect($this->rdWcURL);
-							}
-						}
-					}
-				} else {
-					if (!$this->request->data) {
-						$data = $this->WxDataTw->getDataList($id, $query['id'], null, null, 'product');
-						$this->request->data = $data;
-				    }
-
-				}
-				
-				// View Vars
-				$data['nav'] = $navs;
-				$this->LNRender($data, 'add');
-				break;
-			case 'del':
-				if (!$this->WxDataTw->checkId($id, $query['id'])) {
-					return $this->redirect($this->rdWcURL);
-				} 
-				if ($this->WxDataTw->delete($query['id'])) {
-					$this->Session->setFlash('删除成功。');
-				}
-				return $this->redirect($this->rdWcURL);
-				break;
-			default:
-				$this->paginate['limit'] = 9;
-				$this->Paginator->settings = $this->paginate;
-				$conditions = array('FWebchat' => $id, 'FType' => 0, 'FTwType' => "product");
-				if ($query['value'] != '') {
-					switch ($query['value']) {
-						default:
-							$conditions['FTwType'] = $query['value'];
-					}
-				}
-				$data['datalist'] = $this->Paginator->paginate('WxDataTw', $conditions);
-				$data['category'] = $this->WxDataTw->getCategories($id, 'product');
-				$this->LNRender($data);
-		}
-	}
-	
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author apple
-	 */
-	function _mMenu($id, $query) {
-		$this->loadModel('WxDataMenu');
-		$this->loadModel('WxDataStore');
-		switch ($query['action']) {
-			case 'add':
-				if ($query['mod'] == 'mSite') {
-					if ($this->request->is('post')) {
-						$this->WxDataMenu->set($this->request->data);
-						if ($this->WxDataMenu->validates()) {
-							
-							$query = $this->WxDataMenu->saveData($this->request->data, $id);
-							if ($query) {
-								$this->Session->setFlash('添加成功。');
-								return $this->redirect($this->rdWcURL);
-							}
-						}
-					}
-					$this->LNRender(null, 'addMsite');
-				} else if ($query['mod'] == 'mStore') {
-					if ($this->request->is('post')) {
-						$this->WxDataMenu->set($this->request->data);
-						if ($this->WxDataMenu->validates()) {
-							// echo '<pre>';print_r($this->request->data);exit;
-							$query = $this->WxDataMenu->saveData($this->request->data, $id);
-							if ($query) {
-								$this->Session->setFlash('添加成功。');
-								return $this->redirect($this->rdWcURL);
-							}
-						}
-					}
-					$data['stores'] = $this->WxDataStore->getOptionsStores($id);
-					$this->LNRender($data, 'addMstore');
-				} else {
-					$this->LNRender($data, 'add');
-				}
-				break;
-			case 'edit':
-				if (!$this->WxDataMenu->checkId($id, $query['id'])) {
-					return $this->redirect($this->rdWcURL);
-				}
-				if ($this->request->is('post') || $this->request->is('put')) {
-					$this->WxDataMenu->set($this->request->data);
-					if ($this->WxDataMenu->validates()) {
-						$this->WxDataMenu->id = $query['id'];
-						$query = $this->WxDataMenu->saveData($this->request->data, $id);
-						if ($query) {
-							$this->Session->setFlash('编辑成功。');
-							return $this->redirect($this->rdWcURL);
-						}
-					}
-				} else {
-					if (!$this->request->data) {
-						$data = $this->WxDataMenu->getDataList($id, $query['id']);
-						$data['WxDataMenu']['FPreTwj'] = $data['WxDataMenu']['FTwj'];
-						$this->request->data = $data;
-				    }
-
-				}
-				switch ($data['WxDataMenu']['FType']) {
-					case '1':
-						$tpl = "addMStore";
-						break;
-					default:
-						$tpl = "addMSite";
-				}
-				$data['stores'] = $this->WxDataStore->getOptionsStores($id);
-				$this->LNRender($data, $tpl);
-				break;
-			case 'del':
-				if (!$this->WxDataMenu->checkId($id, $query['id'])) {
-					return $this->redirect($this->rdWcURL);
-				} 
-				if ($this->WxDataMenu->delete($query['id'])) {
-					$this->Session->setFlash('删除成功。');
-				}
-				return $this->redirect($this->rdWcURL);
-				break;
-			default:
-				$this->paginate['limit'] = 9;
-				$this->Paginator->settings = $this->paginate;
-				$conditions = array('FWebchat' => $id);
-				if ($query['value'] != '') {
-					switch ($query['value']) {
-						default:
-							$conditions['FType'] = $query['value'];
-					}
-				}
-				$data['datalist'] = $this->Paginator->paginate('WxDataMenu', $conditions);
-				$data['category'] = $this->WxDataMenu->getCategories($id, $this->rdWcURL);
-				$this->LNRender($data);
-			
-		}
-	}
-	
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author niancode
-	 **/
-	function __cates($type, $id, $query) {
-		$data = array();
-		$this->loadModel('WxDataCate');
-		switch ($query['action']) {
-			case 'add':
-				if ($this->request->is('post')) {
-					$this->WxDataCate->set($this->request->data);
-					if ($this->WxDataCate->validates()) {
-						$query = $this->WxDataCate->saveData($this->request->data, $this->uid, $id);
-						if ($query) {
-							$this->Session->setFlash('添加成功。');
-							return $this->redirect($this->rdWcURL);
-						}
-					}
-				}
-				$this->LNRender($data, 'add');
-				break;
-			case 'edit':
-				if (!$this->WxDataCate->checkId($id, $query['id'])) {
-					return $this->redirect($this->rdWcURL);
-				}
-				
-				if ($this->request->is('post') || $this->request->is('put')) {
-					$this->WxDataCate->set($this->request->data);
-					if ($this->WxDataCate->validates()) {
-						$this->WxDataCate->id = $query['id'];
-						$query = $this->WxDataCate->saveData($this->request->data, $this->uid, $id);
-						if ($query) {
-							$this->Session->setFlash('编辑成功。');
-							return $this->redirect($this->rdWcURL);
-						}
-					}
-				} else {
-					if (!$this->request->data) {
-						$data = $this->WxDataCate->getDataList($id, $query['id']);
-						$this->request->data = $data;
-				    }
-
-				}
-				$this->LNRender($data, 'add');
-				break;
-			case 'del':
-				if (!$this->WxDataCate->checkId($id, $query['id'])) {
-					return $this->redirect($this->rdWcURL);
-				} 
-				if ($this->WxDataCate->delete($query['id'])) {
-					$this->Session->setFlash('删除成功。');
-				}
-				return $this->redirect($this->rdWcURL);
-				break;
-			default:
-				$_type = array('store' => 2);
-				$this->paginate['limit'] = 9;
-				$this->Paginator->settings = $this->paginate;
-				$conditions = array('FWebchat' => $id, 'FType' => $_type[$type]);
-				if ($query['value'] != '') {
-					switch ($query['value']) {
-						default:
-							$conditions['FType'] = $query['value'];
-					}
-				}
-				$data['datalist'] = $this->Paginator->paginate('WxDataCate', $conditions);
-				$data['category'] = $this->WxDataCate->getCategories($id, $type);
-				$this->LNRender($data);
-			
-		}
-	}
-	
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author niancode
-	 **/
-	function _wCates($id, $query) {
-		$this->set('storeIndexUrl', "{$this->rdMobURL}store?id={$id}");
-		$this->__cates('store', $id, $query);
-	}
-	
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author niancode
-	 **/
-	function _wStores($id, $query) {
-		$this->loadModel('WxDataStore');
-		$this->loadModel('WxDataCate');
-		$cateId = $this->request->query['_cid'];
-		$baseurl['cate'] = "{$this->rdWcURL}?_m={$query['mod']}&_id={$query['id']}";
-		$baseurl['cateHome'] = "{$this->rdWcURL}?_id={$query['id']}&_m={$query['mod']}";
-		$this->WxDataStore->webchatId = $id;
-		$storeList = $this->WxDataStore->getDataList($id, $query['id']);
-		$navs = array(
-			'home' => array('name' => "店铺信息", 'default' => TRUE), 
-			'dp001' => array('name' => "营业信息"),
-			'dp002' => array('name' => "支付信息"),
-			'dp003' => array('name' => "配送时间"),
-			'dp004' => array('name' => "店铺活动"),
-			'dp005' => array('name' => "订单提醒"),
-			'dp006' => array('name' => "店铺图片"),
-			'dp007' => array('name' => "二维码")
-		);
-		$cateNavs = array(
-			'home' => array('name' => "店铺管理", 'uri' => "{$this->rdWcURL}"),
-			'dp001' => array('name' => "分类管理", 'default' => TRUE, 'uri' => $baseurl['cateHome'])
-		);
-		
-		$articleDefault = array(0 => array('WxDataCate' => array('Id' => string::uuid(), 'FName' => "公告", 'FOwnerName' => "应用首页")));
-		
-		// Switch Case
-		$this->set('action', $query['action']);
-		switch ($query['action']) {
-			case 'add':
-				if ($query['mod'] == 'cate') {
-					if ($this->request->is('post')) {
-						$this->WxDataCate->set($this->request->data);
-						$this->WxDataCate->set('FOwnerId', $query['id']);
-						if ($this->WxDataCate->validates()) {
-							$query = $this->WxDataCate->saveData($this->request->data, $this->uid, $id);
-							if ($query) {
-								$this->Session->setFlash('编辑成功。');
-								return $this->redirect($baseurl['cateHome']);
-							}
-						}
-					} 
-
-					// View Vars
-					$data['baseurl'] = $baseurl['cate'];
-					$data['nav'] = $cateNavs;
-					$data['storeList'] = $storeList;
-					$this->LNRender($data, 'addCate');
-				} else {
-					if ($this->request->is('post')) {
-						$this->WxDataStore->set($this->request->data);
-						if ($this->WxDataStore->validates()) {
-							$query = $this->WxDataStore->saveData($this->request->data, $id);
-							if ($query) {
-								$this->Session->setFlash('添加成功。');
-								return $this->redirect($this->rdWcURL);
-							}
-						}
-					} 
-
-					// View Vars
-					$data['nav'] = $navs;
-					$data['cates'] = $this->WxDataCate->getOptionsCates($id, 2);
-					$data['tips_store'] = isset($this->WxDataStore->storeType[$query['mod']]) ? $this->WxDataStore->storeType[$query['mod']] : reset($this->WxDataStore->storeType);
-					$this->LNRender($data, 'add');
-				}
-				break;
-			case 'edit':
-				if ($query['mod'] == 'cate') {
-					$storeId = $query['id'];
-					$query['id'] = $cateId;
-					if (!$this->WxDataCate->checkId($id, $query['id'])) {
-						return $this->redirect($this->rdWcURL);
-					}
-					if ($this->request->is('post') || $this->request->is('put')) {
-						$this->WxDataCate->set($this->request->data);
-						$this->WxDataCate->set('FOwnerId', $storeId);
-						if ($this->WxDataCate->validates()) {
-							$this->WxDataCate->id = $query['id'];
-							$query = $this->WxDataCate->saveData($this->request->data, $this->uid, $id);
-							if ($query) {
-								$this->Session->setFlash('编辑成功。');
-								return $this->redirect($baseurl['cateHome']);
-							}
-						}
-					} else {
-						if (!$this->request->data) {
-							$data = $this->WxDataCate->getDataList($id, $query['id']);
-							$this->request->data = $data;
-					    }
-					}
-					
-					// View Vars
-					$data['baseurl'] = $baseurl['cate'];
-					$data['nav'] = $cateNavs;
-					$data['storeList'] = $storeList;
-					$this->LNRender($data, 'addCate');
-				} else if ($query['mod'] == 'article') {			// 文章
-					$cateNavs['dp001']['name'] = '文章管理';
-					$storeId = $query['id'];
-					$query['id'] = $cateId;
-					if ($this->request->is('post') || $this->request->is('put')) {
-						$this->WxDataCate->set($this->request->data);
-						$this->WxDataCate->set('FOwnerId', $storeId);
-						if ($this->WxDataCate->validates()) {
-							$this->WxDataCate->id = $query['id'];
-							$query = $this->WxDataCate->saveData($this->request->data, $this->uid, $id);
-							if ($query) {
-								$this->Session->setFlash('编辑成功。');
-								return $this->redirect($baseurl['cateHome']);
-							}
-						}
-					} else {
-						if (!$this->request->data) {
-							$data = $this->WxDataCate->getDataList($id, $query['id']);
-							$data = !$data['WxDataCate']['Id'] ? reset($articleDefault) : $data;
-							$this->request->data = $data;
-					    }
-					}
-					
-					// View Vars
-					$data['baseurl'] = $baseurl['cate'];
-					$data['nav'] = $cateNavs;
-					$data['storeList'] = $storeList;
-					$this->LNRender($data, 'addArticle');
-				} else {
-					if (!$this->WxDataStore->checkId($id, $query['id'])) {
-						return $this->redirect($this->rdWcURL);
-					}
-					if ($this->request->is('post') || $this->request->is('put')) {
-						$this->WxDataStore->set($this->request->data);
-						if ($this->WxDataStore->validates()) {
-							$this->WxDataStore->id = $query['id'];
-							$query = $this->WxDataStore->saveData($this->request->data, $id);
-							if ($query) {
-								$this->Session->setFlash('编辑成功。');
-								return $this->redirect($this->rdWcURL);
-							}
-						}
-					} else {
-						if (!$this->request->data) {
-							$data = $this->WxDataStore->getDataList($id, $query['id']);
-							$this->request->data = $data;
-					    }
-
-					}
-
-					// View Vars
-					$data['nav'] = $navs;
-					$data['cates'] = $this->WxDataCate->getOptionsCates($id, 2);
-					$data['tips_store'] = isset($this->WxDataStore->storeType[$query['mod']]) ? $this->WxDataStore->storeType[$query['mod']] : reset($this->WxDataStore->storeType);
-					$this->LNRender($data, 'add');
-				}
-				break;
-			case 'del':
-				if ($query['mod'] == 'cate') {
-					$query['id'] = $cateId;
-					if (!$this->WxDataCate->checkId($id, $query['id'])) {
-						return $this->redirect($this->rdWcURL);
-					} 
-					if ($this->WxDataCate->delete($query['id'])) {
-						$this->Session->setFlash('删除成功。');
-					}
-					return $this->redirect($baseurl['cateHome']);
-				} else {
-					if (!$this->WxDataStore->checkId($id, $query['id'])) {
-						return $this->redirect($this->rdWcURL);
-					} 
-					if ($this->WxDataStore->delete($query['id'])) {
-						$this->Session->setFlash('删除成功。');
-					}
-					return $this->redirect($this->rdWcURL);
-				}
-				break;
-			default:
-				if ($query['mod'] == 'cate') {
-					$type = 'product';
-					$_type = array('product' => 3);
-					$this->paginate['limit'] = 9;
-					$this->Paginator->settings = $this->paginate;
-					$conditions = array('FWebchat' => $id, 'FType' => $_type[$type], 'FOwnerId' => $query['id']);
-					if ($query['value'] != '') {
-						switch ($query['value']) {
-							default:
-								$conditions['FType'] = $query['value'];
-						}
-					}
-					$data['datalist'] = $this->Paginator->paginate('WxDataCate', $conditions);
-					$data['baseurl'] = $baseurl['cate'];
-					$data['nav'] = $cateNavs;
-					$data['storeList'] = $storeList;
-					$this->LNRender($data, 'cateIndex');
-				} else if ($query['mod'] == 'article') {
-					$cateNavs['dp001']['name'] = '文章管理';
-					$type = 'product';
-					$_type = array('product' => 4);
-					$this->paginate['limit'] = 9;
-					$this->Paginator->settings = $this->paginate;
-					$conditions = array('FWebchat' => $id, 'FType' => $_type[$type], 'FOwnerId' => $query['id']);
-					if ($query['value'] != '') {
-						switch ($query['value']) {
-							default:
-								$conditions['FType'] = $query['value'];
-						}
-					}
-					$data['datalist'] = $this->Paginator->paginate('WxDataCate', $conditions);
-					$data['datalist'] = !$data['datalist'] ? $articleDefault : $data['datalist'];		// default
-					$data['baseurl'] = $baseurl['cate'];
-					$data['nav'] = $cateNavs;
-					$data['storeList'] = $storeList;
-					$this->LNRender($data, 'articleIndex');
-				} else {
-					$this->paginate['limit'] = 9;
-					$this->Paginator->settings = $this->paginate;
-					$conditions = array('FWebchat' => $id);
-					if ($query['value'] != '') {
-						switch ($query['value']) {
-							default:
-								$conditions['FStore'] = $query['value'];
-						}
-					}
-					$data['datalist'] = $this->Paginator->paginate('WxDataStore', $conditions);
-					$data['category'] = $this->WxDataStore->getCategories($id, $this->rdWcURL);
-					$this->LNRender($data);
-				}
-		}
-	}
-	
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author niancode
-	 **/
-	function _wOrders($id, $query) {
-		$this->loadModel('WxDataOrder');
-		switch ($query['action']) {
-			case 'add':
-				if ($this->request->is('post')) {
-					$this->WxDataOrder->set($this->request->data);
-					if ($this->WxDataOrder->validates()) {
-						$query = $this->WxDataOrder->saveData($this->request->data, $this->uid, $id);
-						if ($query) {
-							$this->Session->setFlash('添加成功。');
-							return $this->redirect($this->rdWcURL);
-						}
-					}
-				} 
-				$this->LNRender($data, 'add');
-				break;
-			case 'edit':
-				if ($this->request->is('post') || $this->request->is('put')) {
-					$this->WxDataOrder->set($this->request->data);
-					if ($this->WxDataOrder->validates()) {
-						$this->WxDataOrder->id = $query['id'];
-						// print_r($this->request->data);exit;
-						$query = $this->WxDataOrder->saveData($this->request->data, $this->uid, $id);
-						if ($query) {
-							$this->Session->setFlash('编辑成功。');
-							return $this->redirect($this->rdWcURL);
-						}
-					}
-				} else {
-					if (!$this->request->data) {
-						$data = $this->WxDataOrder->getDataList($id, null, null, $query['id']);
-						$data['WxDataOrder']['FIsTop'] = array($data['WxDataOrder']['FStatus']);
-						$this->request->data = $data;
-				    }
-				}
-				$this->LNRender($data, 'add');
-				break;
-			case 'del':
-				if (!$this->WxDataOrder->checkId($id, $query['id'])) {
-					return $this->redirect($this->rdWcURL);
-				} 
-				if ($this->WxDataOrder->delete($query['id'])) {
-					$this->Session->setFlash('删除成功。');
-				}
-				return $this->redirect($this->rdWcURL);
-				break;
-			default:
-				$this->paginate['limit'] = 9;
-				$this->Paginator->settings = $this->paginate;
-				$conditions['FWebchat'] = $id;
-				if ($query['value'] != '') {
-					switch ($query['value']) {
-						default:
-							$conditions['FStatus'] = $query['value'];
-					}
-				}
-				$data['datalist'] = $this->Paginator->paginate('WxDataOrder', $conditions);
-				$data['category'] = $this->WxDataOrder->getCategories($id, $this->rdWcURL);
-				$this->LNRender($data);
+				// print_r($this->WxDataTw->getLastQuery());exit;
+				$data['category'] = $this->WxDataTw->getCategories($id, $this->rdWcURL);
+				// print_r($data['category']);exit;
+				$this->set('data', $data);
+				$this->render('/Admin/mPic');
 		}
 	}
 	
@@ -1599,7 +764,8 @@ class AdminController extends AppController {
 						}
 					}
 				} 
-				$this->LNRender(null, 'add');
+				$this->set('data', $data);
+				$this->render('/Admin/_mPicGaryAdd');
 				break;
 			case 'edit':
 				if (!$this->WxDataTw->checkId($id, $query['id'])) {
@@ -1622,7 +788,8 @@ class AdminController extends AppController {
 				    }
 
 				}
-				$this->LNRender($data, 'add');
+				$this->set('data', $data);
+				$this->render('/Admin/_mPicGaryAdd');
 				break;
 			case 'del':
 				if (!$this->WxDataTw->checkId($id, $query['id'])) {
@@ -1637,7 +804,8 @@ class AdminController extends AppController {
 				$this->paginate['limit'] = 9;
 				$this->Paginator->settings = $this->paginate;
 				$data['datalist'] = $this->Paginator->paginate('WxDataTw', array('FWebchat' => $id, 'FType' => 1));
-				$this->LNRender($data);
+				$this->set('data', $data);
+				$this->render('/Admin/mPicGary');
 			
 		}
 	}
@@ -1649,7 +817,7 @@ class AdminController extends AppController {
 	 * @author apple
 	 */
 	function _mSlide() {
-		$this->LNRender($data);
+		$this->render('/Admin/mSlide');
 	}
 	
 	/**
@@ -1659,7 +827,7 @@ class AdminController extends AppController {
 	 * @author apple
 	 */
 	function _mFile() {
-		$this->LNRender($data);
+		$this->render('/Admin/mFile');
 	}
 	
 	/**
@@ -1669,38 +837,7 @@ class AdminController extends AppController {
 	 * @author apple
 	 **/
 	public function _hRobot($id, $query) {
-		$navs = array(
-			'home' => array('name' => "全局设置", 'default' => TRUE, 'uri' => "{$this->rdWcURL}"), 
-			'follow' => array('name' => "问答列表", 'uri' => "{$this->rdWcURL}?_m=follow"), 
-			'mch' => array('name' => "功能介绍", 'uri' => "{$this->rdWcURL}?_m=mch"), 
-		);
-		$tpl = 'index';
-		switch ($query['mod']) {
-			case 'follow':
-				$tpl = 'follow';
-				break;
-			case 'mch':
-				$tpl = 'mch';
-				break;
-			default:
-				
-		}
-		$data['nav'] = $navs;
-		$this->LNRender($data, $tpl);
-	}
-	
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author apple
-	 **/
-	public function _hService($id, $query) {
-		$navs = array(
-			'home' => array('name' => "全局设置", 'default' => TRUE), 
-		);
-		$data['nav'] = $navs;
-		$this->LNRender($data);
+		$this->render('/Admin/hRobot');
 	}
 	
 	/**
@@ -1710,7 +847,7 @@ class AdminController extends AppController {
 	 * @author apple
 	 **/
 	public function _hApp($id, $query) {
-		$this->LNRender($data);
+		$this->render('/Admin/hApp');
 	}
 	
 	/**
@@ -1736,7 +873,7 @@ class AdminController extends AppController {
 				$this->request->data = $data;
 			}
 		}
-		$this->LNRender($data);
+		$this->render('/Admin/menuset');
 	}
 	
 	/**
@@ -1745,8 +882,8 @@ class AdminController extends AppController {
 	 * @return void
 	 * @author apple
 	 **/
-	public function _areply($id, $query, $wxId) {
-		$this->LNRender($data);
+	public function _areply() {
+		$this->render('/Admin/areply');
 	}
 	
 	/**
@@ -1755,8 +892,8 @@ class AdminController extends AppController {
 	 * @return void
 	 * @author apple
 	 **/
-	public function _txtreply($id, $query, $wxId) {
-		$this->LNRender($data);
+	public function _txtreply() {
+		$this->render('/Admin/txtreply');
 	}
 	
 	/**
@@ -1765,8 +902,8 @@ class AdminController extends AppController {
 	 * @return void
 	 * @author apple
 	 **/
-	public function _info($id, $query, $wxId) {
-		$this->LNRender($data);
+	public function _info() {
+		$this->render('/Admin/info');
 	}
 	
 	/**
@@ -1775,8 +912,8 @@ class AdminController extends AppController {
 	 * @return void
 	 * @author apple
 	 **/
-	public function _picreply($id, $query, $wxId) {
-		$this->LNRender($data);
+	public function _picreply() {
+		$this->render('/Admin/picreply');
 	}
 	
 	/**
@@ -1837,133 +974,32 @@ class AdminController extends AppController {
 						}
 						break;
 					default:
-						$msg = $this->WxDataMus->getDataList($id);
+						$msg = $this->WxDataMus->getDataList($wxId);
 						echo json_encode($msg);exit;
 				}
 				break;
 			default:
 				if ($this->request->isPost()) {
+					
 					$this->loadModel('WxReply');
-					$case = $this->WxReply->saveMenus($id, $this->appid, $this->appsecret);
-					if ($case && $case['state'] == 1) {
-						$this->flashSuccess("菜单已经更新成功，由于微信客户端缓存，需要24小时微信客户端才会展现出来。");
-					} else if ($case && $case['state'] == 0) {
-						$this->flashError($case['msg']);
+					$appid = $this->wcdata['WxWebchat']['FWxAppId'];
+					$appsecret = $this->wcdata['WxWebchat']['FWxAppSecret'];
+					if ($appsecret && $appid) {
+						$case = $this->WxReply->saveMenus($wxId, $appid, $appsecret);
+						if ($case && $case['state'] == 1) {
+							$this->flashSuccess("菜单已经更新成功，由于微信客户端缓存，需要24小时微信客户端才会展现出来。");
+						} else if ($case && $case['state'] == 0) {
+							$this->flashError($case['msg']);
+						} else {
+							$this->flashError("菜单更新失败。");
+						}
 					} else {
-						$this->flashError("菜单更新失败。");
+						$this->flashError("请先在系统设置中配置好appid和appsecret。");
 					}
 					$this->redirect($this->rdWcURL);
 				}
-				$this->LNRender($data);
+				$this->render('/Admin/mFields');
 		}
-	}
-	
-	/**
-	 * 获取关注者列表
-	 *
-	 * @return void
-	 * @author apple
-	 **/
-	public function _sFans($id, $query, $wxId) {
-		$this->loadModel('WxDataUser');
-		$this->loadModel('WxReply');
-		$tpl = "index";
-		switch ($query['action']) {
-			case 'sync':
-				$case = $this->WxReply->getFollows($id, $this->appid, $this->appsecret);
-				if ($case && $case['state'] == 1) {
-					$this->flashSuccess("粉丝数据同步成功。");
-				} else if ($case && $case['state'] == 0) {
-					$this->flashError($case['msg']);
-				} else {
-					$this->flashError("同步失败。");
-				}
-				$this->redirect($this->rdWcURL);
-				break;
-			case 'edit': 
-				$tpl = "add";
-				if ($this->request->is('put')) {
-					$this->WxDataUser->set($this->request->data);
-					if ($this->WxDataUser->validates(array('fieldList' => array('FMemo')))) {
-						$this->WxDataUser->id = $query['id'];
-						$query = $this->WxDataUser->saveData($id);
-						if ($query) {
-							$this->flashSuccess("编辑成功。");
-							return $this->redirect($this->rdBaseURL.'sFans');
-						}
-					}
-				} else {
-					if (!$this->request->data) {
-						$data['list'] = $this->WxDataUser->getDataList($id, $query['id']);
-				        $this->request->data = $data['list'];
-				    }
-				}
-			default:
-				$this->paginate['limit'] = 9;
-				$this->paginate['order'] = "FSubscribe_time DESC";
-				$this->Paginator->settings = $this->paginate;
-				$data['datalist'] = $this->Paginator->paginate('WxDataUser', array('FWebchat' => $id));
-				$data['ds'] = $this->WxDataUser->getDataList($id);
-		}
-		$this->LNRender($data, $tpl);
-	}
-	
-	/**
-	 * 获取关注者列表
-	 *
-	 * @return void
-	 * @author apple
-	 **/
-	public function _sMsgst($id, $query, $wxId) {
-		$this->loadModel('WxDataSent');
-		$this->loadModel('WxReply');
-		$tpl = "index";
-		switch ($query['mod']) {
-			case 'history':	
-				if ($query['action'] == 'del') {
-					if ($this->WxDataSent->delete($query['id'])) {
-						$this->Session->setFlash('删除成功。');
-						return $this->redirect("{$this->rdWcURL}?_m=history");
-					}
-				} else {
-					$tpl = 'history';
-					$this->paginate['limit'] = 9;
-					$this->paginate['order'] = "FCreatedate DESC";
-					$this->Paginator->settings = $this->paginate;
-					$data['datalist'] = $this->Paginator->paginate('WxDataSent', array('FWebchat' => $id));
-				}
-				// echo '<pre>';print_r($data);exit;
-				break;
-			default:
-				if ($this->request->is('post') || $this->request->is('put')) {
-					$rdata = $this->request->data['WxDataSent'];
-					$type = $rdata['FType'];
-					$sendd = $type ? reset($rdata['FTwj']) : $rdata['FSentMsg'];
-					$fieldList = ($type == 1) ? array('fieldList' => array('FType')) : array();
-					$this->WxDataSent->set($this->request->data);
-					if ($this->WxDataSent->validates($fieldList)) {
-						$case = ClassRegistry::init('WxReply')->sendall($id, $this->appid, $this->appsecret, $type, $sendd);
-						if ($case && $case['state'] == 1) {
-							$query = $this->WxDataSent->saveData($id, $case['data']['msg_id']);
-							if ($query) {
-								$this->flashSuccess("群发消息提交成功，群发任务一般需要较长的时间才能全部发送完毕，请耐心等待。");
-								return $this->redirect($this->rdWcURL);
-							}
-						} else {
-							$this->flashError($case['msg']);
-						} 
-					}
-				}
-		}
-		
-		// View Vars
-		$data['nav'] = array(
-			'home' => array('name' => "消息群发", 'default' => TRUE, 'uri' => "{$this->rdWcURL}"), 
-			'history' => array('name' => "历史消息", 'uri' => "{$this->rdWcURL}?_m=history")
-			// 'follow' => array('name' => "被关注回复"), 
-			// 'mch' => array('name' => "无匹配回复")
-		);
-		$this->LNRender($data, $tpl);
 	}
 	
 	/**
@@ -1985,10 +1021,12 @@ class AdminController extends AppController {
 			}
 		} else {
 			$user['TPerson'] = $this->TPerson->getUserInfo($this->uid);
+			
 			$this->request->data = $user;
 		}
 		
-		$this->LNRender($data);
+		$this->set('data', $data);
+		$this->render('/Admin/basic');
 	}
 	
 	/**
@@ -2004,13 +1042,12 @@ class AdminController extends AppController {
 			$Setting->Behaviors->disable('Cached');
 			foreach ($this->request->data as $key => $value) {
 				foreach ($value as $k => $v) {
-					$v = is_array($v) ? reset($v) : $v;
 					$Setting->write("{$key}.{$k}", $v);
 				}
 			}
 			$this->flashSuccess("保存成功");
 		} else {
-			$sets = array('Site' => array("title", "name", "keywords", "description", "FOpenSignup", "FSiteStats"));
+			$sets = array('Site' => array("title", "name", "keywords", "description"));
 			foreach ($sets as $key => $value) {
 				foreach ($value as $v) {
 					$user[$key][$v] = Configure::read("{$key}.{$v}");
@@ -2019,106 +1056,8 @@ class AdminController extends AppController {
 			$this->request->data = $user;
 		}
 		
-		$this->LNRender($data);
-	}
-	
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author niancode
-	 **/
-	function wInvite($action, $id) {
-		$this->_checkPrivileges();
-		$this->loadModel('WxInvite');
-		$tpl = "index";
-		switch ($action) {
-			case 'add':
-				if ($this->request->is('post')) {
-					$this->WxInvite->set($this->request->data);
-					if ($this->WxInvite->validates()) {
-						$query = $this->WxInvite->saveData();
-						if ($query) {
-							$this->Session->setFlash('添加成功。');
-							return $this->redirect($this->rdBaseURL.'wInvite');
-						}
-					}
-				} else {
-					$view = new View();
-					$main = $view->loadHelper('Main');
-					$redata['WxInvite']['FInvCode'] = $main->randomkeys(8); 
-					$this->request->data = $redata;
-				}
-				$tpl = "add";
-				break;
-			case 'edit':
-				if ($this->request->is('post') || $this->request->is('put')) {
-					$this->WxInvite->set($this->request->data);
-					if ($this->WxInvite->validates()) {
-						$this->WxInvite->id = $id;
-						$query = $this->WxInvite->saveData();
-						if ($query) {
-							$this->Session->setFlash('编辑成功。');
-							return $this->redirect($this->rdBaseURL.'wInvite');
-						}
-					} 
-				} else {
-					$redata = $this->WxInvite->getDataList("", $id);
-					$this->request->data = $redata;
-				}
-				$tpl = "add";
-				break;
-			case 'del':
-				$query = $this->WxInvite->delete($id);
-				if ($query) {
-					$this->Session->setFlash('删除成功。');
-					return $this->redirect($this->rdBaseURL.'wInvite');
-				}
-				break;
-			default:
-		}
-		$this->Paginator->settings = $this->paginate;
-		$data['datalist'] = $this->Paginator->paginate('WxInvite', $conditions);
-		$this->set('action', $action);
-		$this->LNRender($data, $tpl);
-	}
-	
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author apple
-	 **/
-	public function message() {
-		if ($this->request->is('post') || $this->request->is('put')) {
-			// Validate
-			$user = $this->TPerson->getUserInfo($this->uid);
-			$this->TPerson->validator()
-			->add('FPhoneUser', 'required', array(
-			    'rule' => "notEmpty",
-				'required' => true,
-				'message' => "必须填写"
-			))
-			->add('FPhonePwd', 'required', array(
-		        'rule' => "notEmpty",
-				'required' => true,
-				'message' => "必须填写"
-			));
-			$this->TPerson->set($this->request->data);
-			if ($this->TPerson->validates(array('fieldList' => array('FPhoneUser', 'FPhonePwd')))) {
-				$this->TPerson->id = $this->uid;
-				$query = $this->TPerson->save($this->request->data, TRUE, array('FPhoneUser', 'FPhonePwd'));
-				if ($query) {
-					$this->Session->setFlash('短信账号配置成功。');
-					return $this->redirect($this->rdBaseURL.'message');
-				}
-			}
-		} else {
-			$user = $this->TPerson->find('first', array('conditions' => array('Id' => $this->uid)));
-			$this->request->data = $user;
-		}
-		
-		$this->LNRender($data);
+		$this->set('data', $data);
+		$this->render('/Admin/wBasic');
 	}
 	
 	/**
@@ -2178,77 +1117,72 @@ class AdminController extends AppController {
 			$this->request->data = $user;
 		}
 		
-		$this->LNRender($data);
+		$this->set('data', $data);
+		$this->render('/Admin/repwd');
 	}
 	
 	/**
 	 * undocumented function
 	 *
 	 * @return void
-	 * @author niancode
+	 * @author apple
 	 **/
-	function webchat($action, $id)
+	public function webchatAdd() {
+		$result = $this->WxWebchat->getWebchatList($this->uid);
+		$data['leavecount'] = $this->toAccount - intval($result['count']);
+		if ($data['leavecount'] <= 0) {
+			$this->Session->setFlash('您的公众号配额已经超了。');
+			return $this->redirect(array('action' => "index"));
+		}
+		if ($this->request->is('post')) {
+			$this->WxWebchat->set($this->request->data);
+			if ($this->WxWebchat->validates(array('fieldList' => array('FName', 'FWxopenId', 'FWxId', 'FIcon')))) {
+				$query = $this->WxWebchat->saveWebchat($this->request->data, $this->uid);
+				if ($query) {
+					$this->Session->setFlash('微信公众账号添加成功。');
+					return $this->redirect(array('action' => 'index'));
+				}
+			}
+		} else {
+			if (!$this->request->data) {
+				$this->request->data = array('WxWebchat' => array('FWxApi' => $this->wxAPI, 'FWxToken' => $this->wxToken));
+			}
+		}
+		
+		$this->set('data', $data);
+		$this->render('/Admin/webchatAdd');
+	}
+	
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author apple
+	 **/
+	function webchatEdit($id)
 	{
-		$Tpl = 'add';
 		$this->loadModel('WxWebchat');
-		$navs = array(
-			'home' => array('name' => "基本信息", 'default' => TRUE), 
-			'dp001' => array('name' => "微信应用"),
-		);
-		switch ($action) {
-			case 'add':
-				$result = $this->WxWebchat->getWebchatList($this->uid);
-				$data['leavecount'] = $this->toAccount - intval($result['count']);
-				if ($data['leavecount'] <= 0 && !$this->isAdmin) {
-					$this->flashError("您的公众号配额已经超了。");
-					return $this->redirect(array('action' => "index"));
+		if (!$this->WxWebchat->checkWebchat($id, $this->uid)) return $this->redirect(array('action' => "webchatAdd"));
+		// echo '<pre>';print_r($this->request);exit;
+		if ($this->request->is('post') || $this->request->is('put')) {
+			$this->WxWebchat->set($this->request->data);
+			if ($this->WxWebchat->validates(array('fieldList' => array('FName', 'FWxopenId', 'FWxId', 'FIcon')))) {
+				$this->WxWebchat->id = $id;
+				$query = $this->WxWebchat->saveWebchat($this->request->data, $this->uid);
+				if ($query) {
+					$this->Session->setFlash('微信公众账号编辑成功。');
+					return $this->redirect(array('action' => 'index'));
 				}
-				if ($this->request->is('post')) {
-					$this->WxWebchat->set($this->request->data);
-					if ($this->WxWebchat->validates(array('fieldList' => array('FName', 'FWxopenId', 'FWxId', 'FIcon')))) {
-						$query = $this->WxWebchat->saveWebchat($this->request->data, $this->uid);
-						if ($query) {
-							$this->Session->setFlash('微信公众账号添加成功。');
-							return $this->redirect(array('action' => 'index'));
-						}
-					}
-				} else {
-					if (!$this->request->data) {
-						$this->request->data = array('WxWebchat' => array('FWxApi' => $this->wxAPI, 'FWxToken' => $this->wxToken));
-					}
-				}
-				break;
-			case 'edit':
-				$navs['dp002'] = array('name' => "二维码（应用预览）");
-				if (!$this->WxWebchat->checkWebchat($id, $this->uid)) return $this->redirect(array('action' => "webchatAdd"));
-				// echo '<pre>';print_r($this->request);exit;
-				if ($this->request->is('post') || $this->request->is('put')) {
-					$this->WxWebchat->set($this->request->data);
-					if ($this->WxWebchat->validates(array('fieldList' => array('FName', 'FWxopenId', 'FWxId', 'FIcon')))) {
-						$this->WxWebchat->id = $id;
-						$query = $this->WxWebchat->saveWebchat($this->request->data, $this->uid);
-						if ($query) {
-							$this->Session->setFlash('微信公众账号编辑成功。');
-							return $this->redirect(array('action' => 'index'));
-						}
-					}
-				} else {
-					if (!$this->request->data) {
-						$data['list'] = $this->WxWebchat->getWebchatList($this->uid, $id);
-				        $this->request->data = $data['list'];
-				    }
-				}
-				break;
-			case 'del':
-				if (!$this->WxWebchat->checkWebchat($id, $this->uid)) return $this->redirect(array('action' => "index"));
-				if ($this->WxWebchat->delete($id)) {
-					$this->Session->setFlash('微信公众账号删除成功。');
-				}
-				return $this->redirect(array('action' => 'index'));
-				break;
+			}
+		} else {
+			if (!$this->request->data) {
+				$data['list'] = $this->WxWebchat->getWebchatList($this->uid, $id);
+		        $this->request->data = $data['list'];
+		    }
 		}
-		$data['nav'] = $navs;
-		$this->LNRender($data, $Tpl);
+		
+		$this->set('data', $data);
+		$this->render('/Admin/webchatAdd');
 	}
 	
 	/**
@@ -2257,82 +1191,24 @@ class AdminController extends AppController {
 	 * @return void
 	 * @author apple
 	 **/
-	public function yMapps() {
-		$this->LNRender($data);
-	}
-	
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author apple
-	 **/
-	public function yAppStore() {
-		$this->LNRender($data);
-	}
-	
-	/**
-	 * undocumented function
-	 *
-	 * @return void
-	 * @author apple
-	 **/
-	public function pUsers($action, $id) {
-		$this->_checkPrivileges();
-		$this->loadModel('TPerson');
-		$tpl = "index";
-		$data = array();
-		switch ($action) {
-			case 'add':
-				$tpl = "add";
-				if ($this->request->is('post')) {
-					$this->TPerson->set($this->request->data);
-					$this->TPerson->validator()->add('FMemberId', 'unique', array(
-					    'rule' => 'isUnique',
-					    'required' => 'create',
-						'message' => "此账号已经存在了，请更换一个新的。"
-					));
-					if ($this->TPerson->validates(array('fieldList' => array('FMemberId', 'FPassWord', 'FullName', 'FMobileNumber')))) {
-						$query = $this->TPerson->addUser($this->request->data);
-						if ($query) {
-							$this->flashSuccess("添加成功。");
-							return $this->redirect(array('action' => "pUsers"));
-						}
-					}
-				}
-				break;
-			case 'edit':
-				$tpl = "add";
-				if ($this->request->is('put')) {
-					$this->TPerson->set($this->request->data);
-					if ($this->TPerson->validates(array('fieldList' => array('FPassWord', 'FullName', 'FPhone', 'FMobileNumber', 'FEMail', 'FCity')))) {
-						$this->TPerson->id = $this->request->data['TPerson']['Id'];
-						$query = $this->TPerson->saveUser($this->request->data);
-						if ($query) {
-							$this->flashSuccess("编辑成功。");
-							return $this->redirect(array('action' => "pUsers"));
-						}
-					}
-				} else {
-					if (!$this->request->data) {
-						$data['list'] = $this->TPerson->findById($id);
-				        $this->request->data = $data['list'];
-				    }
-				}
-				break;
-			case 'del':
-				if ($this->TPerson->delete($id)) {
-					$this->Session->setFlash('用户删除成功。');
-					return $this->redirect(array('action' => "pUsers"));
-				}
-				break;
-			default:
-				$this->Paginator->settings = $this->paginate;
-				$data['datalist'] = $this->Paginator->paginate('TPerson', array());
-				$this->vurl = Router::url(array('controller' => "admin", 'action' => "pUsers"));
+	function webchatDel($id)
+	{
+		$this->loadModel('WxWebchat');
+		if (!$this->WxWebchat->checkWebchat($id, $this->uid)) return $this->redirect(array('action' => "index"));
+		if ($this->WxWebchat->delete($id)) {
+			$this->Session->setFlash('微信公众账号删除成功。');
 		}
-		$data['action'] = $action;
-		$this->LNRender($data, $tpl);
+		return $this->redirect(array('action' => 'index'));
+	}
+	
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author apple
+	 **/
+	public function webchat_index()
+	{
 	}
 	
 //======================Private
@@ -2346,10 +1222,7 @@ class AdminController extends AppController {
 	function _checkPrivileges()
 	{
 		$routers = $this->WxWebchat->getmenus('hmenu', '', 'router');
-		$str = Router::url();
-		$segment = stripos(substr($str, stripos($str, 'admin/') + 6), '/');
-		$str = $segment ? substr($str, 0, stripos($str, 'admin/') + 6).substr(substr($str, stripos($str, 'admin/') + 6), 0, stripos(substr($str, stripos($str, 'admin/') + 6), '/')) : $str;
-		if (!in_array($str, $routers)) {
+		if (!in_array(Router::url(), $routers)) {
 			$this->flashError("用户未被授权，禁止访问。");
 			return $this->redirect(array('action' => "index"));
 		}

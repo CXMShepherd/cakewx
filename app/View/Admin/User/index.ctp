@@ -55,13 +55,7 @@
 		));
 	?>
 	<div class="clearfix form-actions">
-		<div class="col-sm-3 no-padding-right">
-			<a href="<?php echo Router::url("/"); ?>" class="btn btn-grey">
-				<i class="icon-arrow-left"></i>
-				返回首页
-			</a>
-		</div>
-		<div class="col-xs-12 col-md-9">
+		<div class="col-md-offset-3 col-md-9">
 			<button class="btn btn-info" type="submit">
 				<i class="icon-ok bigger-110"></i>
 				登录到后台

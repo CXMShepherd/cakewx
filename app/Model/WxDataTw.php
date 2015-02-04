@@ -39,8 +39,7 @@ class WxDataTw extends AppModel {
 	);
 	
 	public $type = array('0' => "文章图文", '1' => "图文集");
-	//public $conType = array('tw' => "单图文", 'twj' => "多图文", 'events' => array('events' => "活动", 'dzp' => "大转盘", 'yhq' => "优惠券"), 'product' => "商品");
-	public $conType = array('tw' => "单图文", 'twj' => "多图文", 'events' => array('events' => "活动"), 'product' => "商品");
+	public $conType = array('tw' => "单图文", 'twj' => "多图文", 'events' => '活动图文');
 	
 	/**
 	 * undocumented function
@@ -72,18 +71,6 @@ class WxDataTw extends AppModel {
 					$dbExtra->set('FOwnerId', $this->id);
 					$dbExtra->save();
 					break;
-				case 'product':
-					$dbExtra = ClassRegistry::init('WxDataTwProduct');
-					$eData = $dbExtra->find('first', array('conditions' => array('FOwnerId' => $this->id), 'recursive' => 0));
-					if (isset($eData['WxDataTwProduct']['Id'])) {
-						$dbExtra->id = $eData['WxDataTwProduct']['Id'];
-					} else {
-						$dbExtra->set('Id', String::uuid());
-						$dbExtra->set('FCreatedate', date('Y-m-d H:i:s'));
-					}
-					$dbExtra->set('FOwnerId', $this->id);
-					$dbExtra->save();
-					break;
 				default:
 			}
 			return $this->id;
@@ -99,9 +86,7 @@ class WxDataTw extends AppModel {
 	function _getTwType($type, $FTwType = null)
 	{
 		if ($type == 0) {
-			$return = is_array($this->conType[$FTwType]) ? reset($this->conType[$FTwType]) : $this->conType[$FTwType];
-			$return = $return ? $return : $this->conType['tw'];
-			return $return;
+			return $this->conType[$FTwType] ? $this->conType[$FTwType] : $this->conType['tw'];
 		} else {
 			return $this->conType['twj'];
 		}
@@ -130,63 +115,32 @@ class WxDataTw extends AppModel {
 	 * @return void
 	 * @author apple
 	 **/
-	function getDataList($id = NULL, $cid = NULL, $ids = NULL, $conditions = NULL, $type = null, $limit = null, $offset = null, $idsOrder = 1) {	
+	function getDataList($id = NULL, $cid = NULL, $ids = NULL, $conditions = NULL) {	
 		if ($cid != NULL) {
 			$conditions = $id == NULL ? array('WxDataTw.Id' => $cid) : array('WxDataTw.Id' => $cid, 'WxDataTw.FWebchat' => $id);
-			switch ($type) {
-				case 'product':
-					$attr = array(
-						'conditions' => array(
-						),
-						'joins' => array(
-							array(
-								'table' => "{$this->tablePrefix}wcdata_tw_product",
-					            'alias' => 'WxDataTwProduct',
-					            'type' => 'LEFT',
-					            'conditions' => array(
-					                'WxDataTw.Id = WxDataTwProduct.FOwnerId'
-					            )
-							)
-						),
-						'fields' => array(
-							"WxDataTw.*",
-							"WxDataTwProduct.FOrigPrice", 
-							"WxDataTwProduct.FPrice", 
-							"WxDataTwProduct.FPicUrl",
-							"WxDataTwProduct.FAddress",
-							"WxDataTwProduct.FUnit",
-							"WxDataTwProduct.FIsClosed",
-						),
-						'group' => array('WxDataTw.Id'),
-						'order' => array('FCreatedate DESC')
-					);
-					break;
-				default:
-					$attr = array(
-						'conditions' => array(
-						),
-						'joins' => array(
-							array(
-								'table' => "{$this->tablePrefix}wcdata_tw_events",
-					            'alias' => 'WxDataTwEvent',
-					            'type' => 'LEFT',
-					            'conditions' => array(
-					                'WxDataTw.Id = WxDataTwEvent.FOwnerId'
-					            )
-							)
-						),
-						'fields' => array(
-							"WxDataTw.*",
-							"WxDataTwEvent.FMaxPersonCount", 
-							"WxDataTwEvent.FAddress", 
-							"WxDataTwEvent.FPersonCount",
-							"WxDataTwEvent.FStartdate"
-						),
-						'group' => array('WxDataTw.Id'),
-						'order' => array('FCreatedate DESC')
-					);
-					break;
-			}
+			$attr = array(
+				'conditions' => array(
+				),
+				'joins' => array(
+					array(
+						'table' => "{$this->tablePrefix}wcdata_tw_events",
+			            'alias' => 'WxDataTwEvent',
+			            'type' => 'LEFT',
+			            'conditions' => array(
+			                'WxDataTw.Id = WxDataTwEvent.FOwnerId'
+			            )
+					)
+				),
+				'fields' => array(
+					"WxDataTw.*",
+					"WxDataTwEvent.FMaxPersonCount", 
+					"WxDataTwEvent.FAddress", 
+					"WxDataTwEvent.FPersonCount",
+					"WxDataTwEvent.FStartdate"
+				),
+				'group' => array('WxDataTw.Id'),
+				'order' => array('FCreatedate DESC')
+			);
 			if ($conditions) $attr['conditions'] = array_merge($attr['conditions'], $conditions);
 			$data = $this->find('first', $attr);
 			if (is_array($data)) {
@@ -194,85 +148,17 @@ class WxDataTw extends AppModel {
 				$data['WxDataTw']['FPreTwj'] = implode(',', $data['WxDataTw']['FTwj']);
 				$data['WxDataTw']['FPreview'] = ($data['WxDataTw']['FType'] == 0 && $data['WxDataTw']['FTwType'] != null) ? Router::url("/mob/tw/events/{$data['WxDataTw']['Id']}", TRUE) : Router::url("/mob/tw/{$data['WxDataTw']['Id']}", TRUE);
 				$data['WxDataTw']['FPreview'] = !empty($data['WxDataTw']['FLink']) ? $data['WxDataTw']['FLink'] : $data['WxDataTw']['FPreview'];
-				$data['WxDataTw']['FPreview_nlik'] = ($data['WxDataTw']['FType'] == 0 && $data['WxDataTw']['FTwType'] != null) ? "/mob/tw/events/{$data['WxDataTw']['Id']}" : "/mob/tw/{$data['WxDataTw']['Id']}";
-				$data['WxDataTw']['FPreview_nlik'] = !empty($data['WxDataTw']['FLink']) ? $data['WxDataTw']['FLink'] : $data['WxDataTw']['FPreview_nlik'];
-				$data['WxDataTwProduct']['FUnit'] = !empty($data['WxDataTwProduct']['FUnit']) ? $data['WxDataTwProduct']['FUnit'] : "份";
-				$data['WxDataTwProduct']['FIsClosed'] = !empty($data['WxDataTwProduct']['FIsClosed']) ? $data['WxDataTwProduct']['FIsClosed'] : 0;
 			}
 		} else {
-			$conditions['WxDataTw.FWebchat'] = $id;
-			if ($ids) $conditions['WxDataTw.Id'] = $ids;
-			switch ($type) {
-				case 'product':
-					$attr = array(
-						'conditions' => array(
-						),
-						'joins' => array(
-							array(
-								'table' => "{$this->tablePrefix}wcdata_tw_product",
-					            'alias' => 'WxDataTwProduct',
-					            'type' => 'LEFT',
-					            'conditions' => array(
-					                'WxDataTw.Id = WxDataTwProduct.FOwnerId'
-					            )
-							)
-						),
-						'fields' => array(
-							"WxDataTw.*",
-							"WxDataTwProduct.FOrigPrice", 
-							"WxDataTwProduct.FPrice", 
-							"WxDataTwProduct.FPicUrl",
-							"WxDataTwProduct.FAddress",
-							"WxDataTwProduct.FUnit",
-							"WxDataTwProduct.FIsClosed",
-						),
-						'group' => array('WxDataTw.Id'),
-						'order' => array('FCreatedate DESC')
-					);
-					break;
-				default:
-					$attr = array(
-						'conditions' => array(
-						),
-						'joins' => array(
-							array(
-								'table' => "{$this->tablePrefix}wcdata_tw_events",
-					            'alias' => 'WxDataTwEvent',
-					            'type' => 'LEFT',
-					            'conditions' => array(
-					                'WxDataTw.Id = WxDataTwEvent.FOwnerId'
-					            )
-							)
-						),
-						'fields' => array(
-							"WxDataTw.*",
-							"WxDataTwEvent.FMaxPersonCount", 
-							"WxDataTwEvent.FAddress", 
-							"WxDataTwEvent.FPersonCount",
-							"WxDataTwEvent.FStartdate"
-						),
-						'group' => array('WxDataTw.Id'),
-						'order' => array('FCreatedate DESC')
-					);
-					break;
-			}
-			if ($limit) $attr['limit'] = $limit;
-			if ($offset) $attr['offset'] = $offset;
-			$ids_str = implode(',', $ids);
-			if ($ids && $idsOrder) $attr['order'] = "FIND_IN_SET(WxDataTw.Id, '{$ids_str}')";
-			if ($conditions) $attr['conditions'] = array_merge($attr['conditions'], $conditions);
-			$data['datalist'] = $this->find('all', $attr);
-			$data['count'] = $this->find('count', $attr);
+			$conditions['FWebchat'] = $id;
+			if ($ids) $conditions['Id'] = $ids;
+			$data['datalist'] = $this->find('all', array('conditions' => $conditions, 'order' => "FCreatedate desc", 'recursive' => 0));
+			$data['count'] = $this->find('count', array('conditions' => $conditions, 'recursive' => 0));
 			foreach ($data['datalist'] as $key => &$vals) {	
 				$vals['WxDataTw']['C_FType'] = $this->conType[$vals['WxDataTw']['FTwType']] ? $this->conType[$vals['WxDataTw']['FTwType']] : reset($this->conType);
 				$vals['WxDataTw']['FTwj'] = unserialize($vals['WxDataTw']['FTwj']);
 				$vals['WxDataTw']['FPreview'] = ($vals['WxDataTw']['FType'] == 0 && $vals['WxDataTw']['FTwType'] != null) ? Router::url("/mob/tw/events/{$vals['WxDataTw']['Id']}", TRUE) : Router::url("/mob/tw/{$vals['WxDataTw']['Id']}", TRUE);
 				$vals['WxDataTw']['FPreview'] = !empty($vals['WxDataTw']['FLink']) ? $vals['WxDataTw']['FLink'] : $vals['WxDataTw']['FPreview'];
-				$vals['WxDataTw']['FPreview_nlik'] = ($vals['WxDataTw']['FType'] == 0 && $vals['WxDataTw']['FTwType'] != null) ? "/mob/tw/events/{$vals['WxDataTw']['Id']}" : "/mob/tw/{$vals['WxDataTw']['Id']}";
-				$vals['WxDataTw']['FPreview_nlik'] = !empty($vals['WxDataTw']['FLink']) ? $vals['WxDataTw']['FLink'] : $vals['WxDataTw']['FPreview_nlik'];
-				$vals['WxDataTw']['C_FCreatedate'] = date('y-m-d', strtotime($vals['WxDataTw']['FCreatedate']));
-				$vals['WxDataTwProduct']['FUnit'] = !empty($vals['WxDataTwProduct']['FUnit']) ? $vals['WxDataTwProduct']['FUnit'] : "份";
-				$vals['WxDataTwProduct']['FIsClosed'] = !empty($vals['WxDataTwProduct']['FIsClosed']) ? $vals['WxDataTwProduct']['FIsClosed'] : 0;
 			}
 			// echo $this->getLastQuery();
 			// echo '<pre>';print_r($data);exit;
@@ -290,7 +176,6 @@ class WxDataTw extends AppModel {
 		$data = $this->getDataList($id, $cid);
 		foreach ($data['WxDataTw']['FTwj'] as $key => &$vals) {
 			$findData = $this->findById($vals);
-			$findData['WxDataTw']['FUrl_nl'] = $findData['WxDataTw']['FUrl'];
 			$findData['WxDataTw']['FUrl'] = Router::url($findData['WxDataTw']['FUrl'], TRUE);
 			$findData['WxDataTw']['FPreview'] = ($findData['WxDataTw']['FType'] == 0 && $findData['WxDataTw']['FTwType'] != null) ? Router::url("/mob/tw/events/{$findData['WxDataTw']['Id']}", TRUE) : Router::url("/mob/tw/{$findData['WxDataTw']['Id']}", TRUE);
 			$findData['WxDataTw']['FPreview'] = !empty($findData['WxDataTw']['FLink']) ? $findData['WxDataTw']['FLink'] : $findData['WxDataTw']['FPreview'];
@@ -300,20 +185,15 @@ class WxDataTw extends AppModel {
 	}
 	
 	/**
-	 * 获取分类数据
+	 * undocumented function
 	 *
 	 * @return void
 	 * @author niancode
 	 **/
-	function getCategories($id, $type = 'tw') {
-		$newarr = $conType = array();
+	function getCategories($id, $baseurl) {
+		$newarr = array();
 		$conditions['FWebchat'] = $id;
-		if ($type == 'tw') {
-			$conType = array_slice($this->conType, 0, 2, true);
-		} else {
-			$conType = is_array($this->conType[$type]) ? $this->conType[$type] : array($type => $this->conType[$type]);
-		}
-		foreach ($conType as $key => $vals) {
+		foreach ($this->conType as $key => $vals) {
 			switch ($key)  {
 				case 'tw':
 					$conditions['FTwType'] = null;
@@ -334,7 +214,7 @@ class WxDataTw extends AppModel {
 	}
 	
 	/**
-	 * 检查Id
+	 * undocumented function
 	 *
 	 * @return void
 	 * @author apple
@@ -347,63 +227,7 @@ class WxDataTw extends AppModel {
 	}
 	
 	/**
-	 * WebChat API Send 
-	 *
-	 * @return void
-	 * @author niancode
-	 **/
-	function getSendTwMsg($twId, $type = 'arr')
-	{
-		$twId = is_array($twId) ? reset($twId) : $twId;
-		$data = $this->getDataList(null, $twId);
-		$WX_twj = isset($data['WxDataTw']['FTwj']) ? unserialize($data['WxDataTw']['FTwj']) : FALSE;
-		$WX_type = isset($data['WxDataTw']['FType']) ? $data['WxDataTw']['FType'] : 0;
-		$returnArr['count'] = 0;
-		if ($WX_type == 0) {
-			$returnArr['count'] = 1;
-			$returnArr['items'][0] = array(
-										'Title' => $data['WxDataTw']['FTitle'],
-										'Description' => $data['WxDataTw']['FMemo'],
-										'PicUrl' => Router::url($data['WxDataTw']['FUrl'], TRUE),
-										'Url' => $data['WxDataTw']['FPreview'],
-										'Content' => $data['WxDataTw']['FContent'],
-										'Author' => $data['WxDataTw']['FAuthor'],
-										'FUrl' => WWW_ROOT.$data['WxDataTw']['FUrl'],
-										'Coverd' => 0
-									);
-		} else {
-			$twjData = $this->getGaryDataList(null, $twId);
-			// echo '<pre>';print_r($twjData);exit;
-			$itemsArr = array();
-			foreach ($twjData['WxDataTw']['FTwj'] as $key => $value) {
-				$returnArr['items'][] = array(
-									'Title' => $value['FTitle'],
-									'Description' => $value['FMemo'],
-									'PicUrl' => Router::url($value['FUrl'], TRUE),
-									'Url' => $value['FPreview'],
-									'Author' => $value['FAuthor'],
-									'Content' => $value['FContent'],
-									'Coverd' => $key == 0 ? 1 : 0,
-									'FUrl' => WWW_ROOT.$value['FUrl_nl']
-								);
-				
-			}
-			$returnArr['count'] += intval(count($twjData['WxDataTw']['FTwj']));
-		}
-		
-		// Msg Output
-		if ($type != 'arr') {
-			$content = array();
-			$content['data']['ArticleCount'] = $returnArr['count'];
-			$content['data']['items'] = $returnArr['items'];
-			$content['type'] = "news";
-			$returnArr = $content;
-		}
-		return $returnArr;
-	}
-	
-	/**
-	 * WebChat API 
+	 * 获取图文信息
 	 *
 	 * @return void
 	 * @author apple
@@ -447,8 +271,6 @@ class WxDataTw extends AppModel {
 		}
 		return $returnArr;
 	}
-	
-
 	
 	/**
 	 * 图文链接
