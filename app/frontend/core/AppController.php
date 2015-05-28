@@ -27,10 +27,6 @@ class AppController extends Controller
      **/
     public function beforeAction($action)
     {
-        Event::on(View::className(), View::EVENT_BEFORE_RENDER, function() {
-            Yii::$app->view->params['datas'] = $this->datas;
-        });
-
     	// $this->setView(['hello' => 'hello, world!']);
     	return TRUE;
     }
