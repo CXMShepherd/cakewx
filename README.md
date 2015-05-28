@@ -1,92 +1,40 @@
-Yii 2 Basic Project Template
-============================
+# CakeWX v2.0
 
-Yii 2 Basic Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
-rapidly creating small projects.
+**CakeWX** 是一个由PHP写的的免费的开源微信公众号管理平台,遵循 [MIT License](https://github.com/niancode/CakeWX/blob/master/LICENSE).
 
-The template contains the basic features including user login/logout and a contact page.
-It includes all commonly used configurations that would allow you to focus on adding new
-features to your application.
+他是基于 [CakePHP](http://www.cakephp.org) MVC 框架.
 
-[![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-app-basic/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![Total Downloads](https://poser.pugx.org/yiisoft/yii2-app-basic/downloads.png)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![Build Status](https://travis-ci.org/yiisoft/yii2-app-basic.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-app-basic)
+## 安装及配置说明
 
-DIRECTORY STRUCTURE
--------------------
+1. APACHE设置
+    + 进入 `Apache安装目录`下 `/conf/httpd.conf`  开启支持.htaccess
+    +去掉  #LoadModule rewrite_module modules/mod_rewrite.so  之前的 `#`号注释
+    + AllowOverride None 改成  `AllowOverride All `
 
-      assets/             contains assets definition
-      commands/           contains console commands (controllers)
-      config/             contains application configurations
-      controllers/        contains Web controller classes
-      mail/               contains view files for e-mails
-      models/             contains model classes
-      runtime/            contains files generated during runtime
-      tests/              contains various tests for the basic application
-      vendor/             contains dependent 3rd-party packages
-      views/              contains view files for the Web application
-      web/                contains the entry script and Web resources
+2. PHP、MySql 设置
+  * PHP 5.4 及以上版本
+  * MySQL 4.1 及以上版本
+  * 配置 `php.ini` 文件
+  * 去掉 extension=php_curl.dll 之前的 `#`号注释
+  * 设置 short_open_tag = On
+
+3. 重启 Apache
 
 
+## 升级说明
+v2.0 预计要更新的功能
 
-REQUIREMENTS
-------------
+1. 新增微店铺。
+2. 新增微会员。（认证微信号）
+3. 新增消息群发。（认证微信号）
+4. 新增短信接口。
+5. 素材库新增商品和活动的类型。
+6. 诸多bug的修复和页面样式的优化。
+7. 更新旧的微信API接口与微信公众平台同步。
 
-The minimum requirement by this project template that your Web server supports PHP 5.4.0.
+## Links
 
-
-INSTALLATION
-------------
-
-### Install from an Archive File
-
-Extract the archive file downloaded from [yiiframework.com](http://www.yiiframework.com/download/) to
-a directory named `basic` that is directly under the Web root.
-
-You can then access the application through the following URL:
-
-~~~
-http://localhost/basic/web/
-~~~
-
-
-### Install via Composer
-
-If you do not have [Composer](http://getcomposer.org/), you may install it by following the instructions
-at [getcomposer.org](http://getcomposer.org/doc/00-intro.md#installation-nix).
-
-You can then install this project template using the following command:
-
-~~~
-php composer.phar global require "fxp/composer-asset-plugin:~1.0.0"
-php composer.phar create-project --prefer-dist --stability=dev yiisoft/yii2-app-basic basic
-~~~
-
-Now you should be able to access the application through the following URL, assuming `basic` is the directory
-directly under the Web root.
-
-~~~
-http://localhost/basic/web/
-~~~
-
-
-CONFIGURATION
--------------
-
-### Database
-
-Edit the file `config/db.php` with real data, for example:
-
-```php
-return [
-    'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-    'username' => 'root',
-    'password' => '1234',
-    'charset' => 'utf8',
-];
-```
-
-**NOTE:** Yii won't create the database for you, this has to be done manually before you can access it.
-
-Also check and edit the other files in the `config/` directory to customize your application.
+  * **官方网站**: [http://cakewx.com](http://cakewx.com)
+  * Apche [http://www.apache.org](http://www.apache.org)
+  * PHP [http://www.php.net](http://www.php.net)
+  * MySql [http://www.mysql.com](http://www.mysql.com)
