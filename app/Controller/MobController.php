@@ -101,6 +101,7 @@ class MobController extends AppController {
 			} else {
 				switch ($action) {
 					case 'index':
+						$tpl = 'index';
 						break;
 					case 'member-reg':
 						// 存入数据

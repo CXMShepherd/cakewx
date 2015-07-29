@@ -226,8 +226,8 @@ class wechatCallbackapiTest
 		$appid = $this->appid;
 		$secret = $this->appsecret;
 		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$appid}&secret={$secret}&code={$code}&grant_type=authorization_code";
-		echo $url;
 		$data = curlData($url);
+		print_r($data);
 		if (isset($data['access_token'])) {
 			$aToken = $data['access_token'];
 			$openid = $data['openid'];
