@@ -140,7 +140,7 @@ class MobController extends AppController {
 						$ticket = $opens['data']['user']['FTicket'];
 						$ticket_money = $opens['data']['user']['FTicketMoney'];
 					} else {
-						$ticket = mt_rand(100000000, 99999999);
+						$ticket = mt_rand(10000001, 99999999);
 						$ticket_money = mt_rand(99, 2999);
 						$data['FTicket'] = $ticket;
 						$data['FTicketMoney'] = $ticket_money;
