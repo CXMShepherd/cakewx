@@ -32,7 +32,7 @@ App::uses('Controller', 'Controller');
  * @link http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
 class AppController extends Controller {
-	
+
 	public $components = array('Session', 'Auth');
 	public $helpers = array('Array', 'Main', 'Html');
 	public $user = array();
@@ -41,12 +41,12 @@ class AppController extends Controller {
 	public $username = '';
 	public $snsurl = '';
 	public $wxAPI = '';
-	public $wxToken = 'liunian';
+	public $wxToken = 'cakewx';
 	public $site_key = "CakeWX";
 	public $site_cx = "Powered by CakeWX";
 	public $version = "1.5";
 	public $verdate = "三  2  4 12:39:34 CST 2015";
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -67,7 +67,7 @@ class AppController extends Controller {
 		);
 		$this->Auth->authError = "用户未被授权，禁止访问。";
 		//$this->Auth->sessionKey = FALSE;
-		
+
 		// login case
 		$this->user = AuthComponent::user();
 		if (!empty($this->user)) {
@@ -75,11 +75,11 @@ class AppController extends Controller {
 			$this->uid = $this->user['Id'];
 			$this->username = $this->user['FMemberId'];
 			$this->isAdmin = $this->user['FIsAdmin'] ? TRUE : FALSE;
-		}	
+		}
 		// Views
 		$this->_setGlobalViews();
 	}
-	
+
 	public function isAuthorized($user) {
 		return TRUE;
 		$this->loadModel('TPerson');
@@ -88,14 +88,14 @@ class AppController extends Controller {
 		if ($taCount) {
 			return TRUE;
 		}
-	
+
 	    // Default deny
 	    return FALSE;
-	}	
-	
+	}
+
 	public function afterFilter() {
         parent::afterFilter();
-		
+
         // sql logging to chrome console
         if (class_exists('ConnectionManager') && Configure::read('debug') >= 2) {
             App::import('Vendor', 'ChromePhp/ChromePhp');
@@ -147,7 +147,7 @@ class AppController extends Controller {
             }
         }
     }
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -163,7 +163,7 @@ class AppController extends Controller {
 			$this->redirect(array('plugin' => "", 'controller' => "admin", 'action' => "index"));
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -174,7 +174,7 @@ class AppController extends Controller {
 	{
 		$this->Session->setFlash($msg);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -185,7 +185,7 @@ class AppController extends Controller {
 	{
 		$this->Session->setFlash($msg, 'default', array(), 'error');
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -198,7 +198,7 @@ class AppController extends Controller {
 		$backendDir = "/Admin/";
 		$frontendDir = ":Mobile/";
 		$uri = Router::getParams();
-		
+
 		// Check
 		if ($data) {
 			$this->set('data', $data);
@@ -206,9 +206,9 @@ class AppController extends Controller {
 		if ($debug == 1) {
 			echo '<pre>';print_r($this->data);exit;
 		}
-		
-		
-		// Case 
+
+
+		// Case
 		switch ($uri['controller']) {
 			case 'admin':
 				if ($uri['action'] == 'index') {
@@ -222,7 +222,7 @@ class AppController extends Controller {
 					}
 				} else {
 					$action = ucfirst($uri['action']);
-					$tview = "{$backendDir}{$action}";	
+					$tview = "{$backendDir}{$action}";
 				}
 				break;
 			case 'mob':
@@ -234,7 +234,7 @@ class AppController extends Controller {
 				$tview = "{$backendDir}{$action}";
 				break;
 		}
-		
+
 		// Load View
 		$split = $ext == 'twig' ? ':' : '/';
 		$ext = $ext == 'twig' ? ".html.{$ext}" : $ext;
@@ -242,14 +242,14 @@ class AppController extends Controller {
 		// echo $tview;exit;
 		return $this->render($tview);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
 	 * @return void
 	 * @author apple
 	 **/
-	function _setGlobalViews() {	
+	function _setGlobalViews() {
 		$conf = $this->_getSiteConf();
 		$settings['site_sign'] = $conf['Site']['name'];
 		$settings['site_name'] = $conf['Site']['title'];
@@ -270,7 +270,7 @@ class AppController extends Controller {
 		$this->set('version', "<a href=\"http://cakewx.com\">{$this->site_key}</a>&nbsp;V{$this->version}");
 		$this->set('cakeStats', $conf['Site']['FSiteStats']);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
