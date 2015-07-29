@@ -226,20 +226,37 @@ class wechatCallbackapiTest
 		$appid = $this->appid;
 		$secret = $this->appsecret;
 		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$appid}&secret={$secret}&code={$code}&grant_type=authorization_code";
-		file_put_contents('/tmp/wxapi.log', file_get_contents('/tmp/wxapi.log')."\n".'========================================'.date('Y-m-d H:i:s'));
-		file_put_contents('/tmp/wxapi.log', file_get_contents('/tmp/wxapi.log')."\n".$url);
 		$data = curlData($url);
-		file_put_contents('/tmp/wxapi.log', file_get_contents('/tmp/wxapi.log')."\n".var_export($data, TRUE));
+		$this->_log('========================================'.date('Y-m-d H:i:s'));
+		$this->_log($url);
+		$this->_log($data, true);
 		if (isset($data['access_token'])) {
-			$aToken = $data['access_token'];
-			$openid = $data['openid'];
-			$this->_getWxUsers($aToken, $openid);		// 获取用户信息
+			$aToken = $this->refresh_token($data['refresh_token']);
+			$this->_getWxUsers($aToken, $data['openid']);		// 获取用户信息
 			$msg = $data['openid'];
 			$msg = array('state' => 1, 'data' => array('openid' => $data['openid']));
 		} else {
 			$msg = array('state' => 0, 'msg' => "错误：appid不正确。");
 		}
 		return $msg;
+	}
+
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author
+	 **/
+	public function refresh_token($refresh_token)
+	{
+		$appid = $this->appid;
+		$url = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid={$appid}&grant_type=refresh_token&refresh_token={$refresh_token}";
+		$data = curlData($url);
+		$this->_log($url);
+		$this->_log($data, true);
+		if (isset($data['access_token'])) {
+			return $data['access_token'];
+		}
 	}
 
 	public function getAccessCode($force = 0)
@@ -323,8 +340,8 @@ class wechatCallbackapiTest
 	{
 		$url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={$token}&openid={$openid}&lang=zh_CN";
 		$user = curlData($url, '', 'GET', $debug);
-		file_put_contents('/tmp/wxapi.log', file_get_contents('/tmp/wxapi.log')."\n".$url);
-		file_put_contents('/tmp/wxapi.log', file_get_contents('/tmp/wxapi.log')."\n".var_export($user, TRUE));
+		$this->_log($url);
+		$this->_log($user, true);
 		if (!isset($user['errcode'])) {
 			$vals = $user;
 			$user['nickname'] = $this->_preg_nickname($user['nickname']);
@@ -355,6 +372,19 @@ class wechatCallbackapiTest
 		$url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=oKeG4jp7RXGHa2NfzkUIpHWHokts&lang=zh_CN';
 		$user = curlData($url, '', 'GET', $debug);
 		print_r($user);exit;
+	}
+
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author
+	 **/
+	public function _log($str, $export = false)
+	{
+		$file = '/tmp/wxapi.log';
+		if ($export) $str = var_export($str, TRUE);
+		file_put_contents($file, file_get_contents($file)."\n".$str);
 	}
 
 	/**

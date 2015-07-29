@@ -2,16 +2,11 @@
 
 {% block content %}
 <div class="content-body">
-    <!-- <div class="ui-loading js-loading"> <i class="fa fa-circle-o-notch fa-spin fa-3x"></i>
-    </div> -->
-    <!-- <div class="power-scroll-container js-power-scroll-container"> -->
-       <!--  <div class="hide js-arrow"></div> -->
-        <!-- <div class="swiper-container js-power-scroll"> -->
-    <div class="swiper-wrapper">
+    <div class="swiper-wrapper" id="swiper-wrapper">
         <div class="swiper-slide slide-groupchats" id="group_scroll">
             <div class="slide-wrapper">
                 <div class="ui-min-space"></div>
-                <div class="ui-title" id="js_times">
+                <div class="ui-title" id="js_time">
                     12:00
                 </div>
                 <div class="ui-mini-space"></div>
@@ -50,7 +45,7 @@
                         </div>
                     </div>
                 </div>
-                 <div class="ui-choose-teacher cf fadeIn  delay04">
+                <div class="ui-choose-teacher cf fadeIn  delay04">
                     <div class="advator"><img src="/img/activity/avatar/{{ rand_info['name'] }}.png"></div>
                     <div class="right">
                         <span class="name">{{ rand_info['name'] }}</span>
@@ -77,16 +72,14 @@
                         <div class="content_mess">
                             <div class="sanjiao"></div>
                             <p class="deep_gray tip_bg">
-                                <span class="ui_title">黑马创业探路的事，我来解决！
-                                </span>
-                                <img src="/img/activity/video.jpg" alt="">
+                                            <!-- <span class="ui_title">黑马创业探路的事，我来解决！
+                                            </span> -->
+                            	<img class="ms_img" src="/img/activity/video.jpg" alt="">
                                 <span class="mes_content">
                                     江南春、牛文文、赵文权、盛发强、赵浦、陈昊芝等24位会长推荐XXX入会，领走1000元入会代金券
                                 </span>
                             </p>
-                            <div class="icon">
-                                <a href="{{ baseurlAction }}/video"></a>
-                            </div>
+							<div class="icon"><a href="{{ baseurlAction }}/video"></a></div>
                         </div>
                     </div>
                 </div>
@@ -94,14 +87,15 @@
                 <div class="ui-big-space"></div>
             </div>
         </div>
-
     </div>
 </div>
 
 <div class="ui-alert center delay05 zoomIn">
-    <div class="icon delay10 fadeIn"></div>
+    <div class="icon delay10 fadeIn">
+    </div>
 </div>
 <div class="ui_bottom"></div>
 <audio preload="load" id="jiesuo" class="audio-lazyload" src="/img/activity/jiesuo.mp3"></audio>
 <audio preload="load" id="message" class="audio-lazyload" src="/img/activity/message.mp3"></audio>
+<script src="/js/activity/Validform_v5.3.2.js"></script>
 {% endblock %}

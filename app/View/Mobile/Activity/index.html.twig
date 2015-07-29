@@ -15,19 +15,19 @@
                 <p>江南春给你来信息了</p>
                 <span class="light_gray">滑动来查看</span>
             </div>
-            <div class="ui-choose-teacher fadeInDown delay0020">
+                        <div class="ui-choose-teacher fadeInDown delay0100">
                 微信 <span class="light_gray">现在</span>
                 <p>江南春给你来信息了</p>
                 <span class="light_gray">滑动来查看</span>
             </div>
-            <div class="ui-choose-teacher fadeInDown delay0060">
+                        <div class="ui-choose-teacher fadeInDown delay02">
                 微信 <span class="light_gray">现在</span>
                 <p>江南春给你来信息了</p>
                 <span class="light_gray">滑动来查看</span>
             </div>
             <div class="ui-big-space"></div>
-            <div class="js-share ui-botton center delay0140 zoomIn">
-            <a href="{{ baseurlAction }}/groupchat"></a>
+                        <div class="js-share ui-botton center delay0140 zoomIn" id="js-share">
+                       <!--  <a href="groupchats.html"></a> -->
             </div>
             <div class="ui_bottom"></div>
         </div>
@@ -35,4 +35,41 @@
 </div>
 <audio preload="load" id="jiesuo" class="audio-lazyload" src="/img/activity/jiesuo.mp3"></audio>
 <audio preload="load" id="message" class="audio-lazyload" src="/img/activity/message.mp3"></audio>
+<audio preload="load" id="message1" class="audio-lazyload" src="/img/activity/message.mp3"></audio>
+<audio preload="load" id="message2" class="audio-lazyload" src="/img/activity/message.mp3"></audio>
+<audio preload="load" id="message3" class="audio-lazyload" src="/img/activity/message.mp3"></audio>
+<audio preload="load" id="message4" class="audio-lazyload" src="/img/activity/message.mp3"></audio>
+<audio preload="load" id="message5" class="audio-lazyload" src="/img/activity/message.mp3"></audio>
+<audio preload="load" id="message6" class="audio-lazyload" src="/img/activity//message.mp3"></audio>
+<audio preload="load" id="message7" class="audio-lazyload" src="/img/activity/message.mp3"></audio>
+<audio preload="load" id="message8" class="audio-lazyload" src="/img/activity/message.mp3"></audio>
+<audio preload="load" id="message9" class="audio-lazyload" src="/img/activity/message.mp3"></audio>
+<audio preload="load" id="message10" class="audio-lazyload" src="/img/activity/message.mp3"></audio>
+<audio preload="load" id="message11" class="audio-lazyload" src="/img/activity/message.mp3"></audio>
+<script type="text/javascript">
+    window.onload=function(){
+
+    var mx=0;
+    var ma=0;
+    var obj=document.getElementById("hhh");
+    var jiesuo = document.getElementById("jiesuo");
+    obj.addEventListener("touchstart",function(e){
+        e.preventDefault();
+        mx=e.touches[0].pageX;
+    });
+        obj.addEventListener("touchmove",function(e){
+        ma=e.touches[0].pageX;
+    });
+        obj.addEventListener("touchend",function(e){
+        e.preventDefault();
+        if(ma > mx){
+            jiesuo.play();
+            window.open ('groupchats.html','');
+        }else{
+
+        }
+    });
+};
+</script>
+<script src="/js/activity/Validform_v5.3.2.js"></script>
 {% endblock %}
