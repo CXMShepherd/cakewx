@@ -2,16 +2,7 @@
 	<h2><?php echo $title_for_layout; ?></h2>
 	<?php
 		$check = true;
-		
-		// apache rewrite
-		$result = apache_get_modules(); 
-		if(in_array('mod_rewrite', $result)) { 
-			echo '<p class="success">' . __d('croogo', 'Apache Rewrite 组件已安装。') . '</p>';
-		} else {
-			$check = false;
-			echo '<p class="error">' . __d('croogo', 'Apache Rewrite 组件未安装。') . '</p>';
-		}
-		
+
 		// tmp is writable
 		if (is_writable(TMP)) {
 			echo '<p class="success">' . __d('croogo', 'app/tmp 目录可写。') . '</p>';
@@ -37,7 +28,7 @@
 			$check = false;
 			echo '<p class="error">' . sprintf(__d('croogo', 'PHP version %s < %s'), phpversion(), $minPhpVersion) . '</p>';
 		}
-		
+
 		// short_open_tag
 		if (ini_get('short_open_tag') == 1) {
 			echo '<p class="success">' . __d('croogo', 'PHP short_open_tag 已开启') . '</p>';
@@ -45,7 +36,7 @@
 			$check = false;
 			echo '<p class="error">' . __d('croogo', 'PHP short_open_tag 未开启') . '</p>';
 		}
-		
+
 		// curl
 		if (function_exists('curl_init')) {
 			echo '<p class="success">' . __d('croogo', 'PHP Curl 组件已开启') . '</p>';
