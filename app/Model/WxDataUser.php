@@ -60,6 +60,18 @@ class WxDataUser extends AppModel {
 		if ($query) return $this->id;
 	}
 
+	/**
+	 * 获取用户信息
+	 *
+	 * @return void
+	 * @author
+	 **/
+	public function getUserByOpenid($openid)
+	{
+		$result = $this->find('first', array('conditions' => array('FOpenId' => $id), 'recursive' => 0));
+		return $result;
+	}
+
     /**
      * undocumented function
      *
