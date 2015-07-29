@@ -338,8 +338,8 @@ class wechatCallbackapiTest
 	 **/
 	private function _getWxUsers($token, $openid, $sns = false)
 	{
-		$uri = $sns ? 'sns/userinfo' : 'user/info';
-		$url = "https://api.weixin.qq.com/cgi-bin/{$uri}?access_token={$token}&openid={$openid}&lang=zh_CN";
+		$uri = $sns ? 'sns/userinfo' : 'cgi-bin/user/info';
+		$url = "https://api.weixin.qq.com/{$uri}?access_token={$token}&openid={$openid}&lang=zh_CN";
 		$user = curlData($url, '', 'GET', $debug);
 		$this->_log($url);
 		$this->_log($user, true);
