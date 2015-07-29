@@ -4,7 +4,7 @@ class Soap {
 
         var $curl;
 
-        function __construct() 
+        function __construct()
         {
                 // require_once("./_curl.php");
                 // $this->curl = new Curl();
