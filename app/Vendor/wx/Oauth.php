@@ -57,7 +57,8 @@ class wechatCallbackapiTest
 			$noncestr = $time;
 			$jsapi_ticket= $data['ticket'];
 			$url='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-			$and = "jsapi_ticket=".$jsapi_ticket."&noncestr=".$noncestr."&timestamp=".$timestamp."&url=".$url."";
+			$and = "jsapi_ticket=".$jsapi_ticket."&noncestr=".$noncestr."&timestamp=".$time."&url=".$url."";
+			$this->_log($and);
 			$signature = sha1($and);
 			return $signature;
  	   	}
