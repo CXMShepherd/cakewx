@@ -21,7 +21,7 @@ class WxSession extends AppModel {
  * @var string
  */
 	public $primaryKey = 'Id';
-	
+
 	public $validate = array(
 		'FData' => array(
 			'rule' => "notEmpty",
@@ -34,7 +34,7 @@ class WxSession extends AppModel {
 			'required' => true
 	    )
 	);
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -46,7 +46,7 @@ class WxSession extends AppModel {
 		$this->wxid = $id;
 		return TRUE;
 	}
-	
+
 	/**
 	 * 写入Wxsess
 	 *
@@ -63,12 +63,12 @@ class WxSession extends AppModel {
 			$wxdata_FData = unserialize($wxdata['WxSession']['FData']);
 			$data = $wxdata_FData ? array_merge($wxdata_FData, $data) : $data;
 			$data = $data ? serialize($data) : '';
-			
+
 		} else {
 			$this->set('FCreatedate', date('Y-m-d H:i:s'));
 			$data = serialize($data);
 		}
-		$this->set('Id', $this->id ? $this->id : String::uuid());
+		// $this->set('Id', $this->id ? $this->id : String::uuid());
 		$this->set('FUpdatedate', date('Y-m-d H:i:s'));
 		$this->set('FWebchat', $id);
 		$this->set('FData', $data);
@@ -77,9 +77,9 @@ class WxSession extends AppModel {
 		$query = $this->save($this->data);
 		if ($query) return $this->id;
 	}
-	
+
 	/**
-	 * 读取Wxsess 
+	 * 读取Wxsess
 	 *
 	 * @return void
 	 * @author apple
@@ -91,11 +91,11 @@ class WxSession extends AppModel {
 		$data = isset($data[$name]) ? $data[$name] : '';
 		return $data;
 	}
-	
+
 	/**
-	 * 删除Wxsess 
+	 * 删除Wxsess
 	 *
-	 * @param string $name 
+	 * @param string $name
 	 * @return void
 	 * @author apple
 	 */
@@ -114,5 +114,5 @@ class WxSession extends AppModel {
 			return $query;
 		}
 	}
-	
+
 }

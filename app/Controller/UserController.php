@@ -7,16 +7,16 @@ App::uses('AppController', 'Controller');
  * @property Admin $Admin
  */
 class UserController extends AppController {
-	
+
 	public $layout = "admin";
 	public $helpers = array('AssetCompress.AssetCompress');
-	
+
 	public function beforeFilter() {
 	    parent::beforeFilter();
-	    $this->Auth->allow('login', 'register', 'version'); 
+	    $this->Auth->allow('login', 'register', 'version');
 		$this->loadModel("TPerson");
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -39,11 +39,11 @@ class UserController extends AppController {
 				}
 			}
 		}
-		
+
 		$this->set('errors', $errors);
 		$this->render('/Admin/User/index');
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -61,7 +61,7 @@ class UserController extends AppController {
 		} else if ($conf['signup'] == 2) {
 			$invite = 1;
 		}
-		
+
 		// Action..
 		$errors = "";
 		if ($this->request->is('post') || $this->request->is('put')) {
@@ -89,7 +89,7 @@ class UserController extends AppController {
 		$this->set('errors', $errors);
 		$this->render('/Admin/User/register');
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -109,6 +109,7 @@ class UserController extends AppController {
 	 **/
 	function version()
 	{
+		header("Content-type:text/html;charset=utf-8");
 		echo $this->version.'<br />'.$this->verdate;exit;
 	}
 

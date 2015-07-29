@@ -27,7 +27,7 @@ class wechatCallbackapiTest
         	exit;
         }
 	}
-	
+
 	public function valid()
     {
         if($this->checkSignature()){
@@ -57,7 +57,7 @@ class wechatCallbackapiTest
 			return $data;
 		}
 	}
-	
+
 	/**
 	 * 菜单功能
 	 *
@@ -84,7 +84,7 @@ class wechatCallbackapiTest
 			return $msg;
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -97,6 +97,7 @@ class wechatCallbackapiTest
 		if (!is_array($aToken)) {
 			$url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token={$aToken}&next_openid=";
 			$data = curlData($url, '', 'GET', $debug);
+			$data['data']['openid'] = array_slice($data['data']['openid'], 0, 1000);
 			// print_r($data);exit;
 			if (!isset($data['errcode'])) {
 				if (is_array($data['data']['openid']) && $userinfo) {
@@ -135,7 +136,7 @@ class wechatCallbackapiTest
 			return $msg;
 		}
 	}
-	
+
 	/**
 	 * 群发文本消息
 	 *
@@ -169,7 +170,7 @@ class wechatCallbackapiTest
 			return $aToken;
 		}
 	}
-	
+
 	/**
 	 * 群发图文消息
 	 *
@@ -230,7 +231,7 @@ class wechatCallbackapiTest
 			return $aToken;
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -290,7 +291,7 @@ class wechatCallbackapiTest
 
       	//extract post data
 		if (!empty($postStr)){
-                
+
               	$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
                 $fromUsername = $postObj->FromUserName;
                 $toUsername = $postObj->ToUserName;
@@ -303,11 +304,11 @@ class wechatCallbackapiTest
 							<MsgType><![CDATA[%s]]></MsgType>
 							<Content><![CDATA[%s]]></Content>
 							<FuncFlag>0</FuncFlag>
-							</xml>";             
+							</xml>";
 				if(!empty( $keyword ))
                 {
 					$rsStr = array(
-									'流年' => "如花美眷，似水流年。", 
+									'流年' => "如花美眷，似水流年。",
 									'ln' => "如花美眷，似水流年。",
 									'liunian' => "流年班级录：http://liunian.mobi",
 									'校友' => "曾经在同一个学校或研究院、所共同学习、工作过的人。一般指共同学习半年以上才构成校友。校友的别称：同窗。欢迎使用流年班级录：http://liunian.mobi",
@@ -333,19 +334,19 @@ class wechatCallbackapiTest
         	exit;
         }
     }
-		
+
 	private function checkSignature()
 	{
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];
-        $nonce = $_GET["nonce"];	
-        		
+        $nonce = $_GET["nonce"];
+
 		$token = $this->token;
 		$tmpArr = array($token, $timestamp, $nonce);
 		sort($tmpArr);
 		$tmpStr = implode( $tmpArr );
 		$tmpStr = sha1( $tmpStr );
-		
+
 		if( $tmpStr == $signature ){
 			return true;
 		}else{

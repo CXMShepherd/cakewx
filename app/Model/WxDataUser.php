@@ -19,7 +19,7 @@ class WxDataUser extends AppModel {
 	 * @var string
 	 */
 	public $primaryKey = 'FOpenId';
-	
+
 	/**
 	 * undocumented variable
 	 *
@@ -34,7 +34,7 @@ class WxDataUser extends AppModel {
 			)
 	    )
 	);
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -42,7 +42,7 @@ class WxDataUser extends AppModel {
 	 * @author apple
 	 **/
 	function saveData($id)
-	{	
+	{
 		$userid = $this->_randMemberId();
 		$this->set('FMemberId', $userid);
 		$this->set('FCreatedate', date('Y-m-d H:i:s'));
@@ -50,7 +50,7 @@ class WxDataUser extends AppModel {
 		$this->set('FWebchat', $id);
 		if ($this->getUserInfo($this->id)) {
 			unset($this->data[$this->name]['FullName']);
-			unset($this->data[$this->name]['FNickname']);
+			// unset($this->data[$this->name]['FNickname']);
 			unset($this->data[$this->name]['FMemberId']);
 			unset($this->data[$this->name]['FCreatedate']);
 		}
@@ -87,7 +87,7 @@ class WxDataUser extends AppModel {
 		$data['isFirstOrder'] = empty($data['isFirstOrder']['count']) ? 1 : 0;
 		return $data;
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -99,11 +99,11 @@ class WxDataUser extends AppModel {
 		$userid = reset(reset($data));
 		return $userid ? intval($userid) + 1 : 10000;
 	}
-	
+
 	/**
 	 * Overridden paginate method - group by week, away_team_id and home_team_id
 	 */
-	public function paginate($conditions, $fields, $order, $limit, $page = 1, $recursive = null, $extra = array()) 
+	public function paginate($conditions, $fields, $order, $limit, $page = 1, $recursive = null, $extra = array())
 	{
 	    $recursive = -1;
 		$data = $this->find(
@@ -111,14 +111,14 @@ class WxDataUser extends AppModel {
 	        compact('conditions', 'fields', 'order', 'limit', 'page', 'recursive', 'group')
 	    );
 		foreach ($data as $key => &$vals)
-		{	
+		{
 			$vals['WxDataUser']['Headimgurl_96'] = $vals['WxDataUser']['FHeadimgurl'] ? substr($vals['WxDataUser']['FHeadimgurl'], 0, -1).'96' : Router::url('/img/avatar/noimg.jpg', TRUE);
 			$vals['WxDataUser']['FSubscribe_time'] = date('Y-m-d H:i:s', $vals['WxDataUser']['FSubscribe_time']);
 		}
 		//echo '<pre>';print_r($data);exit;
 	    return $data;
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -139,7 +139,7 @@ class WxDataUser extends AppModel {
 		}
 		return $newarr;
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -147,7 +147,7 @@ class WxDataUser extends AppModel {
 	 * @author apple
 	 **/
 	function getDataList($id, $cid = 'NULL')
-	{	
+	{
 		if ($cid != 'NULL')
 		{
 			$data = $this->find('first', array('conditions' => array('FOpenId' => $cid, 'FWebchat' => $id), 'recursive' => 0));
@@ -161,7 +161,7 @@ class WxDataUser extends AppModel {
 			$data['datalist'] = $this->find('all', array('conditions' => array('FWebchat' => $id), 'order' => "FCreatedate desc", 'recursive' => 0));
 			$data['count'] = $this->find('count', array('conditions' => array('FWebchat' => $id), 'recursive' => 0));
 			foreach ($data['datalist'] as $key => &$vals)
-			{	
+			{
 				$vals['WxDataKds']['C_FType'] = $this->type[$vals['WxDataKds']['FType']];
 				$vals['WxDataKds']['FTwj'] = unserialize($vals['WxDataKds']['FTwj']);
 			}
@@ -169,7 +169,7 @@ class WxDataUser extends AppModel {
 		}
 		return $data;
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -182,7 +182,7 @@ class WxDataUser extends AppModel {
 		$count = $this->find('count', array('conditions' => $conditions, 'recursive' => 0));
 		if ($count) return TRUE;
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -191,7 +191,7 @@ class WxDataUser extends AppModel {
 	 **/
 	function getWxType($webchat, $keywords) {
 		$data = $this->find('first', array('conditions' => array('FKey' => $keywords, 'FWebchat' => $webchat, 'AND' => array('OR' => array(array('FKeyMacth' => null), array('FKeyMacth' => 0)))), 'recursive' => 0));
-		if (!$data) {		// 模糊匹配			
+		if (!$data) {		// 模糊匹配
 			$data = $this->find('first', array('conditions' => array("LOCATE(`Fkey`, '{$keywords}') >" => "0", 'FWebchat' => $webchat, 'FKeyMacth' => "1"), 'recursive' => 0));
 		}
 		$type = isset($data['FType']) ? $data['FType'] : FALSE;

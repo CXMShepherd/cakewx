@@ -54,7 +54,7 @@
 		'level' => E_ALL & ~E_DEPRECATED,
 		'trace' => true
 	));
-	
+
 	Configure::write('Error', array(
 		'handler' => 'AppError::handleError',
 		'level' => E_ALL & ~E_DEPRECATED,
@@ -112,11 +112,11 @@
  * admin or other prefixed routes.
  *
  * 	Routing.prefixes = array('admin', 'manager');
- * 
+ *
  * Enables:
  *	`admin_index()` and `/admin/controller/index`
  *	`manager_index()` and `/manager/controller/index`
- * 
+ *
  */
 	Configure::write('Routing.prefixes', array('webchat'));
 
@@ -182,7 +182,7 @@
  */
 	Configure::write('Session', array(
 		'defaults' => 'php',
-		'cookie' => "liunian",
+		'cookie' => "cakewx",
 		'timeout' => 86400
 	));
 

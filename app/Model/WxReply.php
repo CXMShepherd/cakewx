@@ -5,7 +5,7 @@ App::uses('AppModel', 'Model');
  *
  */
 class WxReply extends AppModel {
-	
+
 	/**
 	 * undocumented class variable
 	 *
@@ -14,7 +14,7 @@ class WxReply extends AppModel {
 	public $msType = 'text';
 	public $useTable = FALSE;
 	public $_WX;
-	
+
 	/**
 	 * 微信valid
 	 *
@@ -22,10 +22,10 @@ class WxReply extends AppModel {
 	 * @author niancode
 	 **/
 	function wx_valid() {
-		$wx = new Wxauth();	
+		$wx = new Wxauth();
 		return $wx->wx_valid();
 	}
-	
+
 	/**
 	 * 检查Appid和Appsecret
 	 *
@@ -41,7 +41,7 @@ class WxReply extends AppModel {
 		}
 		return $msg;
 	}
-	
+
 	/**
 	 * 保存菜单
 	 *
@@ -49,15 +49,15 @@ class WxReply extends AppModel {
 	 * @author niancode
 	 **/
 	function saveMenus($webchat, $appid, $appsecret)
-	{	
+	{
 		$check = $this->_checkAppidSecret($webchat, $appid, $appsecret);
 		if (!is_array($check)) {
 			$data = ClassRegistry::init('WxDataMus')->getMenuApi($webchat);
 			return $this->_WX->saveMenus($data, 0);		// debug..
 		}
-		return $check;		
+		return $check;
 	}
-	
+
 	/**
 	 * 获取关注者列表
 	 *
@@ -72,7 +72,7 @@ class WxReply extends AppModel {
 		}
 		return $check;
 	}
-	
+
 	/**
 	 * 发送图文／文本消息
 	 *
@@ -84,14 +84,14 @@ class WxReply extends AppModel {
 		if (!is_array($check)) {
 			switch ($type) {
 				case 0:
-					$msg = $this->_WX->sendMsgText($data, 0);	
+					$msg = $this->_WX->sendMsgText($data, 0);
 					break;
 				case 1:
 					$data = ClassRegistry::init('WxDataTw')->getSendTwMsg($data);
 					$msg = $this->_WX->sendMsgTw($data['items'], 0);
 					break;
 				default:
-				
+
 			}
 			return $msg;
 			// return $this->_WX->getFollows(0);		// debug..
@@ -99,7 +99,7 @@ class WxReply extends AppModel {
 		}
 		return $check;
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -122,7 +122,7 @@ class WxReply extends AppModel {
 			return $data;
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -132,11 +132,11 @@ class WxReply extends AppModel {
 	function getSessOpenId() {
 		App::uses("CakeSession", "Model/Datasource");
 		$this->Session = new CakeSession();
-		if ($this->Session->read('WX_openid')) { 
+		if ($this->Session->read('WX_openid')) {
 			return $this->Session->read('WX_openid');
 		}
 	}
-	
+
 	/**
 	 * 初始化
 	 *
@@ -153,7 +153,7 @@ class WxReply extends AppModel {
 		$this->event = $xmlData->Event;
 		$this->eventKey = $xmlData->EventKey;
 		$this->webchat = ClassRegistry::init('WxWebchat')->getWxId($this->toUsername);
-		
+
 		// Senior API
 		$this->msgid = $xmlData->MsgID;
 		$this->totalCount = $xmlData->TotalCount;
@@ -162,7 +162,7 @@ class WxReply extends AppModel {
 		$this->errorCount = $xmlData->ErrorCount;
 		$this->status = $xmlData->Status;
 	}
-	
+
 	/**
 	 * 自动回复
 	 *
@@ -178,12 +178,12 @@ class WxReply extends AppModel {
 					if ($this->event == 'subscribe') {
 						$vars['keyword'] = $this->keyword;
 						$wxData = ClassRegistry::init('WxWebchat')->getMsg('subscribe', $vars, $this->toUsername);
-						$wxData = str_replace(PHP_EOL, '', $wxData); 
+						$wxData = str_replace(PHP_EOL, '', $wxData);
 						$resultStr = $this->_getTPL($wxData['type'], $wxData);
 					} else if ($this->event == 'CLICK') {
 						$vars['keyword'] = $this->eventKey;
 						$wxData = ClassRegistry::init('WxWebchat')->getMsg("text", $vars, $this->toUsername);
-						$wxData = str_replace(PHP_EOL, '', $wxData); 
+						$wxData = str_replace(PHP_EOL, '', $wxData);
 						$resultStr = $this->_getTPL($wxData['type'], $wxData);
 					} else if ($this->event == 'MASSSENDJOBFINISH') {
 						$data['FSentCount'] = $this->sentCount;
@@ -197,7 +197,7 @@ class WxReply extends AppModel {
 				default:
 					$vars['keyword'] = $this->keyword;
 					$wxData = ClassRegistry::init('WxWebchat')->getMsg("text", $vars, $this->toUsername);
-					$wxData = str_replace(PHP_EOL, '', $wxData); 
+					$wxData = str_replace(PHP_EOL, '', $wxData);
 					$resultStr = $this->_getTPL($wxData['type'], $wxData);
 			}
 		} else {
@@ -205,7 +205,7 @@ class WxReply extends AppModel {
 		}
 		return $resultStr;
 	}
-	
+
 	/**
 	 * 获取TPL模板数据
 	 *
@@ -243,7 +243,7 @@ class WxReply extends AppModel {
 			case 'news':
 				$WX_suffixTpl = "";
 				$WX_itemTpl = "<item>
-				<Title><![CDATA[%s]]></Title> 
+				<Title><![CDATA[%s]]></Title>
 				<Description><![CDATA[%s]]></Description>
 				<PicUrl><![CDATA[%s]]></PicUrl>
 				<Url><![CDATA[%s]]></Url>

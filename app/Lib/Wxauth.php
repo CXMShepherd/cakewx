@@ -2,14 +2,14 @@
 App::import('Vendor', 'wx/Oauth');
 App::uses('CakeSession', 'Model/Datasource');
 class Wxauth {
-	
+
 	/**
 	 * undocumented function
 	 *
 	 * @return void
 	 * @author apple
 	 **/
-	function __construct($token = 'liunian', $webchat = null, $appid = null, $appsecret = null)
+	function __construct($token = 'cakewx', $webchat = null, $appid = null, $appsecret = null)
 	{
 		$this->wechatObj = new wechatCallbackapiTest();
 		$this->wechatObj->setGloabl(array(
@@ -19,7 +19,7 @@ class Wxauth {
 						'webchat' => $webchat
 					));
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -30,7 +30,7 @@ class Wxauth {
 	{
 		$this->wechatObj->wx_valid();
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -41,7 +41,7 @@ class Wxauth {
 	{
 		return $this->wechatObj->saveMenus($data, $debug);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -52,7 +52,7 @@ class Wxauth {
 	{
 		return $this->wechatObj->getFollows($debug);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -63,7 +63,7 @@ class Wxauth {
 	{
 		return $this->wechatObj->sendMsgText($data, $debug);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -74,7 +74,7 @@ class Wxauth {
 	{
 		return $this->wechatObj->sendMsgTw($data, $debug);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -84,7 +84,7 @@ class Wxauth {
 	function getWpUserInfo($type, $code) {
 		return $this->wechatObj->getWpUserInfo($type, $code);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -96,7 +96,7 @@ class Wxauth {
 		$userinfo = $this->wechatObj->getUserInfo();
 		return $userinfo;
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -107,13 +107,13 @@ class Wxauth {
 	{
 		return curlData($url, $params, $type, $debug, $options);
 	}
-	
+
 	function curlData($url, $params = array(), $type = 'GET', $debug = 0, $options = array())
 	{
-		$fp = fopen($url,'wb'); 
+		$fp = fopen($url,'wb');
 		$options = array("CURLOPT_FILE", $fp);
 		$data = curlData($url, $params, $type, $debug, $options);
-		fclose($fp);  
+		fclose($fp);
 		return $data;
 	}
 }
