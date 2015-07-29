@@ -274,7 +274,7 @@ exit;
 	 **/
 	function _debug($debug = 0) {
 		if ($debug) {
-			$this->Session->write('WX_openid', 'oXVUJQEm4mEN7KsdM1PNXfxQtkFU');
+			// $this->Session->write('WX_openid', 'oXVUJQEm4mEN7KsdM1PNXfxQtkFU');
 		}
 	}
 
