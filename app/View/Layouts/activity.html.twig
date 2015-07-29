@@ -57,7 +57,7 @@
 
         wx.config({
             debug: false,
-            appId: 'wxf8b4f85f3a794e77',
+            appId: '{{ appid }}',
             timestamp: 1421726467,
             nonceStr: 'V3xOrtKUZO5OXW13',
             signature: '7e43af635eb90f3b355503aa17027712e2d14e89',
@@ -70,11 +70,76 @@
             ]
         });
 
-     	var _shareData = {
-            imgUrl: static_mpath + "/img/activity/sharepic.jpg",
-            title: "黑马",
-            desc: "黑马"
-        };
+        // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareTimeline({
+            title: '{{ share_tile }}', // 分享标题
+            link: '{{ share_link }}', // 分享链接
+            imgUrl: '{{ share_logo }}', // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+        // 获取“分享给朋友”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareAppMessage({
+            title: '{{ share_tile }}', // 分享标题
+            desc: '{{ share_des }}', // 分享描述
+            link: '{{ share_link }}', // 分享链接
+            imgUrl: '{{ share_logo }}', // 分享图标
+            type: 'link', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+        // 获取“分享到QQ”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareQQ({
+            title: '{{ share_tile }}', // 分享标题
+            desc: '{{ share_des }}', // 分享描述
+            link: '{{ share_link }}', // 分享链接
+            imgUrl: '{{ share_logo }}', // 分享图标
+            success: function () {
+               // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+               // 用户取消分享后执行的回调函数
+            }
+        });
+
+        // 获取“分享到腾讯微博”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareWeibo({
+            title: '{{ share_tile }}', // 分享标题
+            desc: '{{ share_des }}', // 分享描述
+            link: '{{ share_link }}', // 分享链接
+            imgUrl: '{{ share_logo }}', // 分享图标
+            success: function () {
+               // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+        // 获取“分享到QQ空间”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareQZone({
+            title: '{{ share_tile }}', // 分享标题
+            desc: '{{ share_des }}', // 分享描述
+            link: '{{ share_link }}', // 分享链接
+            imgUrl: '{{ share_logo }}', // 分享图标
+            success: function () {
+               // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
         navigator.userAgent.match( /micromessenger/gi ) && Share.WeChat.setData( _shareData );
 	</script>
 	<style>

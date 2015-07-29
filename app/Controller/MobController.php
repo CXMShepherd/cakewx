@@ -156,15 +156,21 @@ exit;
 				}
 
 				// Twig View
+				$title = '活动报名';
 				$this->set('action', $action);
                 $this->set("rooturl", Router::url("/", TRUE));
-				$this->set('title', '活动报名');
+				$this->set('title', $title);
                 $this->set("storeid", "{$id}");
 				$this->set("baseurl", Router::url("/mob/activity/", TRUE));
 				$this->set("baseurlAction", Router::url("/mob/activity/{$id}", TRUE));
 				$this->set("baseurlIndex", Router::url("/mob/activity?={$webchatId}", TRUE));
 				$this->set('user', $data['userinfo']);
 				$this->set('appid', $this->appid);
+				// Share
+				$this->set('share_link', Router::url("/mob/activity/{$id}", TRUE));
+				$this->set('share_title', $title);
+				$this->set('share_des', "黑马会领券活动");
+				$this->set('share_logo', '/img/activity/sharepic.jpg');
 				$this->LNRender($data, $tpl, 'twig');
 			}
 		} else {
