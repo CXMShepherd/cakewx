@@ -228,6 +228,7 @@ class wechatCallbackapiTest
 		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$appid}&secret={$secret}&code={$code}&grant_type=authorization_code";
 		file_put_contents('/tmp/wxapi.log', file_get_contents('/tmp/wxapi.log')."\n".$url);
 		$data = curlData($url);
+		file_put_contents('/tmp/wxapi.log', file_get_contents('/tmp/wxapi.log')."\n".var_export($data, TRUE));
 		if (isset($data['access_token'])) {
 			$aToken = $data['access_token'];
 			$openid = $data['openid'];
@@ -322,6 +323,7 @@ class wechatCallbackapiTest
 		$url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={$token}&openid={$openid}&lang=zh_CN";
 		$user = curlData($url, '', 'GET', $debug);
 		file_put_contents('/tmp/wxapi.log', file_get_contents('/tmp/wxapi.log')."\n".$url);
+		file_put_contents('/tmp/wxapi.log', file_get_contents('/tmp/wxapi.log')."\n".var_export($user, TRUE));
 		if (!isset($user['errcode'])) {
 			$vals = $user;
 			$user['nickname'] = $this->_preg_nickname($user['nickname']);
@@ -338,6 +340,20 @@ class wechatCallbackapiTest
 			$ds['FWebchat'] = $this->webchat;
 			ClassRegistry::init('WxDataUser')->saveData($user['openid'], $ds);			// 写入数据库
 		}
+	}
+
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author
+	 **/
+	public function dotest($debug = 0)
+	{
+		$token = urlencode('OezXcEiiBSKSxW0eoylIeKT1dPS2rQhf4BRQJ3xlzBtMAFzgz-Yge_askEMKdMABTSRdJ5Hdyf-735IJQy3WA9wmQc1rv81flSkk8vflW4w9R7D-2rglbSgM7KYtHnw41LtjrkW2h1KHXEKA1dMEkw');
+		$url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=' . $token . '&openid=oKeG4jp7RXGHa2NfzkUIpHWHokts&lang=zh_CN';
+		$user = curlData($url, '', 'GET', $debug);
+		print_r($user);exit;
 	}
 
 	/**

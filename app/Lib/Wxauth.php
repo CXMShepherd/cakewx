@@ -101,6 +101,18 @@ class Wxauth {
 	 * undocumented function
 	 *
 	 * @return void
+	 * @author
+	 **/
+	public function dotest()
+	{
+		$userinfo = $this->wechatObj->dotest();
+		return $userinfo;
+	}
+
+	/**
+	 * undocumented function
+	 *
+	 * @return void
 	 * @author apple
 	 **/
 	function curlStData($url, $params = array(), $type = 'GET', $debug = 0, $options = array())
