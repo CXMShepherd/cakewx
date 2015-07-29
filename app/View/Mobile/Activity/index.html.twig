@@ -1,0 +1,38 @@
+{% extends ":Layouts:activity.html.twig" %}
+
+{% block content %}
+<div class="swiper-wrapper">
+    <div class="swiper-slide slide-mypage">
+        <div class="slide-wrapper">
+            <div class="ui-title" id="js_times">
+                12:00
+            </div>
+            <div class="ui-desc">
+                <span id="month">7月6号</span><span id="today">星期一</span>
+            </div>
+            <div class="ui-choose-teacher">
+                微信 <span class="light_gray">现在</span>
+                <p>江南春给你来信息了</p>
+                <span class="light_gray">滑动来查看</span>
+            </div>
+            <div class="ui-choose-teacher fadeInDown delay0020">
+                微信 <span class="light_gray">现在</span>
+                <p>江南春给你来信息了</p>
+                <span class="light_gray">滑动来查看</span>
+            </div>
+            <div class="ui-choose-teacher fadeInDown delay0060">
+                微信 <span class="light_gray">现在</span>
+                <p>江南春给你来信息了</p>
+                <span class="light_gray">滑动来查看</span>
+            </div>
+            <div class="ui-big-space"></div>
+            <div class="js-share ui-botton center delay0140 zoomIn">
+            <a href="{{ baseurlAction }}/groupchat"></a>
+            </div>
+            <div class="ui_bottom"></div>
+        </div>
+    </div>
+</div>
+<audio preload="load" id="jiesuo" class="audio-lazyload" src="/img/activity/jiesuo.mp3"></audio>
+<audio preload="load" id="message" class="audio-lazyload" src="/img/activity/message.mp3"></audio>
+{% endblock %}
