@@ -50,7 +50,7 @@ class WxReply extends AppModel {
 	 **/
 	public function wx_share_sign($wechat, $appid)
 	{
-		$this->_WX = new Wxauth('cakewx', $webchat, $appid, "3f3f7d885e41840be01339f221dfd369");
+		$this->_WX = new Wxauth('cakewx', $wechat, $appid, "3f3f7d885e41840be01339f221dfd369");
 		return $this->_WX->wx_share_sign();
 	}
 
