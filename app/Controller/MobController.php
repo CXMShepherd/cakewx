@@ -93,7 +93,7 @@ class MobController extends AppController {
 			$openid = $opens['data']['openid'];
 			$data['userinfo'] = $this->WxDataUser->getUserInfo($opens['data']['openid'], $webchat, $id);		//个人信息
 			$webchat = $data['WxDataStore']['FWebchat'];			// md5 webchat
-			$action = isset($opens['data']['user']['FIsMember']) && $opens['data']['user']['FIsMember'] ? 'ticket' : '';			// 结果页面
+			$action = isset($opens['data']['user']['FIsMember']) && $opens['data']['user']['FIsMember'] ? 'ticket' : $action;			// 结果页面
 			switch ($action) {
 				case 'member-reg':
 					// 存入数据
@@ -274,7 +274,7 @@ class MobController extends AppController {
 	 **/
 	function _debug($debug = 0) {
 		if ($debug) {
-			// $this->Session->write('WX_openid', 'oXVUJQEm4mEN7KsdM1PNXfxQtkFU');
+			$this->Session->write('WX_openid', 'oXVUJQEm4mEN7KsdM1PNXfxQtkFU');
 		}
 	}
 
