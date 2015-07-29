@@ -89,11 +89,8 @@ class MobController extends AppController {
 		];
 
 		// Check Weixin Code
-		echo $wxCode;
-		echo $wxState;
 		$opens = $this->WxReply->getWpUserInfo('openid', $wxCode, $this->webchat, $this->appid);
 		if ($opens['state'] == 1) {
-			print_r($opens);exit;
 			$openid = $opens['data']['openid'];
 			$data = $action == 'index' ? $this->WxDataStore->getDataList($webchatId) : $this->WxDataStore->getDataList(null, $id, 'md5');
 			$data['userinfo'] = $this->WxDataUser->getUserInfo($opens['data']['openid'], $webchat, $id);		//个人信息
