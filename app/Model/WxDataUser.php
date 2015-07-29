@@ -120,6 +120,7 @@ class WxDataUser extends AppModel {
 	public function paginate($conditions, $fields, $order, $limit, $page = 1, $recursive = null, $extra = array())
 	{
 	    $recursive = -1;
+	    $order = array('FCreatedate' => 'DESC');
 		$data = $this->find(
 	        'all',
 	        compact('conditions', 'fields', 'order', 'limit', 'page', 'recursive', 'group')
@@ -166,7 +167,7 @@ class WxDataUser extends AppModel {
 		{
 			$data = $this->find('first', array('conditions' => array('FOpenId' => $cid, 'FWebchat' => $id), 'recursive' => 0));
 			if (is_array($data)) {
-				$data['WxDataUser']['FSubscribe_time'] = date('Y-m-d H:i:s', $data['WxDataUser']['FSubscribe_time']);
+				$data['WxDataUser']['FSubscribe_time'] = $data['WxDataUser']['FSubscribe_time'] ? date('Y-m-d H:i:s', $data['WxDataUser']['FSubscribe_time']) : '';
 				$data['WxDataKds']['FTwj'] = unserialize($data['WxDataKds']['FTwj']);
 				$data['WxDataKds']['FPreTwj'] = implode(',', $data['WxDataKds']['FTwj']);
 			}
