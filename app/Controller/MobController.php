@@ -26,11 +26,6 @@ class MobController extends AppController {
 	 * @author apple
 	 **/
 	function index($action) {
-
-		// Test
-		$wx = new Wxauth('cakewx', '', $this->appid, "ad59dac608c35311d71d11ec89300926");
-		$wx->dotest();
-exit;
 		switch ($action) {
 			default:
 				$tpl = 'index';
@@ -94,16 +89,6 @@ exit;
 
 		// Check Weixin Code
 		if ($wxCode) {
-			// $opens = $this->WxReply->getWpUserInfo('openid', $wxCode, $this->webchat, $this->appid);
-			$opens = file_get_contents("https://api.weixin.qq.com/sns/oauth2/access_token?appid=".'wx708acc93bd6ad1b0'."&secret=".'d05a63f65046e95d4d41dc7858aa9624'."&code=".$wxCode."&grant_type=authorization_code");
-			$opens = json_decode($opens);
-			$opens = get_object_vars($opens);
-			$this->log(var_export($opens, true)."\n", 'wxapi');
-
-			$token = file_get_contents("https://api.weixin.qq.com/sns/userinfo?access_token={$opens['access_token']}&openid={$opens['openid']}&lang=zh_CN");
-			$this->log(var_export($token, true)."\n", 'wxapi');exit;
-
-
 			if ($opens['state'] == 1) {
 				$opens = $this->WxReply->getWpUserInfo('openid', $wxCode, $this->webchat, $this->appid);
 				$openid = $opens['data']['openid'];

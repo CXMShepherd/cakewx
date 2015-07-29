@@ -8,7 +8,7 @@ if (! function_exists('curlData'))
 	 * @return void
 	 * @author apple
 	 **/
-	function curlData($url, $params = array(), $type = 'GET', $debug = 0, $options = array(), $force = 1)
+	function curlData($url, $params = array(), $type = 'GET', $debug = 0, $options = array(), $force = 1, $assoc = true)
 	{
 		$cl = new Curl();
 		if ($type == 'GET')
@@ -23,7 +23,7 @@ if (! function_exists('curlData'))
 			$json = $cl->simple_post($curl['url'], $params, $options, $force);
 		}
 		if ($debug) exit($cl->debug());	// debug
-		$json = json_decode($json, TRUE);
+		$json = json_decode($json, $assoc);
 		return $json;
 	}
 }
@@ -42,9 +42,9 @@ if (! function_exists('MY_paraseGetArray'))
 		$newarr = array_map("__oget", $tmp, $arr);
 		$str = implode('&', $newarr);
 		return $str;
-		
+
 	}
-	function __oget($v1, $v2) 
+	function __oget($v1, $v2)
 	{
 		return "{$v1}={$v2}";
 	}
