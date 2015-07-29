@@ -3,11 +3,11 @@
 {% block title %}{{ title }}{% endblock %}
 {% block viewport %}<meta name="MobileOptimized" content="320">{% endblock %}
 {% block head %}
-	{{ css('activity/aio.min', {'block': 'css_basic'}) }}
-	{{ css('activity/heima', {'block': 'css_basic'}) }}
+	{{ css('Activity/aio.min', {'block': 'css_basic'}) }}
+	{{ css('Activity/heima', {'block': 'css_basic'}) }}
 	{{ script('http://res.wx.qq.com/open/js/jweixin-1.0.0.js', {'block': 'js_basic'}) }}
-	{{ script('activity/aio.min', {'block': 'js_basic'}) }}
-	{{ script('activity/heima', {'block': 'js_basic'}) }}
+	{{ script('Activity/aio.min', {'block': 'js_basic'}) }}
+	{{ script('Activity/heima', {'block': 'js_basic'}) }}
 	{{ parent() }}
 	<script type="text/javascript">
 		var BASE_URL = "{{ url('/', true) }}";
