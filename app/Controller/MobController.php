@@ -95,7 +95,7 @@ exit;
 		// Check Weixin Code
 		if ($wxCode) {
 			$opens = $this->WxReply->getWpUserInfo('openid', $wxCode, $this->webchat, $this->appid);
-			$this->log(var_export($opens, true)."\n", 'wxapi');
+			$this->log(var_export($opens, true)."\n", 'wxapi');exit;
 			if ($opens['state'] == 1) {
 				$opens = $this->WxReply->getWpUserInfo('openid', $wxCode, $this->webchat, $this->appid);
 				$openid = $opens['data']['openid'];
