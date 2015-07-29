@@ -93,7 +93,12 @@ class MobController extends AppController {
 			$openid = $opens['data']['openid'];
 			$data['userinfo'] = $this->WxDataUser->getUserInfo($opens['data']['openid'], $webchat, $id);		//个人信息
 			$webchat = $data['WxDataStore']['FWebchat'];			// md5 webchat
-			$action = isset($opens['data']['user']['FIsMember']) && $opens['data']['user']['FIsMember'] ? 'ticket' : $action;			// 结果页面
+
+			// 判断是否报名
+			if ($action != 'share' && isset($opens['data']['user']['FIsMember']) && $opens['data']['user']['FIsMember']) {
+				$action = 'ticket';
+			}
+
 			switch ($action) {
 				case 'member-reg':
 					// 存入数据
