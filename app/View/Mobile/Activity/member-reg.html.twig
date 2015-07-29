@@ -1,6 +1,6 @@
 {% extends ":Layouts:activity.html.twig" %}
 
-{% block content %}
+{% block wrap %}
 <div class="content-body">
     <div class="swiper-wrapper">
        <div class="swiper-slide slide-register">
@@ -25,10 +25,10 @@
                 <div class="ui-big-space"></div>
                 <div class="join cf">{{ image('activity/join.png') }}</div>
                 <div class="ui-middle-space"></div>
-               <form action="{{ baseurlAction }}/member-reg" class="form" method="post" id="editForm">
+               <form action="" class="form" method="post" id="editForm">
                     <div class="formitem cf">
                 		<div class="leftlabel name">姓名</div>
-                		<div class="formobject"><input type="text" name="name" placeholder="请填写你的姓名  datatype="/^[\u4E00-\u9FA5\uf900-\ufa2d]{2,15}$/" nullmsg="姓名不可以为空" errormsg="姓名至少2个字,最多15个字！""></div>
+                		<div class="formobject"><input type="text" name="name" placeholder="请填写你的姓名"   datatype="/^[\u4E00-\u9FA5\uf900-\ufa2d]{2,15}$/" nullmsg="姓名不可以为空" errormsg="姓名至少2个字,最多15个字！"></div>
             		</div>
             		<div class="formitem cf">
                 		<div class="leftlabel mobile">电话</div>
@@ -43,5 +43,5 @@
 </div>
 <div class="gray_bg hide"></div>
 <div class="share_bg hide"></div>
-<script src="/js/activity/Validform_v5.3.2.js"></script>
+<script src="/js/Activity/Validform_v5.3.2.js"></script>
 {% endblock %}

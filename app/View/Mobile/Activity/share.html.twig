@@ -1,0 +1,35 @@
+{% extends ":Layouts:activity.html.twig" %}
+
+{% block wrap %}
+<div class="content-body">
+    <div class="swiper-container js-power-scroll">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide slide-share">
+                <div class="slide-wrapper">
+                    <div class="ui-big-space"></div>
+                    <div class="success"><img class="img" src="/img/activity/succ.png"/><span>提交成功</span></div>
+                    <div class="why"><img class="img" src="/img/activity/why.png"/><span>如何获取优惠券？</span></div>
+
+                    <div class="text">
+                        <p>1. 分享此链接后，重新点击此链接即可获得千               元黑马会随机红包（金额为99-2999元不等）。</p>
+
+                        <p>2. 此红包仅可在入会时使用。</p>
+
+                        <p>3. 黑马专用红包仅支持微信平台获得。</p>
+
+                        <p>4. 有效期至2015年8月8日</p>
+
+                    </div>
+                    <div class="ui-middle-space"></div>
+                    <div class="yuanbao"><img src="/img/activity/yuanbao.png"/></div>
+                    <button type="button" class="share cf">立即分享&nbsp;&nbsp;领取红包</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="gray_bg hide"></div>
+<div class="share_bg hide">
+</div>
+<script src="/js/Activity/Validform_v5.3.2.js"></script>
+{% endblock %}
