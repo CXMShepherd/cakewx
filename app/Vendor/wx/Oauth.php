@@ -231,7 +231,7 @@ class wechatCallbackapiTest
 		$this->_log($url);
 		$this->_log($data, true);
 		if (isset($data['access_token'])) {
-			$aToken = $this->refresh_token($data['refresh_token']);
+			$aToken = $data['access_token'];
 			$this->_getWxUsers($aToken, $data['openid']);		// 获取用户信息
 			$msg = $data['openid'];
 			$msg = array('state' => 1, 'data' => array('openid' => $data['openid']));
