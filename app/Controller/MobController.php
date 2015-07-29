@@ -136,7 +136,19 @@ class MobController extends AppController {
 					$tpl = 'share';
 					break;
 				case 'ticket':
+					if (isset($opens['data']['user']['FTicket'])) {
+						$ticket = $opens['data']['user']['FTicket'];
+						$ticket_money = $opens['data']['user']['FTicketMoney'];
+					} else {
+						$ticket = mt_rand(100000000, 99999999);
+						$ticket_money = mt_rand(99, 2999);
+						$data['FTicket'] = $ticket;
+						$data['FTicketMoney'] = $ticket_money;
+						$this->WxDataUser->saveData($openid, $data);		// 记录优惠券
+					}
+
 					$tpl = 'ticket';
+					$this->set('ticket', $ticket);
 					break;
 				default:
 					$tpl = 'index';

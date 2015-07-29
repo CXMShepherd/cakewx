@@ -166,6 +166,7 @@ class WxDataUser extends AppModel {
 		{
 			$data = $this->find('first', array('conditions' => array('FOpenId' => $cid, 'FWebchat' => $id), 'recursive' => 0));
 			if (is_array($data)) {
+				$data['WxDataUser']['FSubscribe_time'] = date('Y-m-d H:i:s', $data['WxDataUser']['FSubscribe_time']);
 				$data['WxDataKds']['FTwj'] = unserialize($data['WxDataKds']['FTwj']);
 				$data['WxDataKds']['FPreTwj'] = implode(',', $data['WxDataKds']['FTwj']);
 			}

@@ -1,6 +1,6 @@
 <?php
 	$this->extend('/Common/Admin/index');
-	
+
 	// load script
 	$this->Html->script(array(
 		"/assets/js/bootbox.min",
@@ -50,6 +50,9 @@
 						<th>城市</th>
 						<th>所在省</th>
 						<th>国家</th>
+						<th>真实姓名</th>
+						<th>手机</th>
+						<th>已报名</th>
 						<th>关注时间</th>
 						<th>
 							<i class="icon-time bigger-110 hidden-480"></i>
@@ -74,10 +77,19 @@
 								</td>
 								<td>
 									<p><?= $vals['WxDataUser']['FProvince'] ?></p>
-									
+
 								</td>
 								<td>
 									<p><?= $vals['WxDataUser']['FCountry'] ?></p>
+								</td>
+								<td>
+									<p><?= $vals['WxDataUser']['FullName'] ?></p>
+								</td>
+								<td>
+									<p><?= $vals['WxDataUser']['FPhone'] ?></p>
+								</td>
+								<td>
+									<p><?= $vals['WxDataUser']['FIsMember'] ? '是' : '否' ?></p>
 								</td>
 								<td>
 									<p><?= $vals['WxDataUser']['FSubscribe_time'] ?></p>
@@ -100,7 +112,7 @@
 				</tbody>
 			</table>
 			<ul class='pagination' style="margin-top:0">
-				<?php 
+				<?php
 					echo $this->Paginator->hasPrev() ? $this->Paginator->prev(
 					  '« 上一页',
 					  array('tag' => "li"),
@@ -108,7 +120,7 @@
 					  array('class' => 'disabled', 'tag' => "li", 'disabledTag' => "a")
 					) : '';
 					echo $this->Paginator->numbers(array('tag' => "li", 'separator' => "", 'currentClass' => "active", 'currentTag' => "a"));
-				
+
 					// Shows the next and previous links
 					echo $this->Paginator->hasNext() ? $this->Paginator->next(
 					  '下一页 »',

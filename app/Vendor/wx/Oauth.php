@@ -348,6 +348,7 @@ class wechatCallbackapiTest
 			$vals = $user;
 			$user['nickname'] = $this->_preg_nickname($user['nickname']);
 			$ds['FOpenId'] = $user['openid'];
+			$ds['FUnionid'] = isset($user['unionid']) ? $user['unionid'] : '';
 			$ds['FSubscribe'] = $user['subscribe'];
 			$ds['FNickname'] = $user['nickname'];
 			$ds['FSex'] = $user['sex'] == 1 ? '男' : ($user['sex'] == 2 ? '女' : '');
