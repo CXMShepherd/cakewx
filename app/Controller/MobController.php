@@ -90,6 +90,7 @@ class MobController extends AppController {
 
 		// Check Weixin Code
 		$opens = $this->WxReply->getWpUserInfo('openid', $wxCode, $this->webchat, $this->appid);
+		print_r($opens);
 		if ($opens['state'] == 1) {
 			print_r($opens);exit;
 			$openid = $opens['data']['openid'];
