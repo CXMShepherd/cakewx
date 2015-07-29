@@ -11,7 +11,7 @@ class MobController extends AppController {
 	public $layout = "mobile";
 	public $viewClass = 'Twig.Twig';
 	public $appid = "wxa2345d698a6f2162";
-	public $webchat = "d05a63f65046e95d4d41dc7858aa9624";
+	public $webchat = "ad59dac608c35311d71d11ec89300926";
 
 	public function beforeFilter() {
 	    parent::beforeFilter();
@@ -28,7 +28,7 @@ class MobController extends AppController {
 	function index($action) {
 
 		// Test
-		$wx = new Wxauth('cakewx', '', $this->appid, "d05a63f65046e95d4d41dc7858aa9624");
+		$wx = new Wxauth('cakewx', '', $this->appid, "ad59dac608c35311d71d11ec89300926");
 		$wx->dotest();
 exit;
 		switch ($action) {

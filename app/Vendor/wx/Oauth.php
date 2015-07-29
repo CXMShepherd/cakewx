@@ -3,9 +3,9 @@ App::uses('CakeSession', 'Model/Datasource');
 App::uses('ClassRegistry', 'Utility');
 
 //define your token
-define("APPID", "wx903c19fcf0626385");
-define("APPSECRET", "4f9734b004e3944872f3e72039e3a28f");
-define("TOKEN", "ohnuw2oob0Aiweequoh3");
+// define("APPID", "wx903c19fcf0626385");
+// define("APPSECRET", "4f9734b004e3944872f3e72039e3a28f");
+// define("TOKEN", "ohnuw2oob0Aiweequoh3");
 include ("lib/func.php");
 include ("lib/curl.php");
 $userinfo = array();
@@ -226,6 +226,7 @@ class wechatCallbackapiTest
 		$appid = $this->appid;
 		$secret = $this->appsecret;
 		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$appid}&secret={$secret}&code={$code}&grant_type=authorization_code";
+		file_put_contents('/tmp/wxapi.log', file_get_contents('/tmp/wxapi.log')."\n".'========================================'.date('Y-m-d H:i:s'));
 		file_put_contents('/tmp/wxapi.log', file_get_contents('/tmp/wxapi.log')."\n".$url);
 		$data = curlData($url);
 		file_put_contents('/tmp/wxapi.log', file_get_contents('/tmp/wxapi.log')."\n".var_export($data, TRUE));
