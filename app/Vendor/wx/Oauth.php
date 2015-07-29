@@ -97,30 +97,13 @@ class wechatCallbackapiTest
 		if (!is_array($aToken)) {
 			$url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token={$aToken}&next_openid=";
 			$data = curlData($url, '', 'GET', $debug);
-			$data['data']['openid'] = array_slice($data['data']['openid'], 0, 100);
+			$data['data']['openid'] = array_slice($data['data']['openid'], 0, 10);
 			// echo '<pre>';print_r($data);exit;
 			// print_r($data);exit;
 			if (!isset($data['errcode'])) {
 				if (is_array($data['data']['openid']) && $userinfo) {
 					foreach ($data['data']['openid'] as $key => &$vals) {
-						$url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={$aToken}&openid={$vals}&lang=zh_CN";
-						$user = curlData($url, '', 'GET', $debug);
-						if (!isset($user['errcode'])) {
-							$vals = $user;
-							$user['nickname'] = $this->_preg_nickname($user['nickname']);
-							$ds['FOpenId'] = $user['openid'];
-							$ds['FSubscribe'] = $user['subscribe'];
-							$ds['FNickname'] = $user['nickname'];
-							$ds['FSex'] = $user['sex'] == 1 ? '男' : ($user['sex'] == 2 ? '女' : '');
-							$ds['FLanguage'] = $user['language'];
-							$ds['FCity'] = $user['city'];
-							$ds['FProvince'] = $user['province'];
-							$ds['FCountry'] = $user['country'];
-							$ds['FHeadimgurl'] = $user['headimgurl'];
-							$ds['FSubscribe_time'] = $user['subscribe_time'];
-							$ds['FWebchat'] = $this->webchat;
-							ClassRegistry::init('WxDataUser')->saveData($user['openid'], $ds);			// 写入数据库
-						}
+						$this->_getWxUsers($aToken, $vals);		// 获取用户信息
 					}
 				}
 				$msg['state'] = 1;
@@ -245,20 +228,9 @@ class wechatCallbackapiTest
 		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$appid}&secret={$secret}&code={$code}&grant_type=authorization_code";
 		$data = curlData($url);
 		if (isset($data['access_token'])) {
-			$data['nickname'] = $this->_preg_nickname($data['nickname']);
-			$ds['FOpenId'] = $data['openid'];
-			$ds['FOpenId'] = $data['openid'];
-			$ds['FSubscribe'] = $data['subscribe'];
-			$ds['FNickname'] = $data['nickname'];
-			$ds['FSex'] = $data['sex'] == 1 ? '男' : ($data['sex'] == 2 ? '女' : '');
-			$ds['FLanguage'] = $data['language'];
-			$ds['FCity'] = $data['city'];
-			$ds['FProvince'] = $data['province'];
-			$ds['FCountry'] = $data['country'];
-			$ds['FHeadimgurl'] = $data['headimgurl'];
-			$ds['FSubscribe_time'] = $data['subscribe_time'];
-			$ds['FWebchat'] = $this->webchat;
-			ClassRegistry::init('WxDataUser')->saveData($data['openid'], $ds);			// 写入数据库
+			$aToken = $data['access_token'];
+			$openid = $data['openid'];
+			$this->_getWxUsers($aToken, $openid);		// 获取用户信息
 			$msg = $data['openid'];
 			$msg = array('state' => 1, 'data' => array('openid' => $data['openid']));
 		} else {
@@ -338,6 +310,40 @@ class wechatCallbackapiTest
         }
     }
 
+    /**
+	 * 获取用户信息
+	 *
+	 * @return void
+	 * @author
+	 **/
+	private function _getWxUsers($token, $openid)
+	{
+		$url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={$token}&openid={$openid}&lang=zh_CN";
+		$user = curlData($url, '', 'GET', $debug);
+		if (!isset($user['errcode'])) {
+			$vals = $user;
+			$user['nickname'] = $this->_preg_nickname($user['nickname']);
+			$ds['FOpenId'] = $user['openid'];
+			$ds['FSubscribe'] = $user['subscribe'];
+			$ds['FNickname'] = $user['nickname'];
+			$ds['FSex'] = $user['sex'] == 1 ? '男' : ($user['sex'] == 2 ? '女' : '');
+			$ds['FLanguage'] = $user['language'];
+			$ds['FCity'] = $user['city'];
+			$ds['FProvince'] = $user['province'];
+			$ds['FCountry'] = $user['country'];
+			$ds['FHeadimgurl'] = $user['headimgurl'];
+			$ds['FSubscribe_time'] = $user['subscribe_time'];
+			$ds['FWebchat'] = $this->webchat;
+			ClassRegistry::init('WxDataUser')->saveData($user['openid'], $ds);			// 写入数据库
+		}
+	}
+
+	/**
+	 * 替换昵称
+	 *
+	 * @return void
+	 * @author
+	 **/
 	private function checkSignature()
 	{
         $signature = $_GET["signature"];
