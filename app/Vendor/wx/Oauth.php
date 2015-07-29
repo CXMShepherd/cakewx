@@ -106,6 +106,7 @@ class wechatCallbackapiTest
 						$user = curlData($url, '', 'GET', $debug);
 						if (!isset($user['errcode'])) {
 							$vals = $user;
+							$user['nickname'] = preg_replace('/\xEE[\x80-\xBF][\x80-\xBF]|\xEF[\x81-\x83][\x80-\xBF]/', '', $user['nickname']);
 							$ds['FOpenId'] = $user['openid'];
 							$ds['FSubscribe'] = $user['subscribe'];
 							$ds['FNickname'] = $user['nickname'];

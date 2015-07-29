@@ -6,7 +6,7 @@ App::uses('AppController', 'Controller');
  * @property Admin $Admin
  */
 class AdminController extends AppController {
-	
+
 	public $components = array('Paginator');
 	public $helpers = array('Array', 'Main', 'Html', 'AssetCompress.AssetCompress');
 	public $layout = "admin";
@@ -25,7 +25,7 @@ class AdminController extends AppController {
 	var $wcdata;
 	var $appid = '';		// appid
 	var $appsecret = '';		// appsecret
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -39,7 +39,7 @@ class AdminController extends AppController {
 		$this->Auth->deny('index');
 		$this->vmenu = $this->WxWebchat->getmenus('hmenu');
 	}
-	
+
 	public function beforeRender() {
 		// Check center
 		if ($this->wxId && !$this->WxWebchat->checkWebchat($this->wxId, $this->uid, 'md5')) {
@@ -52,7 +52,7 @@ class AdminController extends AppController {
 		$this->set('wxURL', $this->wxAPI);
 		$this->set('wxToken', $this->wxToken);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -82,10 +82,10 @@ class AdminController extends AppController {
 		$this->set('WC_query', $query);
 		$this->set('WC_data', $wcdata);
 		$this->set('WC_wxId', $wxId);
-		
+
 		// Check WebchatId
 		if (!$wxId) return $this->redirect("/admin");
-		
+
 		// Load func
 		if (!method_exists($this, "_{$action}")) {
 			return $this->redirect("/admin/wc/{$id}/center");
@@ -93,7 +93,7 @@ class AdminController extends AppController {
 			return call_user_func(array($this, "_{$action}"), $id, $query, $wxId);
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -111,7 +111,7 @@ class AdminController extends AppController {
 		$this->vurl = Router::url(array('controller' => "admin", 'action' => "basic"));
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -122,7 +122,7 @@ class AdminController extends AppController {
 		return $this->redirect($this->rdBaseURL.'sAroz');
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -150,7 +150,7 @@ class AdminController extends AppController {
 		}
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -160,7 +160,7 @@ class AdminController extends AppController {
 	function _sLayout() {
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -223,7 +223,7 @@ class AdminController extends AppController {
 		}
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -258,7 +258,7 @@ class AdminController extends AppController {
 				$this->LNRender($data);
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -291,7 +291,7 @@ class AdminController extends AppController {
 				$this->LNRender($data);
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -344,7 +344,7 @@ class AdminController extends AppController {
 			case 'del':
 				if (!$this->WxDataKds->checkId($id, $query['id'])) {
 					return $this->redirect($this->rdWcURL);
-				} 
+				}
 				if ($this->WxDataKds->delete($query['id'])) {
 					$this->Session->setFlash('微信公众账号删除成功。');
 				}
@@ -357,7 +357,7 @@ class AdminController extends AppController {
 				$this->LNRender($data);
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -367,7 +367,7 @@ class AdminController extends AppController {
 	function _bLbs() {
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -377,7 +377,7 @@ class AdminController extends AppController {
 	function _bSvc() {
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -430,7 +430,7 @@ class AdminController extends AppController {
 				$this->LNRender($data);
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -482,14 +482,14 @@ class AdminController extends AppController {
 			            	</div>',
 			'twj_footer' => '</div><div class="com_mask"></div><i class="icon_item_selected">修改</i></div></div>&nbsp;'
 		);
-		
+
 		// Left Nav
 		$data['leftNav'] = array(
-			//'lhome' => array('name' => "分类设置", 'default' => TRUE, 'icon' => "pink icon-dashboard bigger-110"), 
-			//'ldp001' => array('name' => "菜单设置", 'icon' => "blue icon-user bigger-110"), 
+			//'lhome' => array('name' => "分类设置", 'default' => TRUE, 'icon' => "pink icon-dashboard bigger-110"),
+			//'ldp001' => array('name' => "菜单设置", 'icon' => "blue icon-user bigger-110"),
 			//'ldp002' => array('name' => "评论设置", 'icon' => "icon-rocket bigger-110"),
 		);
-		
+
 		// Action Start
 		switch ($query['action']) {
 			case 'add':
@@ -631,7 +631,7 @@ class AdminController extends AppController {
 			case 'del':
 				if (!$this->WxDataTw->checkId($id, $query['id'])) {
 					return $this->redirect($this->rdWcURL);
-				} 
+				}
 				if ($this->WxDataTw->delete($query['id'])) {
 					$this->Session->setFlash('图文删除成功。');
 				}
@@ -801,7 +801,7 @@ class AdminController extends AppController {
 				$conditions = array('FWebchat' => $id, 'FTwType' => NULL);
 				if ($query['value']) {
 					switch ($query['value']) {
-						case 'tw':	
+						case 'tw':
 							$conditions['FType'] = 0;
 							$conditions['FTwType'] = null;
 							break;
@@ -817,7 +817,7 @@ class AdminController extends AppController {
 				$this->LNRender($data);
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -850,7 +850,7 @@ class AdminController extends AppController {
 				if (!$this->WxDataTw->checkId($id, $query['id'])) {
 					return $this->redirect($this->rdWcURL);
 				}
-				
+
 				if ($this->request->is('post') || $this->request->is('put')) {
 					$this->request->data['WxDataTw']['FType'] = 0;
 					$this->WxDataTw->set($this->request->data);
@@ -877,7 +877,7 @@ class AdminController extends AppController {
 			case 'del':
 				if (!$this->WxDataTw->checkId($id, $query['id'])) {
 					return $this->redirect($this->rdWcURL);
-				} 
+				}
 				if ($this->WxDataTw->delete($query['id'])) {
 					$this->Session->setFlash('删除成功。');
 				}
@@ -896,10 +896,10 @@ class AdminController extends AppController {
 				$data['datalist'] = $this->Paginator->paginate('WxDataTw', $conditions);
 				$data['category'] = $this->WxDataTw->getCategories($id, 'events');
 				$this->LNRender($data);
-			
+
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -954,7 +954,7 @@ class AdminController extends AppController {
 				if (!$this->WxDataCate->checkId($id, $query['id'])) {
 					return $this->redirect($this->rdWcURL);
 				}
-				
+
 				if ($this->request->is('post') || $this->request->is('put')) {
 					$this->WxDataCate->set($this->request->data);
 					if ($this->WxDataCate->validates()) {
@@ -988,7 +988,7 @@ class AdminController extends AppController {
 			case 'del':
 				if (!$this->WxDataCate->checkId($id, $query['id'])) {
 					return $this->redirect($this->rdWcURL);
-				} 
+				}
 				if ($this->WxDataCate->delete($query['id'])) {
 					$this->Session->setFlash('删除成功。');
 				}
@@ -1007,10 +1007,10 @@ class AdminController extends AppController {
 				$data['datalist'] = $this->Paginator->paginate('WxDataCate', $conditions);
 				$data['category'] = $this->WxDataCate->getCategories($id, $this->rdWcURL);
 				$this->LNRender($data);
-			
+
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1063,7 +1063,7 @@ class AdminController extends AppController {
 				    }
 
 				}
-				
+
 				// View Vars
 				$data['nav'] = $navs;
 				$this->LNRender($data, 'add');
@@ -1071,7 +1071,7 @@ class AdminController extends AppController {
 			case 'del':
 				if (!$this->WxDataTw->checkId($id, $query['id'])) {
 					return $this->redirect($this->rdWcURL);
-				} 
+				}
 				if ($this->WxDataTw->delete($query['id'])) {
 					$this->Session->setFlash('删除成功。');
 				}
@@ -1092,7 +1092,7 @@ class AdminController extends AppController {
 				$this->LNRender($data);
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1108,7 +1108,7 @@ class AdminController extends AppController {
 					if ($this->request->is('post')) {
 						$this->WxDataMenu->set($this->request->data);
 						if ($this->WxDataMenu->validates()) {
-							
+
 							$query = $this->WxDataMenu->saveData($this->request->data, $id);
 							if ($query) {
 								$this->Session->setFlash('添加成功。');
@@ -1170,7 +1170,7 @@ class AdminController extends AppController {
 			case 'del':
 				if (!$this->WxDataMenu->checkId($id, $query['id'])) {
 					return $this->redirect($this->rdWcURL);
-				} 
+				}
 				if ($this->WxDataMenu->delete($query['id'])) {
 					$this->Session->setFlash('删除成功。');
 				}
@@ -1189,10 +1189,10 @@ class AdminController extends AppController {
 				$data['datalist'] = $this->Paginator->paginate('WxDataMenu', $conditions);
 				$data['category'] = $this->WxDataMenu->getCategories($id, $this->rdWcURL);
 				$this->LNRender($data);
-			
+
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1220,7 +1220,7 @@ class AdminController extends AppController {
 				if (!$this->WxDataCate->checkId($id, $query['id'])) {
 					return $this->redirect($this->rdWcURL);
 				}
-				
+
 				if ($this->request->is('post') || $this->request->is('put')) {
 					$this->WxDataCate->set($this->request->data);
 					if ($this->WxDataCate->validates()) {
@@ -1243,7 +1243,7 @@ class AdminController extends AppController {
 			case 'del':
 				if (!$this->WxDataCate->checkId($id, $query['id'])) {
 					return $this->redirect($this->rdWcURL);
-				} 
+				}
 				if ($this->WxDataCate->delete($query['id'])) {
 					$this->Session->setFlash('删除成功。');
 				}
@@ -1263,10 +1263,10 @@ class AdminController extends AppController {
 				$data['datalist'] = $this->Paginator->paginate('WxDataCate', $conditions);
 				$data['category'] = $this->WxDataCate->getCategories($id, $type);
 				$this->LNRender($data);
-			
+
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1277,7 +1277,7 @@ class AdminController extends AppController {
 		$this->set('storeIndexUrl', "{$this->rdMobURL}store?id={$id}");
 		$this->__cates('store', $id, $query);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1293,7 +1293,7 @@ class AdminController extends AppController {
 		$this->WxDataStore->webchatId = $id;
 		$storeList = $this->WxDataStore->getDataList($id, $query['id']);
 		$navs = array(
-			'home' => array('name' => "店铺信息", 'default' => TRUE), 
+			'home' => array('name' => "店铺信息", 'default' => TRUE),
 			'dp001' => array('name' => "营业信息"),
 			'dp002' => array('name' => "支付信息"),
 			'dp003' => array('name' => "配送时间"),
@@ -1306,9 +1306,9 @@ class AdminController extends AppController {
 			'home' => array('name' => "店铺管理", 'uri' => "{$this->rdWcURL}"),
 			'dp001' => array('name' => "分类管理", 'default' => TRUE, 'uri' => $baseurl['cateHome'])
 		);
-		
+
 		$articleDefault = array(0 => array('WxDataCate' => array('Id' => string::uuid(), 'FName' => "公告", 'FOwnerName' => "应用首页")));
-		
+
 		// Switch Case
 		$this->set('action', $query['action']);
 		switch ($query['action']) {
@@ -1324,7 +1324,7 @@ class AdminController extends AppController {
 								return $this->redirect($baseurl['cateHome']);
 							}
 						}
-					} 
+					}
 
 					// View Vars
 					$data['baseurl'] = $baseurl['cate'];
@@ -1341,7 +1341,7 @@ class AdminController extends AppController {
 								return $this->redirect($this->rdWcURL);
 							}
 						}
-					} 
+					}
 
 					// View Vars
 					$data['nav'] = $navs;
@@ -1374,7 +1374,7 @@ class AdminController extends AppController {
 							$this->request->data = $data;
 					    }
 					}
-					
+
 					// View Vars
 					$data['baseurl'] = $baseurl['cate'];
 					$data['nav'] = $cateNavs;
@@ -1402,7 +1402,7 @@ class AdminController extends AppController {
 							$this->request->data = $data;
 					    }
 					}
-					
+
 					// View Vars
 					$data['baseurl'] = $baseurl['cate'];
 					$data['nav'] = $cateNavs;
@@ -1442,7 +1442,7 @@ class AdminController extends AppController {
 					$query['id'] = $cateId;
 					if (!$this->WxDataCate->checkId($id, $query['id'])) {
 						return $this->redirect($this->rdWcURL);
-					} 
+					}
 					if ($this->WxDataCate->delete($query['id'])) {
 						$this->Session->setFlash('删除成功。');
 					}
@@ -1450,7 +1450,7 @@ class AdminController extends AppController {
 				} else {
 					if (!$this->WxDataStore->checkId($id, $query['id'])) {
 						return $this->redirect($this->rdWcURL);
-					} 
+					}
 					if ($this->WxDataStore->delete($query['id'])) {
 						$this->Session->setFlash('删除成功。');
 					}
@@ -1510,7 +1510,7 @@ class AdminController extends AppController {
 				}
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1530,7 +1530,7 @@ class AdminController extends AppController {
 							return $this->redirect($this->rdWcURL);
 						}
 					}
-				} 
+				}
 				$this->LNRender($data, 'add');
 				break;
 			case 'edit':
@@ -1557,7 +1557,7 @@ class AdminController extends AppController {
 			case 'del':
 				if (!$this->WxDataOrder->checkId($id, $query['id'])) {
 					return $this->redirect($this->rdWcURL);
-				} 
+				}
 				if ($this->WxDataOrder->delete($query['id'])) {
 					$this->Session->setFlash('删除成功。');
 				}
@@ -1578,7 +1578,7 @@ class AdminController extends AppController {
 				$this->LNRender($data);
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1598,7 +1598,7 @@ class AdminController extends AppController {
 							return $this->redirect($this->rdWcURL);
 						}
 					}
-				} 
+				}
 				$this->LNRender(null, 'add');
 				break;
 			case 'edit':
@@ -1627,7 +1627,7 @@ class AdminController extends AppController {
 			case 'del':
 				if (!$this->WxDataTw->checkId($id, $query['id'])) {
 					return $this->redirect($this->rdWcURL);
-				} 
+				}
 				if ($this->WxDataTw->delete($query['id'])) {
 					$this->Session->setFlash('图文删除成功。');
 				}
@@ -1638,10 +1638,10 @@ class AdminController extends AppController {
 				$this->Paginator->settings = $this->paginate;
 				$data['datalist'] = $this->Paginator->paginate('WxDataTw', array('FWebchat' => $id, 'FType' => 1));
 				$this->LNRender($data);
-			
+
 		}
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1651,7 +1651,7 @@ class AdminController extends AppController {
 	function _mSlide() {
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1661,7 +1661,7 @@ class AdminController extends AppController {
 	function _mFile() {
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1670,9 +1670,9 @@ class AdminController extends AppController {
 	 **/
 	public function _hRobot($id, $query) {
 		$navs = array(
-			'home' => array('name' => "全局设置", 'default' => TRUE, 'uri' => "{$this->rdWcURL}"), 
-			'follow' => array('name' => "问答列表", 'uri' => "{$this->rdWcURL}?_m=follow"), 
-			'mch' => array('name' => "功能介绍", 'uri' => "{$this->rdWcURL}?_m=mch"), 
+			'home' => array('name' => "全局设置", 'default' => TRUE, 'uri' => "{$this->rdWcURL}"),
+			'follow' => array('name' => "问答列表", 'uri' => "{$this->rdWcURL}?_m=follow"),
+			'mch' => array('name' => "功能介绍", 'uri' => "{$this->rdWcURL}?_m=mch"),
 		);
 		$tpl = 'index';
 		switch ($query['mod']) {
@@ -1683,12 +1683,12 @@ class AdminController extends AppController {
 				$tpl = 'mch';
 				break;
 			default:
-				
+
 		}
 		$data['nav'] = $navs;
 		$this->LNRender($data, $tpl);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1697,12 +1697,12 @@ class AdminController extends AppController {
 	 **/
 	public function _hService($id, $query) {
 		$navs = array(
-			'home' => array('name' => "全局设置", 'default' => TRUE), 
+			'home' => array('name' => "全局设置", 'default' => TRUE),
 		);
 		$data['nav'] = $navs;
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1712,7 +1712,7 @@ class AdminController extends AppController {
 	public function _hApp($id, $query) {
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1738,7 +1738,7 @@ class AdminController extends AppController {
 		}
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1748,7 +1748,7 @@ class AdminController extends AppController {
 	public function _areply($id, $query, $wxId) {
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1758,7 +1758,7 @@ class AdminController extends AppController {
 	public function _txtreply($id, $query, $wxId) {
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1768,7 +1768,7 @@ class AdminController extends AppController {
 	public function _info($id, $query, $wxId) {
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1778,7 +1778,7 @@ class AdminController extends AppController {
 	public function _picreply($id, $query, $wxId) {
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1857,7 +1857,7 @@ class AdminController extends AppController {
 				$this->LNRender($data);
 		}
 	}
-	
+
 	/**
 	 * 获取关注者列表
 	 *
@@ -1880,7 +1880,7 @@ class AdminController extends AppController {
 				}
 				$this->redirect($this->rdWcURL);
 				break;
-			case 'edit': 
+			case 'edit':
 				$tpl = "add";
 				if ($this->request->is('put')) {
 					$this->WxDataUser->set($this->request->data);
@@ -1903,11 +1903,11 @@ class AdminController extends AppController {
 				$this->paginate['order'] = "FSubscribe_time DESC";
 				$this->Paginator->settings = $this->paginate;
 				$data['datalist'] = $this->Paginator->paginate('WxDataUser', array('FWebchat' => $id));
-				$data['ds'] = $this->WxDataUser->getDataList($id);
+				// $data['ds'] = $this->WxDataUser->getDataList($id);
 		}
 		$this->LNRender($data, $tpl);
 	}
-	
+
 	/**
 	 * 获取关注者列表
 	 *
@@ -1919,7 +1919,7 @@ class AdminController extends AppController {
 		$this->loadModel('WxReply');
 		$tpl = "index";
 		switch ($query['mod']) {
-			case 'history':	
+			case 'history':
 				if ($query['action'] == 'del') {
 					if ($this->WxDataSent->delete($query['id'])) {
 						$this->Session->setFlash('删除成功。');
@@ -1951,21 +1951,21 @@ class AdminController extends AppController {
 							}
 						} else {
 							$this->flashError($case['msg']);
-						} 
+						}
 					}
 				}
 		}
-		
+
 		// View Vars
 		$data['nav'] = array(
-			'home' => array('name' => "消息群发", 'default' => TRUE, 'uri' => "{$this->rdWcURL}"), 
+			'home' => array('name' => "消息群发", 'default' => TRUE, 'uri' => "{$this->rdWcURL}"),
 			'history' => array('name' => "历史消息", 'uri' => "{$this->rdWcURL}?_m=history")
-			// 'follow' => array('name' => "被关注回复"), 
+			// 'follow' => array('name' => "被关注回复"),
 			// 'mch' => array('name' => "无匹配回复")
 		);
 		$this->LNRender($data, $tpl);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -1987,10 +1987,10 @@ class AdminController extends AppController {
 			$user['TPerson'] = $this->TPerson->getUserInfo($this->uid);
 			$this->request->data = $user;
 		}
-		
+
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -2018,10 +2018,10 @@ class AdminController extends AppController {
 			}
 			$this->request->data = $user;
 		}
-		
+
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -2046,7 +2046,7 @@ class AdminController extends AppController {
 				} else {
 					$view = new View();
 					$main = $view->loadHelper('Main');
-					$redata['WxInvite']['FInvCode'] = $main->randomkeys(8); 
+					$redata['WxInvite']['FInvCode'] = $main->randomkeys(8);
 					$this->request->data = $redata;
 				}
 				$tpl = "add";
@@ -2061,7 +2061,7 @@ class AdminController extends AppController {
 							$this->Session->setFlash('编辑成功。');
 							return $this->redirect($this->rdBaseURL.'wInvite');
 						}
-					} 
+					}
 				} else {
 					$redata = $this->WxInvite->getDataList("", $id);
 					$this->request->data = $redata;
@@ -2082,7 +2082,7 @@ class AdminController extends AppController {
 		$this->set('action', $action);
 		$this->LNRender($data, $tpl);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -2117,10 +2117,10 @@ class AdminController extends AppController {
 			$user = $this->TPerson->find('first', array('conditions' => array('Id' => $this->uid)));
 			$this->request->data = $user;
 		}
-		
+
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -2130,14 +2130,14 @@ class AdminController extends AppController {
 	public function repwd() {
 		App::uses('SimplePasswordHasher', 'Controller/Component/Auth');
 		if ($this->request->is('post') || $this->request->is('put')) {
-			
+
 			// Encode Password
 			$userPwd = $this->request->data['TPerson']['FPassWord'];
 			$oldPwd = $this->request->data['TPerson']['FOldPassWord'];
 			$sp = new SimplePasswordHasher();
 			$this->request->data['TPerson']['FOldPassWord'] = $oldPwd = $sp->hash($oldPwd);
 			$this->request->data['TPerson']['FPassWord'] = $sp->hash($userPwd);
-			
+
 			// Validate
 			$user = $this->TPerson->getUserInfo($this->uid);
 			$this->TPerson->validator()
@@ -2154,7 +2154,7 @@ class AdminController extends AppController {
 		        'rule' => "notEmpty",
 				'required' => true,
 				'message' => "必须填写",
-			))	
+			))
 			->add('FRePassWord', 'minLength', array(
 		        'rule' => array('minLength', '6'),
 				'message' => "不能少于6位",
@@ -2163,7 +2163,7 @@ class AdminController extends AppController {
 		        'rule' => array('equalTo', $userPwd),
 				'message' => "两次输入的密码不一致",
 			));
-		
+
 			$this->TPerson->set($this->request->data);
 			if ($this->TPerson->validates(array('fieldList' => array('FMemberId', 'FOldPassWord', 'FPassWord', 'FRePassWord')))) {
 				$this->TPerson->id = $this->uid;
@@ -2177,10 +2177,10 @@ class AdminController extends AppController {
 			$user['TPerson']['FMemberId'] = $this->username;
 			$this->request->data = $user;
 		}
-		
+
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -2192,7 +2192,7 @@ class AdminController extends AppController {
 		$Tpl = 'add';
 		$this->loadModel('WxWebchat');
 		$navs = array(
-			'home' => array('name' => "基本信息", 'default' => TRUE), 
+			'home' => array('name' => "基本信息", 'default' => TRUE),
 			'dp001' => array('name' => "微信应用"),
 		);
 		switch ($action) {
@@ -2250,7 +2250,7 @@ class AdminController extends AppController {
 		$data['nav'] = $navs;
 		$this->LNRender($data, $Tpl);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -2260,7 +2260,7 @@ class AdminController extends AppController {
 	public function yMapps() {
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -2270,7 +2270,7 @@ class AdminController extends AppController {
 	public function yAppStore() {
 		$this->LNRender($data);
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -2334,9 +2334,9 @@ class AdminController extends AppController {
 		$data['action'] = $action;
 		$this->LNRender($data, $tpl);
 	}
-	
+
 //======================Private
-	
+
 	/**
 	 * 权限检查
 	 *
