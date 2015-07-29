@@ -128,7 +128,7 @@ class WxDataUser extends AppModel {
 		foreach ($data as $key => &$vals)
 		{
 			$vals['WxDataUser']['Headimgurl_96'] = $vals['WxDataUser']['FHeadimgurl'] ? substr($vals['WxDataUser']['FHeadimgurl'], 0, -1).'96' : Router::url('/img/avatar/noimg.jpg', TRUE);
-			$vals['WxDataUser']['FSubscribe_time'] = date('Y-m-d H:i:s', $vals['WxDataUser']['FSubscribe_time']);
+			$vals['WxDataUser']['FSubscribe_time'] = $vals['WxDataUser']['FSubscribe_time'] ? date('Y-m-d H:i:s', $vals['WxDataUser']['FSubscribe_time']) : '';
 		}
 		//echo '<pre>';print_r($data);exit;
 	    return $data;
