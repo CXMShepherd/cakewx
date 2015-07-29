@@ -147,8 +147,9 @@ class MobController extends AppController {
 						$this->WxDataUser->saveData($openid, $data);		// 记录优惠券
 					}
 
-					$tpl = 'ticket';
 					$this->set('ticket', $ticket);
+					$this->set('ticket_money', $ticket_money);
+					$tpl = 'ticket';
 					break;
 				default:
 					$tpl = 'index';
