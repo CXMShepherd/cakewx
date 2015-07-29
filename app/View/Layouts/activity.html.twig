@@ -56,7 +56,7 @@
         }( navigator.userAgent );
 
         wx.config({
-            debug: false,
+            debug: true,
             appId: '{{ appid }}',
             timestamp: 1421726467,
             nonceStr: 'V3xOrtKUZO5OXW13',
@@ -72,7 +72,7 @@
 
         // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
         wx.onMenuShareTimeline({
-            title: '{{ share_tile }}', // 分享标题
+            title: '{{ share_title }}', // 分享标题
             link: '{{ share_link }}', // 分享链接
             imgUrl: '{{ share_logo }}', // 分享图标
             success: function () {
@@ -85,7 +85,7 @@
 
         // 获取“分享给朋友”按钮点击状态及自定义分享内容接口
         wx.onMenuShareAppMessage({
-            title: '{{ share_tile }}', // 分享标题
+            title: '{{ share_title }}', // 分享标题
             desc: '{{ share_des }}', // 分享描述
             link: '{{ share_link }}', // 分享链接
             imgUrl: '{{ share_logo }}', // 分享图标
@@ -101,7 +101,7 @@
 
         // 获取“分享到QQ”按钮点击状态及自定义分享内容接口
         wx.onMenuShareQQ({
-            title: '{{ share_tile }}', // 分享标题
+            title: '{{ share_title }}', // 分享标题
             desc: '{{ share_des }}', // 分享描述
             link: '{{ share_link }}', // 分享链接
             imgUrl: '{{ share_logo }}', // 分享图标
@@ -115,7 +115,7 @@
 
         // 获取“分享到腾讯微博”按钮点击状态及自定义分享内容接口
         wx.onMenuShareWeibo({
-            title: '{{ share_tile }}', // 分享标题
+            title: '{{ share_title }}', // 分享标题
             desc: '{{ share_des }}', // 分享描述
             link: '{{ share_link }}', // 分享链接
             imgUrl: '{{ share_logo }}', // 分享图标
@@ -129,7 +129,7 @@
 
         // 获取“分享到QQ空间”按钮点击状态及自定义分享内容接口
         wx.onMenuShareQZone({
-            title: '{{ share_tile }}', // 分享标题
+            title: '{{ share_title }}', // 分享标题
             desc: '{{ share_des }}', // 分享描述
             link: '{{ share_link }}', // 分享链接
             imgUrl: '{{ share_logo }}', // 分享图标
