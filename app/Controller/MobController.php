@@ -125,7 +125,7 @@ class MobController extends AppController {
 			}
 		} else {
 			$rduri = urlencode(Router::url("/{$this->request->url}", TRUE));
-			$url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$this->appid}&redirect_uri={$rduri}&response_type=code&scope=snsapi_base&state=idaiyan#wechat_redirect";
+			$url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$this->appid}&redirect_uri={$rduri}&response_type=code&scope=snsapi_userinfo&state=idaiyan#wechat_redirect";
 			$this->redirect($url);
 		}
 	}
