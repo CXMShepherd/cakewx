@@ -189,4 +189,3 @@ App::uses('Wxauth', 'Lib');
 
 CakePlugin::load('Croogo', array('bootstrap' => true));
 CakePlugin::load('Twig', array('bootstrap' => true));
-CakePlugin::load('liunian', array('bootstrap' => false, 'routes' => false));
