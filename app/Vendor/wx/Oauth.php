@@ -319,8 +319,9 @@ class wechatCallbackapiTest
 	private function _getWxUsers($token, $openid)
 	{
 		$url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={$token}&openid={$openid}&lang=zh_CN";
-		echo $url;
+		$this->log($url, 'wxapi');
 		$user = curlData($url, '', 'GET', $debug);
+		$this->log($user, 'wxapi');
 		if (!isset($user['errcode'])) {
 			$vals = $user;
 			$user['nickname'] = $this->_preg_nickname($user['nickname']);
