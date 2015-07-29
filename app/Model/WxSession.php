@@ -12,7 +12,7 @@ class WxSession extends AppModel {
  * @var mixed False or table name
  */
 	public $useTable = 'wcsess';
-	public $expires = "86400";
+	public $expires = "7000";
 	public $wxid = '';
 
 /**

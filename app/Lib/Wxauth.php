@@ -35,6 +35,17 @@ class Wxauth {
 	 * undocumented function
 	 *
 	 * @return void
+	 * @author
+	 **/
+	function wx_share_sign()
+	{
+		return $this->wechatObj->wx_share_sign();
+	}
+
+	/**
+	 * undocumented function
+	 *
+	 * @return void
 	 * @author niancode
 	 **/
 	function saveMenus($data, $debug)

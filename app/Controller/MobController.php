@@ -93,6 +93,7 @@ class MobController extends AppController {
 			$openid = $opens['data']['openid'];
 			$data['userinfo'] = $this->WxDataUser->getUserInfo($opens['data']['openid'], $webchat, $id);		//个人信息
 			$webchat = $data['WxDataStore']['FWebchat'];			// md5 webchat
+			$signature  = $this->WxReply->wx_share_sign($this->webchat, $this->appid);
 
 			// 判断是否报名
 			if ($action != 'share' && isset($opens['data']['user']['FIsMember']) && $opens['data']['user']['FIsMember']) {
@@ -173,6 +174,7 @@ class MobController extends AppController {
 			$this->set('user', $data['userinfo']);
 			$this->set('appid', $this->appid);
 			// Share
+			$this->set('signature', $signature);
 			$this->set('share_link', Router::url("/mob/activity/{$id}", TRUE));
 			$this->set('share_title', $title);
 			$this->set('share_des', "黑马会领券活动");

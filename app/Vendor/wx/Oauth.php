@@ -36,6 +36,33 @@ class wechatCallbackapiTest
         }
     }
 
+    /**
+     * undocumented function
+     *
+     * @return void
+     * @author
+     **/
+    public function wx_share_sign()
+    {
+    	$token = $this->getAccessCode();
+    	$this->_log('========================================AccessToken'.date('Y-m-d H:i:s'));
+		$this->_log($token);
+    	if ($token) {
+    		$url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={$token}&type=jsapi";
+    		$data = curlData($url);
+			$this->_log($data, true);
+
+			// Signature 
+			$time = 1438207234;
+			$noncestr = $time;
+			$jsapi_ticket= $data['ticket'];
+			$url='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			$and = "jsapi_ticket=".$jsapi_ticket."&noncestr=".$noncestr."&timestamp=".$timestamp."&url=".$url."";
+			$signature = sha1($and);
+			return $signature;
+ 	   	}
+    }
+
 	public function setGloabl($data)
 	{
 		while (list($key, $vals) = each($data))
@@ -98,7 +125,7 @@ class wechatCallbackapiTest
 		if (!is_array($aToken)) {
 			$url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token={$aToken}&next_openid=";
 			$data = curlData($url, '', 'GET', $debug);
-			$data['data']['openid'] = array_slice($data['data']['openid'], 0, 1000);
+			$data['data']['openid'] = array_slice($data['data']['openid'], 0, 100);
 			// echo '<pre>';print_r($data);exit;
 			// print_r($data);exit;
 			if (!isset($data['errcode'])) {
