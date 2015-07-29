@@ -91,82 +91,75 @@ class MobController extends AppController {
 		$opens = $this->WxReply->getWpUserInfo('openid', $wxCode, $this->webchat, $this->appid);
 		if ($opens['state'] == 1) {
 			$openid = $opens['data']['openid'];
-			$data = $action == 'index' ? $this->WxDataStore->getDataList($webchatId) : $this->WxDataStore->getDataList(null, $id, 'md5');
 			$data['userinfo'] = $this->WxDataUser->getUserInfo($opens['data']['openid'], $webchat, $id);		//个人信息
 			$webchat = $data['WxDataStore']['FWebchat'];			// md5 webchat
-			if ($data['count']) {
-				$this->set('tips', "对不起，此活动不存在。");
-				$this->render(':Mobile:error.html.twig');
-			} else {
-				switch ($action) {
-					case 'index':
-						$tpl = 'index';
-						break;
-					case 'member-reg':
-						// 存入数据
-						$tpl = 'member-reg';
-						if ($this->request->is('post')) {
-							$data['FullName'] = $this->request->data['name'];
-							$data['FPhone'] = $this->request->data['mobile'];
-							if ($this->WxDataUser->saveData($openid, $data)) {
-								$this->redirect(Router::url("/mob/activity/{$id}/share"));
-							}
+			$action = isset($opens['data']['user']['FIsMember']) && $opens['data']['user']['FIsMember'] ? 'ticket' : '';			// 结果页面
+			switch ($action) {
+				case 'member-reg':
+					// 存入数据
+					$tpl = 'member-reg';
+					if ($this->request->is('post')) {
+						$data['FullName'] = $this->request->data['name'];
+						$data['FPhone'] = $this->request->data['mobile'];
+						$data['FIsMember'] = 1;
+						if ($this->WxDataUser->saveData($openid, $data)) {
+							$this->redirect(Router::url("/mob/activity/{$id}/share"));
 						}
+					}
 
-						$rand_name = array_rand($info, 6);
-						$map_func = function($v) use ($info) {
-							$re_v = str_replace('副会长', '', $v);
-							$re_v = str_replace('会长', '', $re_v);
-							return [
-								'name' => $re_v,
-								'avatar' => $v,
-								'value' => $info[$v]
-							];
-						};
-						$rand_info = array_map($map_func, $rand_name);
-						$this->set('rand_info', $rand_info);
-						break;
-					case 'groupchat':
-						$rand_name = array_rand($info);
-						$rand_info = [
-							'name' => $rand_name,
-							'value' => $info[$rand_name]
+					$rand_name = array_rand($info, 6);
+					$map_func = function($v) use ($info) {
+						$re_v = str_replace('副会长', '', $v);
+						$re_v = str_replace('会长', '', $re_v);
+						return [
+							'name' => $re_v,
+							'avatar' => $v,
+							'value' => $info[$v]
 						];
-						$this->set('rand_info', $rand_info);
-						$tpl = 'groupchat';
-						break;
-					case 'video':
-						$tpl = 'video';
-						break;
-					case 'share':
-						$tpl = 'share';
-						break;
-					case 'ticket':
-						$tpl = 'ticket';
-						break;
-					default:
-						$tpl = 'index';
-						break;
-				}
-
-				// Twig View
-				$title = '活动报名';
-				$this->set('action', $action);
-                $this->set("rooturl", Router::url("/", TRUE));
-				$this->set('title', $title);
-                $this->set("storeid", "{$id}");
-				$this->set("baseurl", Router::url("/mob/activity/", TRUE));
-				$this->set("baseurlAction", Router::url("/mob/activity/{$id}", TRUE));
-				$this->set("baseurlIndex", Router::url("/mob/activity?={$webchatId}", TRUE));
-				$this->set('user', $data['userinfo']);
-				$this->set('appid', $this->appid);
-				// Share
-				$this->set('share_link', Router::url("/mob/activity/{$id}", TRUE));
-				$this->set('share_title', $title);
-				$this->set('share_des', "黑马会领券活动");
-				$this->set('share_logo', '/img/activity/sharepic.jpg');
-				$this->LNRender($data, $tpl, 'twig');
+					};
+					$rand_info = array_map($map_func, $rand_name);
+					$this->set('rand_info', $rand_info);
+					break;
+				case 'groupchat':
+					$rand_name = array_rand($info);
+					$rand_info = [
+						'name' => $rand_name,
+						'value' => $info[$rand_name]
+					];
+					$this->set('rand_info', $rand_info);
+					$tpl = 'groupchat';
+					break;
+				case 'video':
+					$tpl = 'video';
+					break;
+				case 'share':
+					$tpl = 'share';
+					break;
+				case 'ticket':
+					$tpl = 'ticket';
+					break;
+				default:
+					$tpl = 'index';
+					break;
 			}
+
+			// Twig View
+			$title = '活动报名';
+			$this->set('action', $action);
+            $this->set("rooturl", Router::url("/", TRUE));
+			$this->set('title', $title);
+            $this->set("storeid", "{$id}");
+			$this->set("baseurl", Router::url("/mob/activity/", TRUE));
+			$this->set("baseurlAction", Router::url("/mob/activity/{$id}", TRUE));
+			$this->set("baseurlIndex", Router::url("/mob/activity?={$webchatId}", TRUE));
+			$this->set('user', $data['userinfo']);
+			$this->set('appid', $this->appid);
+			// Share
+			$this->set('share_link', Router::url("/mob/activity/{$id}", TRUE));
+			$this->set('share_title', $title);
+			$this->set('share_des', "黑马会领券活动");
+			$this->set('share_logo', '/img/activity/sharepic.jpg');
+			$this->LNRender($data, $tpl, 'twig');
 		} else {
 			$rduri = urlencode(Router::url("/{$this->request->url}", TRUE));
 			$url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$this->appid}&redirect_uri={$rduri}&response_type=code&scope=snsapi_userinfo&state=iheima#wechat_redirect";

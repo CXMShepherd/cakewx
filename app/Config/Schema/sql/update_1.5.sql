@@ -103,6 +103,7 @@ CREATE TABLE `cx_wcdata_tw_product` (
 
 CREATE TABLE `cx_wcdata_users` (
   `FOpenId` varchar(100) NOT NULL DEFAULT '',
+  `FUnionid` varchar(100) NULL DEFAULT '',
   `FMemberId` varchar(38) DEFAULT NULL,
   `FWebchat` varchar(38) NOT NULL,
   `FullName` varchar(100) DEFAULT NULL,
@@ -120,6 +121,7 @@ CREATE TABLE `cx_wcdata_users` (
   `FMemo` text,
   `FPhone` varchar(100) DEFAULT NULL COMMENT '联系电话',
   `FAddress` varchar(1000) DEFAULT NULL COMMENT '地址',
+  `FIsMember` tinyint(1) DEFAULT 0 COMMENT '是否报名',
   PRIMARY KEY (`FOpenId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -112,7 +112,7 @@ class WxReply extends AppModel {
 		// echo $this->Session->read('WX_openid');exit;
 		$userinfo = ClassRegistry::init('WxDataUser')->getUserInfo($this->Session->read('WX_openid'));
 		if (isset($userinfo['FOpenId'])) {
-			return array('state' => 1, 'data' => array('openid' => $this->Session->read('WX_openid')));
+			return array('state' => 1, 'data' => array('openid' => $this->Session->read('WX_openid'), 'user' => $userinfo));
 		} else {
 			$this->_WX = new Wxauth('cakewx', $webchat, $appid, "3f3f7d885e41840be01339f221dfd369");
 			$data = $this->_WX->getWpUserInfo($type, $code);

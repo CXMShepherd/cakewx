@@ -8,6 +8,7 @@ App::uses('ClassRegistry', 'Utility');
 // define("TOKEN", "ohnuw2oob0Aiweequoh3");
 include ("lib/func.php");
 include ("lib/curl.php");
+include ("lib/emoji.php");
 $userinfo = array();
 $cl = new Curl();
 // $code = isset($_GET['code']) ? $_GET['code'] : FALSE;
@@ -97,7 +98,7 @@ class wechatCallbackapiTest
 		if (!is_array($aToken)) {
 			$url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token={$aToken}&next_openid=";
 			$data = curlData($url, '', 'GET', $debug);
-			$data['data']['openid'] = array_slice($data['data']['openid'], 0, 10);
+			$data['data']['openid'] = array_slice($data['data']['openid'], 0, 1000);
 			// echo '<pre>';print_r($data);exit;
 			// print_r($data);exit;
 			if (!isset($data['errcode'])) {
@@ -415,7 +416,8 @@ class wechatCallbackapiTest
 
 	private function _preg_nickname($nickname)
 	{
-		return preg_replace('~\xEE[\x80-\xBF][\x80-\xBF]|\xEF[\x81-\x83][\x80-\xBF]~', '', $nickname);
+		// return preg_replace('~\xEE[\x80-\xBF][\x80-\xBF]|\xEF[\x81-\x83][\x80-\xBF]~', '', $nickname);
+		return emoji_unified_to_html($nickname);
 	}
 }
 
