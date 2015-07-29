@@ -226,15 +226,15 @@ class wechatCallbackapiTest
 		$appid = $this->appid;
 		$secret = $this->appsecret;
 		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$appid}&secret={$secret}&code={$code}&grant_type=authorization_code";
-		$data = curlData($url, [], 'GET', 0, [], 1, false);
+		$data = curlData($url);
 		$this->_log('========================================'.date('Y-m-d H:i:s'));
 		$this->_log($url);
 		$this->_log($data, true);
-		if (isset($data->access_token)) {
-			$aToken = $data->access_token;
-			$this->_getWxUsers($aToken, $data->openid);		// 获取用户信息
+		if (isset($data['access_token'])) {
+			$aToken = $data['access_token'];
+			$this->_getWxUsers($aToken, $data['openid'], true);		// 获取用户信息
 			$msg = $data['openid'];
-			$msg = array('state' => 1, 'data' => array('openid' => $data->openid));
+			$msg = array('state' => 1, 'data' => array('openid' => $data['openid']));
 		} else {
 			$msg = array('state' => 0, 'msg' => "错误：appid不正确。");
 		}
@@ -336,9 +336,10 @@ class wechatCallbackapiTest
 	 * @return void
 	 * @author
 	 **/
-	private function _getWxUsers($token, $openid)
+	private function _getWxUsers($token, $openid, $sns = false)
 	{
-		$url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={$token}&openid={$openid}&lang=zh_CN";
+		$uri = $sns ? 'sns/userinfo' : 'user/info';
+		$url = "https://api.weixin.qq.com/cgi-bin/{$uri}?access_token={$token}&openid={$openid}&lang=zh_CN";
 		$user = curlData($url, '', 'GET', $debug);
 		$this->_log($url);
 		$this->_log($user, true);
