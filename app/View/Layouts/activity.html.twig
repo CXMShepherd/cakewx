@@ -1,0 +1,94 @@
+{% extends ":Layouts:base.html.twig" %}
+{% block html %}<html class="ui-viewport-640" lang="zh-CN">{{ html }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block viewport %}<meta name="MobileOptimized" content="320">{% endblock %}
+{% block head %}
+	{{ css('activity/aio.min', {'block': 'css_basic'}) }}
+	{{ css('activity/heima', {'block': 'css_basic'}) }}
+	{{ script('http://res.wx.qq.com/open/js/jweixin-1.0.0.js', {'block': 'js_basic'}) }}
+	{{ script('activity/aio.min', {'block': 'js_basic'}) }}
+	{{ script('activity/heima', {'block': 'js_basic'}) }}
+	{{ parent() }}
+	<script type="text/javascript">
+		var BASE_URL = "{{ url('/', true) }}";
+		var UPLOAD_URL = "{{ url('/lib/picUpload') }}";
+		var ADMIN_URL = "{{ url('/admin/', true) }}";
+		var ADMIN_WC_URL = "{{ url(WC_BASE) }}";
+
+		// WEB
+		var SITE_URL  = location.origin + location.pathname;
+        //var static_mpath = "http://static.idaiyan.cn/special/h5_20150320_yunmantou";
+        var static_mpath = "";
+
+        // class
+        ! function( navigator ) {
+            var userAgent = navigator.userAgent;
+                documentElement = document.documentElement;
+            if ( userAgent.match( /micromessenger\/5/gi ) ) {
+                documentElement.className += " mobile wx_mobile wx_mobile_5";
+            } else if ( userAgent.match( /micromessenger/gi ) ) {
+                documentElement.className += " mobile wx_mobile";
+            } else if ( userAgent.match( /ucbrowser/gi ) ) {
+                documentElement.className += " mobile uc_mobile";
+            } else if ( /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test( userAgent.toLowerCase() ) ) {
+                documentElement.className += " mobile";
+            } else if ( userAgent.toLowerCase().match( /msie/gi ) && ( parseFloat( userAgent.toLowerCase().match( /msie ([0-9]{1,}[\.0-9]{0,})/i )[1] || 999 ) < 9 ) ) {
+                documentElement.className += " pc pc-ie pc-ie8";
+            } else if ( userAgent.toLowerCase().match( /msie/gi ) || navigator.msPointerEnabled || navigator.pointerEnabled ) {
+                 documentElement.className += " pc pc-ie";
+            } else {
+                documentElement.className += " pc";
+            }
+        }( navigator );
+        // meta
+        ! function( userAgent ) {
+            var screen_w = parseInt(window.screen.width),
+                scale = screen_w / 640;
+            if ( /Android (\d+\.\d+)/.test( userAgent ) ) {
+                var version = parseFloat( RegExp.$1 );
+                document.write( version > 2.3
+                    ? '<meta name="viewport" content="width=640, minimum-scale = ' + scale + ", maximum-scale = " + scale + ', target-densitydpi=device-dpi">'
+                    : '<meta name="viewport" content="width=640, target-densitydpi=device-dpi">' );
+            } else {
+                document.write( '<meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi">' );
+            }
+        }( navigator.userAgent );
+
+        wx.config({
+            debug: false,
+            appId: 'wxf8b4f85f3a794e77',
+            timestamp: 1421726467,
+            nonceStr: 'V3xOrtKUZO5OXW13',
+            signature: '7e43af635eb90f3b355503aa17027712e2d14e89',
+            jsApiList: [
+              'checkJsApi',
+              'onMenuShareTimeline',
+              'onMenuShareAppMessage',
+              'onMenuShareQQ',
+              'onMenuShareWeibo'
+            ]
+        });
+
+     	var _shareData = {
+            imgUrl: static_mpath + "/img/sharepic.jpg",
+            title: "黑马",
+            desc: "黑马"
+        };
+        navigator.userAgent.match( /micromessenger/gi ) && Share.WeChat.setData( _shareData );
+	</script>
+	<style>
+		.copyright{text-align: center;margin:10px 0;font-size:10px;}
+		.copyright a{text-decoration: none;color:#393939;}
+	</style>
+{% endblock %}
+{% block content %}
+	<!-- container -->
+    <div class="container">
+        <div class="content">
+			{{ block ('wrap') }}
+		</div>
+	</dvi>
+{% endblock %}
+{% block footer %}
+	{{ parent() }}
+{% endblock %}

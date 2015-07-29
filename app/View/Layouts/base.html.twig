@@ -1,18 +1,22 @@
-<!DOCTYPE html> 
-<html> 
+<!DOCTYPE html>
+{% block html %}
+<html>
+{% endblock %}
     <head>
 	<title>{% block title %}{% endblock %}</title>
 	{% block meta %}
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="keywords" content="" />
 		<meta name="description" content="" />
-		<meta name="author" content="liunian.CakeWX" />
+		<meta name="author" content="niancode" />
 		<meta name="generator" content="www.cakewx.com" />
 		<meta name="HandheldFriendly" content="True">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<meta name="format-detection" content="telephone=no">
+	{% endblock %}
+	{% block viewport %}
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 	{% endblock %}
 	{% block head %}
 		{{ fetch('css_basic')}}
@@ -30,5 +34,5 @@
 			</div>
 		{% endblock %}
 		{{ cakeStats|raw }}
-    </body> 
+    </body>
 </html>

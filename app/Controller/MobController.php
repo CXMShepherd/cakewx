@@ -51,12 +51,12 @@ class MobController extends AppController {
 	 * @return void
 	 * @author niancode
 	 **/
-	public function activity()
+	public function activity($id, $action)
 	{
         $this->loadModel('WxDataStore');
 		$this->loadModel('WxReply');
 		$this->loadModel('WxDataUser');
-		$this->layout = 'activity';
+		// $this->layout = 'activity';
 		$webchatId = $this->request->query['id'];
 		$wxCode = $this->request->query['code'];
 		$wxState = $this->request->query['state'];
@@ -67,47 +67,80 @@ class MobController extends AppController {
 		// Debug
 		$this->_debug($debug);
 
+		// Define
+		$info = [
+			'副会长曹晓春' => "药药药，切克闹，创业疑难杂症那都不是事儿",
+			'副会长陈涛' => "我比较实在，做电商黑马们，一起赚钱一起飞！",
+			'副会长段毅' => "房地产圈，我熟，房事儿不叫事儿！",
+			'副会长郝鸿峰' => "别闹，创业这么苦，解忧唯有。。。",
+			'副会长黄梦' => "搞定移动营销，黑马只用H5来嗨！",
+			'副会长蒋涛' => "腾飞是个技术问题，我这只有技术男，是不是很有诱惑！",
+			'副会长罗军' => "世界那么大你随便看，出差住宿交给我",
+			'副会长蒲易' => "不光搞定温饱，我们还能给黑马们搞定爱情，人生巅峰不再遥远！",
+			'副会长唐文斌' => "拼颜值的时代，加入黑马，face++帮你搞定“脸”的问题",
+			'副会长王国安' => "走上人生巅峰，做牛X的事，兄弟我们一起上！",
+			'副会长王宇翔' => "我们负责照顾好你的胃",
+			'副会长杨守彬' => "微信红包（字显示：缺钱找我）",
+			'副会长杨雪剑' => "买卖的事儿，随时call me",
+			'副会长张珺' => "办展览包给我，办展览包给我，办展览包给我，重要的事说三遍！",
+			'副会长郑早明' => "黑马创业难题，寻医问药，约我，约我！",
+			'会长陈昊芝' => "兄弟们一起打怪升级啦！",
+			'会长俞熔' => "身体不行，然并卵，黑马健康的事儿包给我！",
+		];
+
 		// Check Weixin Code
 		$opens = $this->WxReply->getWpUserInfo('openid', $wxCode, $this->webchat, $this->appid);
 		if ($opens['state'] == 1) {
-			echo '<pre>';print_r($opens);exit;
+			print_r($opens);exit;
+			$openid = $opens['data']['openid'];
 			$data = $action == 'index' ? $this->WxDataStore->getDataList($webchatId) : $this->WxDataStore->getDataList(null, $id, 'md5');
 			$data['userinfo'] = $this->WxDataUser->getUserInfo($opens['data']['openid'], $webchat, $id);		//个人信息
-			// exit;
 			$webchat = $data['WxDataStore']['FWebchat'];			// md5 webchat
-			if (!$data['count']) {
-				$this->set('tips', "对不起，此店铺不存在。");
+			if ($data['count']) {
+				$this->set('tips', "对不起，此活动不存在。");
 				$this->render(':Mobile:error.html.twig');
 			} else {
 				switch ($action) {
-					case 'index':			// 店铺列表页
-						$data['stores'] = $this->WxDataStore->getStoresByCate($webchatId);
-						// echo '<pre>';print_r($data['stores']['cate']);exit;
+					case 'index':
 						break;
-					case 'shopping':
-						$data['category'] = $this->WxDataStore->getStoreProdcut($data['WxDataStore']['FWebchat'], $id, 'md5');
-						// echo '<pre>';print_r($data['category']);exit;
+					case 'member-reg':
+						// 存入数据
+						$tpl = 'member-reg';
+						if ($this->request->is('post')) {
+							$data['FullName'] = $this->request->data['name'];
+							$data['FPhone'] = $this->request->data['mobile'];
+							if ($this->WxDataUser->saveData($openid, $data)) {
+								$this->redirect(Router::url("/mob/activity/{$id}/share"));
+							}
+						}
+
+						$rand_name = array_rand($info, 6);
+						$map_func = function($v) use ($info) {
+							$re_v = str_replace('副会长', '', $v);
+							$re_v = str_replace('会长', '', $re_v);
+							return [
+								'name' => $re_v,
+								'avatar' => $v,
+								'value' => $info[$v]
+							];
+						};
+						$rand_info = array_map($map_func, $rand_name);
+						$this->set('rand_info', $rand_info);
 						break;
-		            case 'cart':
-
-		                break;
-		            case 'ucenter':
-
-		                break;
-		            case 'address':
-
-		                break;
-		            case 'orders':
-						$this->loadModel('WxDataOrder');
-						$data['orders'] = $this->WxDataOrder->getDataList($webchat, $id, $opens['data']['openid']);
-		                break;
-					case 'person':
-
-		                break;
-					default:		// 店铺首页
-						$tpl = 'view';
-						$this->loadModel('WxDataCate');
-						$data['accArticle'] = $this->WxDataCate->getArticleByCate($webchat, $id, '公告', 5);
+					case 'groupchat':
+						$rand_name = array_rand($info);
+						$rand_info = [
+							'name' => $rand_name,
+							'value' => $info[$rand_name]
+						];
+						$this->set('rand_info', $rand_info);
+						$tpl = 'groupchat';
+						break;
+					case 'video':
+						$tpl = 'video';
+						break;
+					default:
+						$tpl = 'index';
 						break;
 				}
 
@@ -116,7 +149,7 @@ class MobController extends AppController {
                 $this->set("rooturl", Router::url("/", TRUE));
 				$this->set('title', '活动报名');
                 $this->set("storeid", "{$id}");
-				$this->set("baseurl", Router::url("/mob/store/", TRUE));
+				$this->set("baseurl", Router::url("/mob/activity/", TRUE));
 				$this->set("baseurlAction", Router::url("/mob/activity/{$id}", TRUE));
 				$this->set("baseurlIndex", Router::url("/mob/activity?={$webchatId}", TRUE));
 				$this->set('user', $data['userinfo']);

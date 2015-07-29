@@ -41,19 +41,21 @@ class WxDataUser extends AppModel {
 	 * @return void
 	 * @author apple
 	 **/
-	function saveData($id)
+	function saveData($id, $data = [])
 	{
 		$userid = $this->_randMemberId();
-		$this->set('FMemberId', $userid);
-		$this->set('FCreatedate', date('Y-m-d H:i:s'));
-		$this->set('FUpdatedate', date('Y-m-d H:i:s'));
-		$this->set('FWebchat', $id);
-		if ($this->getUserInfo($this->id)) {
-			unset($this->data[$this->name]['FullName']);
-			// unset($this->data[$this->name]['FNickname']);
-			unset($this->data[$this->name]['FMemberId']);
-			unset($this->data[$this->name]['FCreatedate']);
+		$read = $this->read(null, $id);
+
+		if ($read) {
+			$this->set($data);
+			$this->set('FUpdatedate', date('Y-m-d H:i:s'));
+		} else {
+			$this->set($data);
+			$this->set('FMemberId', $userid);
+			$this->set('FCreatedate', date('Y-m-d H:i:s'));
+			$this->set('FUpdatedate', date('Y-m-d H:i:s'));
 		}
+
 		$query = $this->save($this->data);
 		if ($query) return $this->id;
 	}

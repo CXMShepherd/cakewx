@@ -106,7 +106,7 @@ class wechatCallbackapiTest
 						$user = curlData($url, '', 'GET', $debug);
 						if (!isset($user['errcode'])) {
 							$vals = $user;
-							$user['nickname'] = preg_replace('/\xEE[\x80-\xBF][\x80-\xBF]|\xEF[\x81-\x83][\x80-\xBF]/', '', $user['nickname']);
+							$user['nickname'] = $this->_preg_nickname($user['nickname']);
 							$ds['FOpenId'] = $user['openid'];
 							$ds['FSubscribe'] = $user['subscribe'];
 							$ds['FNickname'] = $user['nickname'];
@@ -117,9 +117,8 @@ class wechatCallbackapiTest
 							$ds['FCountry'] = $user['country'];
 							$ds['FHeadimgurl'] = $user['headimgurl'];
 							$ds['FSubscribe_time'] = $user['subscribe_time'];
-							ClassRegistry::init('WxDataUser')->id = $user['openid'];
-							ClassRegistry::init('WxDataUser')->set($ds);
-							ClassRegistry::init('WxDataUser')->saveData($this->webchat);			// 写入数据库
+							$ds['FWebchat'] = $this->webchat;
+							ClassRegistry::init('WxDataUser')->saveData($user['openid'], $ds);			// 写入数据库
 						}
 					}
 				}
@@ -245,12 +244,20 @@ class wechatCallbackapiTest
 		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$appid}&secret={$secret}&code={$code}&grant_type=authorization_code";
 		$data = curlData($url);
 		if (isset($data['access_token'])) {
+			$data['nickname'] = $this->_preg_nickname($data['nickname']);
 			$ds['FOpenId'] = $data['openid'];
-			$ds['FullName'] = "匿名";
-			$ds['FNickname'] = "匿名";
-			ClassRegistry::init('WxDataUser')->id = $data['openid'];
-			ClassRegistry::init('WxDataUser')->set($ds);
-			$userid = ClassRegistry::init('WxDataUser')->saveData($this->webchat);
+			$ds['FOpenId'] = $data['openid'];
+			$ds['FSubscribe'] = $data['subscribe'];
+			$ds['FNickname'] = $data['nickname'];
+			$ds['FSex'] = $data['sex'] == 1 ? '男' : ($data['sex'] == 2 ? '女' : '');
+			$ds['FLanguage'] = $data['language'];
+			$ds['FCity'] = $data['city'];
+			$ds['FProvince'] = $data['province'];
+			$ds['FCountry'] = $data['country'];
+			$ds['FHeadimgurl'] = $data['headimgurl'];
+			$ds['FSubscribe_time'] = $data['subscribe_time'];
+			$ds['FWebchat'] = $this->webchat;
+			ClassRegistry::init('WxDataUser')->saveData($data['openid'], $ds);			// 写入数据库
 			$msg = $data['openid'];
 			$msg = array('state' => 1, 'data' => array('openid' => $data['openid']));
 		} else {
@@ -311,12 +318,6 @@ class wechatCallbackapiTest
 					$rsStr = array(
 									'流年' => "如花美眷，似水流年。",
 									'ln' => "如花美眷，似水流年。",
-									'liunian' => "流年班级录：http://liunian.mobi",
-									'校友' => "曾经在同一个学校或研究院、所共同学习、工作过的人。一般指共同学习半年以上才构成校友。校友的别称：同窗。欢迎使用流年班级录：http://liunian.mobi",
-									'陈俊年' => "流年班级录：创始人兼产品经理。",
-									'李珂' => "流年班级录：创始人兼设计总监。",
-									'石秀峰' => "流年班级录：创始人兼技术总监。",
-									'小然' => "她是小年的女朋友。"
 								);
 					$contentStr = $rsStr[$keyword];
 					if (!in_array($keyword, array_keys($rsStr)))
@@ -353,6 +354,11 @@ class wechatCallbackapiTest
 		}else{
 			return false;
 		}
+	}
+
+	private function _preg_nickname($nickname)
+	{
+		reutrn preg_replace('/\xEE[\x80-\xBF][\x80-\xBF]|\xEF[\x81-\x83][\x80-\xBF]/', '', $nickname);
 	}
 }
 
