@@ -94,7 +94,8 @@ exit;
 
 		// Check Weixin Code
 		if ($wxCode) {
-			$opens = $this->WxReply->getWpUserInfo('openid', $wxCode, $this->webchat, $this->appid);
+			// $opens = $this->WxReply->getWpUserInfo('openid', $wxCode, $this->webchat, $this->appid);
+			$opens = file_get_contents("https://api.weixin.qq.com/sns/oauth2/access_token?appid=".$this->appid."&secret=".'3f3f7d885e41840be01339f221dfd369'."&code=".$wxCode."&grant_type=authorization_code");
 			$this->log(var_export($opens, true)."\n", 'wxapi');exit;
 			if ($opens['state'] == 1) {
 				$opens = $this->WxReply->getWpUserInfo('openid', $wxCode, $this->webchat, $this->appid);
