@@ -178,7 +178,7 @@ class MobController extends AppController {
 			$this->set('share_link', Router::url("/mob/activity/{$id}", TRUE));
 			$this->set('share_title', $title);
 			$this->set('share_des', "黑马会领券活动");
-			$this->set('share_logo', '/img/activity/sharepic.jpg');
+			$this->set('share_logo', Router::url('/img/activity/sharepic.jpg', TRUE));
 			$this->LNRender($data, $tpl, 'twig');
 		} else {
 			$rduri = urlencode('http://apply.iheima.com/proxy.php?to=') . urlencode(Router::url("/{$this->request->url}", TRUE));

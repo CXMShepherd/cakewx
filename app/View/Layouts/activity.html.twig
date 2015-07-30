@@ -56,7 +56,7 @@
         }( navigator.userAgent );
 
         wx.config({
-            debug: true,
+            debug: false,
             appId: '{{ appid }}',
             timestamp: {{ signature["timestamp"] }},
             nonceStr: '{{ signature["nonceStr"] }}',
