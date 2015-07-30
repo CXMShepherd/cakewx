@@ -177,7 +177,7 @@ class MobController extends AppController {
 			$this->set('signature', $signature);
 			$this->set('share_link', Router::url("/mob/activity/{$id}", TRUE));
 			$this->set('share_title', $title);
-			$this->set('share_des', "对！你没看错。牛文文、江南春、赵文权、盛发强、俞熔、赵浦、陈昊芝在这！");
+			$this->set('share_des', "对！你没看错。牛文文、江南春、赵文权、盛发强、俞熔、赵浦、陈昊芝在这等你！");
 			$this->set('share_logo', Router::url('/img/activity/sharepic.jpg', TRUE));
 			$this->LNRender($data, $tpl, 'twig');
 		} else {
