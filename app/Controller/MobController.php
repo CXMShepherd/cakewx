@@ -163,7 +163,7 @@ class MobController extends AppController {
 			}
 
 			// Twig View
-			$title = '活动报名';
+			$title = 'Wow !来大佬朋友圈逛逛？！';
 			$this->set('action', $action);
             $this->set("rooturl", Router::url("/", TRUE));
 			$this->set('title', $title);
@@ -177,7 +177,7 @@ class MobController extends AppController {
 			$this->set('signature', $signature);
 			$this->set('share_link', Router::url("/mob/activity/{$id}", TRUE));
 			$this->set('share_title', $title);
-			$this->set('share_des', "黑马会领券活动");
+			$this->set('share_des', "对！你没看错。牛文文、江南春、赵文权、盛发强、俞熔、赵浦、陈昊芝在这！");
 			$this->set('share_logo', Router::url('/img/activity/sharepic.jpg', TRUE));
 			$this->LNRender($data, $tpl, 'twig');
 		} else {
