@@ -2031,3 +2031,37 @@ body {
   -webkit-animation-fill-mode: both;
           animation-fill-mode: both;
 }
+
+/**/
+@-webkit-keyframes stretch{
+    0% {
+        height: 0
+    }
+    100% {
+       height: 273px;
+    }
+}
+@-moz-keyframes stretch{
+   0% {
+        height: 0
+    }
+    100% {
+       height: 273px;
+    }
+}
+@keyframes stretch{
+ 0% {
+        height: 0
+    }
+    100% {
+       height: 273px;
+    }
+}
+.stretch{
+  -webkit-animation-name: stretch;
+          animation-name: stretch;
+  -webkit-animation-duration: 1.5s;
+          animation-duration: 1.5s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+}

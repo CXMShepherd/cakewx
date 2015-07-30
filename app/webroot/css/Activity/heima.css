@@ -435,7 +435,6 @@ html,body{height: 100%;}
   background: #f2eddf;
   text-align: center;
   position: relative;
-  padding-top: 40px;
 }
 .slide-video .product_video .icon {
   width: 110px;
@@ -449,16 +448,14 @@ html,body{height: 100%;}
   animation: blackSlide 1.2s steps(4) 0s infinite;
 }
 .slide-video .product_video #video{
-  /*padding-top: 40px;*/
-  background-color: #000000;
+  padding-top: 40px;
 }
 .slide-video .product_video  .logo{
   padding:20px 0;
 }
 .slide-video .product_video  .logo img{
-  /*width: 249px;*/
-  height: 72px;
-  margin-top: 30px;
+  width: 249px;
+  height: 92px;
 }
 .register_btn{
   margin: 0 8%;
@@ -657,11 +654,23 @@ html,body{height: 100%;}
   border: none;
 }
 #shareout{
-    width: 100%;
+  width: 100%;
   height: 70px;
   line-height: 70px;
   background: #fff;
   color: #434343;
+  font-size: 3.2rem;
+  border-radius: 4px;
+  margin-top: 3%;
+  border:solid 1px #dedede;
+  outline: none;
+}
+.ruhui{
+  width: 100%;
+  height: 70px;
+  line-height: 70px;
+  background: #22bf43;
+  color: #ffffff;
   font-size: 3.2rem;
   border-radius: 4px;
   margin-top: 3%;
@@ -784,7 +793,7 @@ html,body{height: 100%;}
 }
 .hmh_logo{
   text-align: center;
-  margin-top: 10%;
+  margin-top: 15%;
 }
 .cash{
 
@@ -799,23 +808,88 @@ html,body{height: 100%;}
     margin-top: 50%;
     position: absolute;
 }
+.user-info{
+  width: 70%;
+  height: 100px;
+  margin:27% auto 5%;
+}
+.user-info img{
+  width: 90px;
+  height: 90px;
+  border-radius: 50px;
+  vertical-align: middle;
+  border:5px solid #fff;
+}
+.user-info .username{
+  font-size: 24px;
+  color:#b5b5b5;
+  margin-left: 35px;
+}
+.numimg{
+  padding:104px 0 0 50px;
+}
+.numimg img{
+  width: 36px;
+  height: 60px;
+}
+.user-info .username .name{
+  padding-bottom: 20px;
+  padding-top: 18px;
+}
+.cashacrd{
+  width:422px;
+  height: 300px;
+  margin:auto;
+  padding: 20px 0 0 25px;
+  background:url(../../img/activity/border-bg.png) no-repeat 0 0;
+}
+.cashacrd .card{
+  width: 388px;
+  height: 273px;
+  overflow: hidden;
+  position: relative;
+  background:url(../../img/activity/quanbg.png) no-repeat 0 0;
+}
+.cashacrd .card .tips{
+  font-size: 24px;
+  color:#606f76;
+  text-align: center;
+  padding-top: 28px;
+  /*position: absolute;
+  bottom: 30px;
+  margin: auto;
+  left: 0;
+  right: 0;*/
+}
 .font_18{
   font-size: 18px;
 }
 .slide-quan .receive {
-  margin: 0 20%;
-  width: 60%;
-  height: 70px;
-  line-height: 70px;
+  margin: 0 auto;
+  width: 58%;
+  display: block;
+  height: 60px;
+  line-height: 60px;
   background: #fc4c47;
   color: #fff;
-  font-size: 3.2rem;
+  font-size: 2.4rem;
   border-radius: 4px;
-  box-shadow: 0 6px 0 #e01b27;
-  margin-top: 75%;
   border: none;
   outline: none;
-  position: absolute;
+}
+.slide-quan .continue {
+  margin: 0 auto;
+  width: 58%;
+  height: 60px;
+  display: block;
+  margin-top: 35px;
+  line-height: 60px;
+  background: #fff;
+  color: #b5b5b5;
+  font-size: 2.4rem;
+  border-radius: 4px;
+  border: none;
+  outline: none;
 }
 .suss {
   width: 100%;
@@ -845,9 +919,43 @@ html,body{height: 100%;}
 .share_bg {
   width: 361px;
   height: 258px;
-  background: url(../../img/activity/share.png) no-repeat left top;
+  background: url(../img/share.png) no-repeat left top;
   position: absolute;
   right: 8%;
   top: 3%;
   z-index: 301;
+}
+
+/**/
+@-webkit-keyframes stretch{
+    0% {
+        height: 0
+    }
+    100% {
+       height: 273px;
+    }
+}
+@-moz-keyframes stretch{
+   0% {
+        height: 0
+    }
+    100% {
+       height: 273px;
+    }
+}
+@keyframes stretch{
+ 0% {
+        height: 0
+    }
+    100% {
+       height: 273px;
+    }
+}
+.stretch{
+  -webkit-animation-name: stretch;
+          animation-name: stretch;
+  -webkit-animation-duration: 1.5s;
+          animation-duration: 1.5s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
 }

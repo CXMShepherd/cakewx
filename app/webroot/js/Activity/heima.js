@@ -12,7 +12,7 @@ $(function(){
         $(".zeo").show();
         $(".huizhang").show();
         $("#message")[0].play();
-    });   
+    });
      $(".ui-alert .icon").on("click",function(){
         $(this).hide();
         $(this).parent().hide();
@@ -21,7 +21,7 @@ $(function(){
         $("#message")[0].play();
         var top = $(".huizhang").offset().top;
         $("#swiper-wrapper").animate({scrollTop:top+1000},1000);
-    }); 
+    });
     // $(".ui-choose-teacher").each(function(){
     //     var that =$(this);
     //     that.on("webkitAnimationStart", function() {
@@ -39,11 +39,11 @@ $(function(){
         $(this).hide();
         $(".share_bg").hide();
     });
-    $(".receive").on("click",function(){
-        $(this).html("领取成功");
-        $(".cash").show();
-        $(".suss").show();
-    });
+    // $(".receive").on("click",function(){
+    //     $(this).html("领取成功");
+    //     $(".cash").show();
+    //     $(".suss").show();
+    // });
     $("#shareout").on("click",function(){
         $(".gray_bg").show();
         $(".share_bg").show();
@@ -52,7 +52,7 @@ $(function(){
         $(this).hide();
         $(".share_bg").hide();
     });
-    
+
 
     var today=new Date();
     var hour=today.getHours();
@@ -74,10 +74,10 @@ $(function(){
     weekday[5]="星期五";
     weekday[6]="星期六";
     today_box.html(weekday[today.getDay()]);
-    
+
      js_time.html(hour+":"+minu);
     jsTime.html(hour+":"+minu);
-     
+
     month_box.html(month+"月"+date+"日");
 });
 

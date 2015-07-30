@@ -6,6 +6,41 @@
         <div class="swiper-wrapper">
              <div class="swiper-slide slide-quan">
                 <div class="hmh_logo"><img src="/img/activity/hmh_logo.png"/></div>
+                <div class="user-info cf">
+                <div class="portrait fl">
+                    <img src="/img/activity/niu_bg.jpg" alt="">
+                </div>
+                    <div class="username fl">
+                        <p class="name">我是<span>{{ user['FNickname'] }}</span></p>
+                        <p>这是你已经领过的红包了哦</p>
+                    </div>
+                </div>
+                <div class="cashacrd">
+                    <div class="card stretch">
+                        <div class="numimg">
+                            {% for key,num in ticket_money_nums %}
+                                <img src="/img/activity/num/{{ num }}.png">
+                            {% endfor %}
+                        </div>
+                         <div class="tips">
+                                使用码：<span>{{ user['FPhone'] }}</span><br/>
+                                只限机主使用
+                        </div>
+                    </div>
+
+                </div>
+                <button type="button" class="receive cf">分享好友</button>
+                <button type="button" class="continue cf">再去逛逛</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-body">
+    <div class="swiper-container js-power-scroll">
+        <div class="swiper-wrapper">
+             <div class="swiper-slide slide-quan">
+                <div class="hmh_logo"><img src="/img/activity/hmh_logo.png"/></div>
                 <div class="cash hide">
                     代金券码：<span>{{ ticket }}</span><br/>
                     <span class="font_18">只限机主使用</span>

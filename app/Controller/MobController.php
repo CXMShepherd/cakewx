@@ -60,6 +60,7 @@ class MobController extends AppController {
 		$wxCode = $this->request->query['code'];
 		$wxState = $this->request->query['state'];
 		$debug = $this->request->query['lndebug'];
+		$review = $this->request->query['review'];
 		$action = $id ? $action : 'index';		// 店铺列表页
 		$tpl = $action;
 
@@ -96,8 +97,10 @@ class MobController extends AppController {
 			$signature  = $this->WxReply->wx_share_sign($this->webchat, $this->appid);
 
 			// 判断是否报名
-			if ($action != 'share' && isset($opens['data']['user']['FIsMember']) && $opens['data']['user']['FIsMember']) {
-				$action = 'ticket';
+			if ($action == '') {
+				if (!$review && isset($opens['data']['user']['FIsMember']) && $opens['data']['user']['FIsMember']) {
+					$action = 'ticket';
+				}
 			}
 
 			switch ($action) {
@@ -147,7 +150,7 @@ class MobController extends AppController {
 						$ticket_money = $opens['data']['user']['FTicketMoney'];
 					} else {
 						$ticket = mt_rand(10000001, 99999999);
-						$ticket_money = mt_rand(99, 2999);
+						$ticket_money = mt_rand(99, 1999);
 						$data['FTicket'] = $ticket;
 						$data['FTicketMoney'] = $ticket_money;
 						$this->WxDataUser->saveData($openid, $data);		// 记录优惠券
@@ -155,6 +158,7 @@ class MobController extends AppController {
 
 					$this->set('ticket', $ticket);
 					$this->set('ticket_money', $ticket_money);
+					$this->set('ticket_money_nums', str_split($ticket_money));
 					$tpl = 'ticket';
 					break;
 				default:
