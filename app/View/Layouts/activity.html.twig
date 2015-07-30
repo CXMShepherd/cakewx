@@ -58,9 +58,9 @@
         wx.config({
             debug: true,
             appId: '{{ appid }}',
-            timestamp: {{ signature['timestamp'] }},
-            nonceStr: '{{ signature['nonceStr'] }}',
-            signature: '{{ signature['signature'] }}',
+            timestamp: {{ signature["timestamp"] }},
+            nonceStr: '{{ signature["nonceStr"] }}',
+            signature: '{{ signature["signature"] }}',
             jsApiList: [
               'checkJsApi',
               'onMenuShareTimeline',

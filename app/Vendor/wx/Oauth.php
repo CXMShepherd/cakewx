@@ -9,6 +9,7 @@ App::uses('ClassRegistry', 'Utility');
 include ("lib/func.php");
 include ("lib/curl.php");
 include ("lib/emoji.php");
+include ("lib/jssdk.php");
 $userinfo = array();
 $cl = new Curl();
 // $code = isset($_GET['code']) ? $_GET['code'] : FALSE;
@@ -44,31 +45,36 @@ class wechatCallbackapiTest
      **/
     public function wx_share_sign()
     {
-    	$token = $this->getAccessCode();
-    	$this->_log('========================================AccessToken'.date('Y-m-d H:i:s'));
-		$this->_log($token);
-    	if ($token) {
-    		$url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={$token}&type=jsapi";
-    		$data = curlData($url);
-			$this->_log($data, true);
+    	$appid = $this->appid;
+		$secret = $this->appsecret;
+    	$jssdk = new JSSDK($appid, $secret);
+        $signPackage = $jssdk ->GetSignPackage();
+        return $signPackage;
+  //   	$token = $this->getAccessCode();
+  //   	$this->_log('========================================AccessToken'.date('Y-m-d H:i:s'));
+		// $this->_log($token);
+  //   	if ($token) {
+  //   		$url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={$token}&type=jsapi";
+  //   		$data = curlData($url);
+		// 	$this->_log($data, true);
 
-			// Signature 
-			$time = 1438207234;
-			$noncestr = $this->createNonceStr();
-			$jsapi_ticket= $data['ticket'];
-			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-    		$url = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-			$and = "jsapi_ticket=".$jsapi_ticket."&noncestr=".$noncestr."&timestamp=".$time."&url=".$url;
-			$this->_log($and);
-			$signature = sha1($and);
-			return [
-				'nonceStr' => $noncestr,
-				'timestamp' => $time,
-				"url"       => $url,
-				"signature" => $signature,
-				"rawString" => $and
-			];;
- 	   	}
+		// 	// Signature 
+		// 	$time = 1438207234;
+		// 	$noncestr = $this->createNonceStr();
+		// 	$jsapi_ticket= $data['ticket'];
+		// 	$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+  //   		$url = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		// 	$and = "jsapi_ticket=".$jsapi_ticket."&noncestr=".$noncestr."&timestamp=".$time."&url=".$url;
+		// 	$this->_log($and);
+		// 	$signature = sha1($and);
+		// 	return [
+		// 		'nonceStr' => $noncestr,
+		// 		'timestamp' => $time,
+		// 		"url"       => $url,
+		// 		"signature" => $signature,
+		// 		"rawString" => $and
+		// 	];;
+ 	//    	}
     }
 
     private function createNonceStr($length = 16) {
