@@ -54,15 +54,31 @@ class wechatCallbackapiTest
 
 			// Signature 
 			$time = 1438207234;
-			$noncestr = $time;
+			$noncestr = $this->createNonceStr();
 			$jsapi_ticket= $data['ticket'];
-			$url='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-			$and = "jsapi_ticket=".$jsapi_ticket."&noncestr=".$noncestr."&timestamp=".$time."&url=".$url."";
+			$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+    		$url = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+			$and = "jsapi_ticket=".$jsapi_ticket."&noncestr=".$noncestr."&timestamp=".$time."&url=".$url;
 			$this->_log($and);
 			$signature = sha1($and);
-			return $signature;
+			return [
+				'nonceStr' => $noncestr,
+				'timestamp' => $time,
+				"url"       => $url,
+				"signature" => $signature,
+				"rawString" => $and
+			];;
  	   	}
     }
+
+    private function createNonceStr($length = 16) {
+	    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	    $str = "";
+	    for ($i = 0; $i < $length; $i++) {
+	      $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+	    }
+	    return $str;
+  	}
 
 	public function setGloabl($data)
 	{
