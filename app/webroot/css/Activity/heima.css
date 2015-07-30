@@ -919,7 +919,7 @@ html,body{height: 100%;}
 .share_bg {
   width: 361px;
   height: 258px;
-  background: url(../img/share.png) no-repeat left top;
+  background: url(../../img/activity/share.png) no-repeat left top;
   position: absolute;
   right: 8%;
   top: 3%;

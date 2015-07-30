@@ -8,7 +8,7 @@
                 <div class="hmh_logo"><img src="/img/activity/hmh_logo.png"/></div>
                 <div class="user-info cf">
                 <div class="portrait fl">
-                    <img src="/img/activity/niu_bg.jpg" alt="">
+                    <img src="{{ user['FHeadimgurl'] }}">
                 </div>
                     <div class="username fl">
                         <p class="name">我是<span>{{ user['FNickname'] }}</span></p>
@@ -30,23 +30,7 @@
 
                 </div>
                 <button type="button" class="receive cf">分享好友</button>
-                <button type="button" class="continue cf">再去逛逛</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="content-body">
-    <div class="swiper-container js-power-scroll">
-        <div class="swiper-wrapper">
-             <div class="swiper-slide slide-quan">
-                <div class="hmh_logo"><img src="/img/activity/hmh_logo.png"/></div>
-                <div class="cash hide">
-                    代金券码：<span>{{ ticket }}</span><br/>
-                    <span class="font_18">只限机主使用</span>
-                </div>
-                <button type="button" class="receive cf">立即领取</button>
-                <div class="suss hide">您已成功领取{{ ticket_money }}元代金券</div>
+                <a href="{{ baseurlAction }}?review=1"><button type="button" class="continue cf">再去逛逛</button></a>
             </div>
         </div>
     </div>

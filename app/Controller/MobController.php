@@ -183,6 +183,17 @@ class MobController extends AppController {
 			$this->set('share_title', $title);
 			$this->set('share_des', "对！你没看错。牛文文、江南春、赵文权、盛发强、俞熔、赵浦、陈昊芝在这等你！");
 			$this->set('share_logo', Router::url('/img/activity/sharepic.jpg', TRUE));
+
+			// Stat
+			$this->set('cakeStats', '<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?9723485e19f163e8e518ca694e959cb9";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>');
 			$this->LNRender($data, $tpl, 'twig');
 		} else {
 			$rduri = urlencode('http://apply.iheima.com/proxy.php?to=') . urlencode(Router::url("/{$this->request->url}", TRUE));
