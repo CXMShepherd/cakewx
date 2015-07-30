@@ -478,6 +478,10 @@ body {
     animation-delay: 5s;
   -webkit-animation-delay: 5s;
 }
+.delay10{
+    animation-delay: 6s;
+  -webkit-animation-delay: 6s;
+}
 @-webkit-keyframes upArrow1 {
     0%, 30% {
         opacity: 0;

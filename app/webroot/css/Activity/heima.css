@@ -435,6 +435,7 @@ html,body{height: 100%;}
   background: #f2eddf;
   text-align: center;
   position: relative;
+  padding-top: 40px;
 }
 .slide-video .product_video .icon {
   width: 110px;
@@ -448,7 +449,8 @@ html,body{height: 100%;}
   animation: blackSlide 1.2s steps(4) 0s infinite;
 }
 .slide-video .product_video #video{
-  padding-top: 40px;
+  /*padding-top: 40px;*/
+  background-color: #000000;
 }
 .slide-video .product_video  .logo{
   padding:20px 0;
