@@ -181,7 +181,7 @@ class MobController extends AppController {
 			$this->set('share_logo', '/img/activity/sharepic.jpg');
 			$this->LNRender($data, $tpl, 'twig');
 		} else {
-			$rduri = urlencode(Router::url("/{$this->request->url}", TRUE));
+			$rduri = urlencode('http://apply.iheima.com/proxy.php?to=') . urlencode(Router::url("/{$this->request->url}", TRUE));
 			$url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$this->appid}&redirect_uri={$rduri}&response_type=code&scope=snsapi_userinfo&state=iheima#wechat_redirect";
 			$this->redirect($url);
 		}
