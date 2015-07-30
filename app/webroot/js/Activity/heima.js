@@ -39,11 +39,11 @@ $(function(){
         $(this).hide();
         $(".share_bg").hide();
     });
-    // $(".receive").on("click",function(){
-    //     $(this).html("领取成功");
-    //     $(".cash").show();
-    //     $(".suss").show();
-    // });
+    $(".receive").on("click",function(){
+        // $(this).html("领取成功");
+        $(".gray_bg").show();
+        $(".share_bg").show();
+    });
     $("#shareout").on("click",function(){
         $(".gray_bg").show();
         $(".share_bg").show();

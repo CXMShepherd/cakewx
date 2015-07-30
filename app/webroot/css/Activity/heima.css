@@ -435,6 +435,7 @@ html,body{height: 100%;}
   background: #f2eddf;
   text-align: center;
   position: relative;
+  padding-top: 40px;
 }
 .slide-video .product_video .icon {
   width: 110px;
@@ -448,10 +449,12 @@ html,body{height: 100%;}
   animation: blackSlide 1.2s steps(4) 0s infinite;
 }
 .slide-video .product_video #video{
-  padding-top: 40px;
+  /*padding-top: 40px;*/
+  background-color: #000000;
+
 }
 .slide-video .product_video  .logo{
-  padding:20px 0;
+  padding:40px 0;
 }
 .slide-video .product_video  .logo img{
   width: 249px;
@@ -540,7 +543,7 @@ html,body{height: 100%;}
   background-size: cover;
 }
 .slide-register .ui-big-space {
-  height: 30px;
+  height: 50px;
 }
 .slide-register .ui-middle-space {
   height: 40px;
@@ -556,15 +559,15 @@ html,body{height: 100%;}
 }
 .slide-register .ui-logo {
   margin: 0 auto;
-  width: 178px;
-  height: 178px;
+  width: 168px;
+  height: 168px;
   border-radius: 50%;
   border: solid 1px #b8b8b8;
   padding: 28px;
 }
 .slide-register .ui-logo img {
-  width: 178px;
-  height: 178px;
+  width: 168px;
+  height: 168px;
   border-radius: 50%;
 }
 .slide-register .person {
