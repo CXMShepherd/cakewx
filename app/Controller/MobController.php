@@ -10,7 +10,7 @@ class MobController extends AppController {
 
 	public $layout = "mobile";
 	public $viewClass = 'Twig.Twig';
-	public $appid = "wxa2345d698a6f2162";
+	public $appid = "wx9377b2e0071942d2";
 	public $webchat = "ad59dac608c35311d71d11ec89300926";
 
 	public function beforeFilter() {

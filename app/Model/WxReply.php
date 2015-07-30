@@ -50,7 +50,7 @@ class WxReply extends AppModel {
 	 **/
 	public function wx_share_sign($wechat, $appid)
 	{
-		$this->_WX = new Wxauth('cakewx', $wechat, $appid, "3f3f7d885e41840be01339f221dfd369");
+		$this->_WX = new Wxauth('cakewx', $wechat, $appid, "303078fe229fe63fc190e0ffcee27f99");
 		return $this->_WX->wx_share_sign();
 	}
 
@@ -126,7 +126,7 @@ class WxReply extends AppModel {
 		if (isset($userinfo['FOpenId'])) {
 			return array('state' => 1, 'data' => array('openid' => $this->Session->read('WX_openid'), 'user' => $userinfo));
 		} else {
-			$this->_WX = new Wxauth('cakewx', $webchat, $appid, "3f3f7d885e41840be01339f221dfd369");
+			$this->_WX = new Wxauth('cakewx', $webchat, $appid, "303078fe229fe63fc190e0ffcee27f99");
 			$data = $this->_WX->getWpUserInfo($type, $code);
 			if ($data['state'] == 1) {
 				$this->Session->write('WX_openid', $data['data']['openid']);
