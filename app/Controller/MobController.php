@@ -171,7 +171,7 @@ class MobController extends AppController {
 			$this->set("baseurl", Router::url("/mob/activity/", TRUE));
 			$this->set("baseurlAction", Router::url("/mob/activity/{$id}", TRUE));
 			$this->set("baseurlIndex", Router::url("/mob/activity?={$webchatId}", TRUE));
-			$this->set('user', $data['userinfo']);
+			$this->set('user', $opens['data']['user']);
 			$this->set('appid', $this->appid);
 			// Share
 			$this->set('signature', $signature);
