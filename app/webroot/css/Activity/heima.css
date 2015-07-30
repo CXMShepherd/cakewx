@@ -238,17 +238,27 @@ html,body{height: 100%;}
   position: relative;
   width: 100%;
 }
-.slide-groupchats .ui-choose-teacher .right .content_mess .icon {
-  width: 110px;
-  height: 117px;
+.slide-groupchats .ui-choose-teacher .right .content_mess a {
+    display: inline-block;
+
+  width: 350px;
+  height: 120px;
   position: absolute;
-  background: url(../../img/activity/black_icon.png) no-repeat center center;
   z-index: 100;
-  left:50%;
+  left:10px;
   top: 10px;
+}
+
+.slide-groupchats .ui-choose-teacher .right .content_mess a .icon {
+  display: inline-block;
+  float: right;
+  width: 120px;
+  height: 120px;
+  background: url(../../img/activity/black_icon.png) no-repeat center center;
   -webkit-animation: blackSlide 1.2s steps(4) 0s infinite;
   animation: blackSlide 1.2s steps(4) 0s infinite;
 }
+
 .slide-groupchats .ui-choose-teacher .right .content_mess .icon a{
   display: block;
   width: 100%;
@@ -814,7 +824,7 @@ html,body{height: 100%;}
 .user-info{
   width: 70%;
   height: 100px;
-  margin:27% auto 5%;
+  margin:10% auto 5%;
 }
 .user-info img{
   width: 90px;
@@ -825,7 +835,7 @@ html,body{height: 100%;}
 }
 .user-info .username{
   font-size: 24px;
-  color:#b5b5b5;
+  color:#ffffff;
   margin-left: 35px;
 }
 .numimg{
