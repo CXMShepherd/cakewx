@@ -678,6 +678,18 @@ html,body{height: 100%;}
   border:solid 1px #dedede;
   outline: none;
 }
+#shareout.ruhui{
+  width: 100%;
+  height: 70px;
+  line-height: 70px;
+  background: #22bf43;
+  color: #ffffff;
+  font-size: 3.2rem;
+  border-radius: 4px;
+  margin-top: 3%;
+  border:solid 1px #dedede;
+  outline: none;
+}
 .ruhui{
   width: 100%;
   height: 70px;
@@ -799,14 +811,15 @@ html,body{height: 100%;}
 }
 /* register */
 .slide-quan {
-  background: url(../../img/activity/quan.jpg) no-repeat 0 0;
+  background: url(../../img/activity/quan.jpg) no-repeat 0 -60px #2E2E2E;
   background-size: cover;
   width: 100%;
   height: 100%;
+  padding-bottom:50px;
 }
 .hmh_logo{
   text-align: center;
-  margin-top: 15%;
+  margin-top: 6%;
 }
 .cash{
 
@@ -822,9 +835,9 @@ html,body{height: 100%;}
     position: absolute;
 }
 .user-info{
-  width: 70%;
-  height: 100px;
-  margin:300px auto 5%;
+  width:70%;
+  height:100px;
+  margin:250px auto 5%;
 }
 .user-info img{
   width: 90px;
@@ -834,26 +847,27 @@ html,body{height: 100%;}
   border:5px solid #fff;
 }
 .user-info .username{
+  width:300px;
   font-size: 24px;
   color:#ffffff;
-  margin-left: 35px;
+  margin-left: 20px;
 }
 .numimg{
-  padding:104px 0 0 50px;
+  padding:30px 0 0 50px;
 }
 .numimg img{
   width: 36px;
   height: 60px;
 }
 .user-info .username .name{
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   padding-top: 18px;
 }
 .cashacrd{
   width:422px;
   height: 300px;
   margin:auto;
-  padding: 20px 0 0 25px;
+  padding: 20px 0 0 20px;
   background:url(../../img/activity/border-bg.png) no-repeat 0 0;
 }
 .cashacrd .card{
@@ -863,11 +877,42 @@ html,body{height: 100%;}
   position: relative;
   background:url(../../img/activity/quanbg.png) no-repeat 0 0;
 }
-.cashacrd .card .tips{
+.cashacrd .card a.tishi_icon{
+  position: absolute;
+  left:0;
+  top: 0;
+  display: inline-block;
+  width:120px;
+  height:120px;
+  padding:80px 0 70px 280px;
+}
+
+.cashacrd .card a.tishi_icon .icon {
+  display: inline-block;
+  width: 120px;
+  height: 120px;
+  line-height: 120px;
+  font-style: 30px;
+  background: url(../../img/activity/black_icon.png) no-repeat center center;
+  -webkit-animation: blackSlide 1.2s steps(4) 0s infinite;
+  animation: blackSlide 1.2s steps(4) 0s infinite;
+}
+.cashacrd .card .tips_tt{
   font-size: 24px;
+  color:#CFB06D;
+  text-align: center;
+  padding-top: 48px;
+  /*position: absolute;
+  bottom: 30px;
+  margin: auto;
+  left: 0;
+  right: 0;*/
+}
+.cashacrd .card .tips{
+  font-size: 16px;
   color:#606f76;
   text-align: center;
-  padding-top: 28px;
+  padding: 28px 20px 0px;
   /*position: absolute;
   bottom: 30px;
   margin: auto;
@@ -895,7 +940,7 @@ html,body{height: 100%;}
   width: 58%;
   height: 60px;
   display: block;
-  margin-top: 35px;
+  margin-top: 25px;
   line-height: 60px;
   background: #fff;
   color: #b5b5b5;
@@ -904,6 +949,10 @@ html,body{height: 100%;}
   border: none;
   outline: none;
 }
+
+
+
+
 .suss {
   width: 100%;
   text-align: center;

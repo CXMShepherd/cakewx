@@ -48,6 +48,8 @@ class JSSDK {
     $data = json_decode(file_get_contents("jsapi_ticket.json"));
     if ($data->expire_time < time()) {
       $accessToken = $this->getAccessToken();
+      $this->_log('==================refresh-token');
+      $this->_log(date('Y-m-d H:i:s').'->'.$accessToken);
       // 如果是企业号用以下 URL 获取 ticket
       // $url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=$accessToken";
       $url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=$accessToken";
@@ -62,7 +64,9 @@ class JSSDK {
       }
     } else {
       $ticket = $data->jsapi_ticket;
-    }
+      $this->_log('==================get-token');    
+      $this->_log(date('Y-m-d H:i:s').'->'.$ticket);
+	 }
 
     return $ticket;
   }
@@ -102,5 +106,19 @@ class JSSDK {
 
     return $res;
   }
+	
+ /**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author
+	 **/
+	public function _log($str, $export = false)
+	{
+		$file = '/tmp/wxtoken.log';
+		if ($export) $str = var_export($str, TRUE);
+		file_put_contents($file, "\n".$str, FILE_APPEND);
+	}
+
 }
 

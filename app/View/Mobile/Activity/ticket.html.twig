@@ -1,40 +1,38 @@
 {% extends ":Layouts:activity.html.twig" %}
 
 {% block wrap %}
-<div class="content-body">
-    <div class="swiper-container js-power-scroll">
-        <div class="swiper-wrapper">
              <div class="swiper-slide slide-quan">
                 {# <div class="hmh_logo"><img src="/img/activity/hmh_logo.png"/></div> #}
                 <div class="user-info cf">
-                <div class="portrait fl">
-                    <img src="{{ user['FHeadimgurl'] }}">
-                </div>
+                    <div class="portrait fl">
+                        <img src="{{ user['FHeadimgurl'] }}">
+                    </div>
                     <div class="username fl">
-                        <p class="name">我是<span>{{ user['FNickname'] }}</span></p>
-                        <p>这是你已经领过的红包了哦</p>
+                        <p class="name">欢迎您，<span>{{ user['FNickname'] }}</span></p>
+                        <p>这是你的代金券，赶紧点击使用吧</p>
                     </div>
                 </div>
+
                 <div class="cashacrd">
                     <div class="card stretch">
+                        <div class="tips_tt">使用码：<span>{{ user['FPhone'] }}</span></div>
                         <div class="numimg">
                             {% for key,num in ticket_money_nums %}
                                 <img src="/img/activity/num/{{ num }}.png">
                             {% endfor %}
                         </div>
-                         <div class="tips">
-                                使用码：<span>{{ user['FPhone'] }}</span><br/>
-                                只限机主使用
+                        <div class="tips">
+                            关注"黑马会HMH"公众号，此代金券仅限入会申请审核通过后使用，新会员入会、老会员续费均可直接抵扣。有效期至2015年8月8日
                         </div>
+                        <a href="http://apply.iheima.com/#wechat_redirect" class="tishi_icon"><span class="icon"></span></a>
                     </div>
-
                 </div>
+
                 <button type="button" class="receive cf">分享好友</button>
                 <a href="{{ baseurlAction }}?review=1"><button type="button" class="continue cf">再去逛逛</button></a>
+
+
             </div>
-        </div>
-    </div>
-</div>
 <div class="gray_bg hide"></div>
 <div class="share_bg hide"></div>
 <script src="/js/Activity/Validform_v5.3.2.js"></script>

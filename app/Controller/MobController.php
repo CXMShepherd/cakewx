@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses("CakeSession", "Model/Datasource");
 
 /**
  * Mobile Controller
@@ -12,11 +13,14 @@ class MobController extends AppController {
 	public $viewClass = 'Twig.Twig';
 	public $appid = "wx9377b2e0071942d2";
 	public $webchat = "ad59dac608c35311d71d11ec89300926";
+	public $_session = '';
 
 	public function beforeFilter() {
 	    parent::beforeFilter();
 	    $this->Auth->allow('tw', 'store', 'test', 'activity');
 		$this->loadModel("TPerson");
+			$this->_session = new CakeSession();
+
 	}
 
 	/**
@@ -68,6 +72,8 @@ class MobController extends AppController {
 		$this->_debug($debug);
 
 		// Define
+		$title = $share_title = 'Wow !来大佬朋友圈逛逛？！';
+		$share_des = '对！你没看错。牛文文、江南春、赵文权、盛发强、俞熔、赵浦、陈昊芝在这等你！';
 		$info = [
 			'副会长曹晓春' => "创业疑难杂症那都不是事儿",
 			'副会长陈涛' => "我比较实在，做电商黑马们，一起赚钱一起飞！",
@@ -92,6 +98,7 @@ class MobController extends AppController {
 		$opens = $this->WxReply->getWpUserInfo('openid', $wxCode, $this->webchat, $this->appid);
 		if ($opens['state'] == 1) {
 			$openid = $opens['data']['openid'];
+			$nickname = $opens['data']['user']['FNickname'];
 			$data['userinfo'] = $this->WxDataUser->getUserInfo($opens['data']['openid'], $webchat, $id);		//个人信息
 			$webchat = $data['WxDataStore']['FWebchat'];			// md5 webchat
 			$signature  = $this->WxReply->wx_share_sign($this->webchat, $this->appid);
@@ -101,11 +108,16 @@ class MobController extends AppController {
 				if (!$review && isset($opens['data']['user']['FIsMember']) && $opens['data']['user']['FIsMember']) {
 					$action = 'ticket';
 				}
+			} else if ($action == 'share') {
+				if ($this->_session->read('WX_shared')) {
+					$action = 'ticket';
+				}
 			}
 
 			switch ($action) {
 				case 'member-reg':
 					// 存入数据
+					$this->_session->delete('WX_shared');
 					$tpl = 'member-reg';
 					if ($this->request->is('post')) {
 						$data['FullName'] = $this->request->data['name'];
@@ -142,6 +154,7 @@ class MobController extends AppController {
 					$tpl = 'video';
 					break;
 				case 'share':
+					$this->_session->write('WX_shared', true);
 					$tpl = 'share';
 					break;
 				case 'ticket':
@@ -150,11 +163,14 @@ class MobController extends AppController {
 						$ticket_money = $opens['data']['user']['FTicketMoney'];
 					} else {
 						$ticket = mt_rand(10000001, 99999999);
-						$ticket_money = mt_rand(99, 1999);
+						$ticket_money = mt_rand(99, 1299);
 						$data['FTicket'] = $ticket;
 						$data['FTicketMoney'] = $ticket_money;
 						$this->WxDataUser->saveData($openid, $data);		// 记录优惠券
 					}
+					
+					$share_title = "我是{$nickname}，今天进了个大佬群，领了{$ticket_money}元代金券";
+					$share_des = '我和小伙伴都惊呆了，牛文文、江南春、赵文权、盛发强、俞熔、赵浦、陈昊芝都在';
 
 					$this->set('ticket', $ticket);
 					$this->set('ticket_money', $ticket_money);
@@ -167,7 +183,6 @@ class MobController extends AppController {
 			}
 
 			// Twig View
-			$title = 'Wow !来大佬朋友圈逛逛？！';
 			$this->set('action', $action);
             $this->set("rooturl", Router::url("/", TRUE));
 			$this->set('title', $title);
@@ -180,8 +195,8 @@ class MobController extends AppController {
 			// Share
 			$this->set('signature', $signature);
 			$this->set('share_link', Router::url("/mob/activity/{$id}", TRUE));
-			$this->set('share_title', $title);
-			$this->set('share_des', "对！你没看错。牛文文、江南春、赵文权、盛发强、俞熔、赵浦、陈昊芝在这等你！");
+			$this->set('share_title', $share_title);
+			$this->set('share_des', $share_des);
 			$this->set('share_logo', Router::url('/img/activity/sharepic.jpg', TRUE));
 
 			// Stat
@@ -296,7 +311,7 @@ var _hmt = _hmt || [];
 	 **/
 	function _debug($debug = 0) {
 		if ($debug) {
-			$this->Session->write('WX_openid', 'oXVUJQEm4mEN7KsdM1PNXfxQtkFU');
+			$this->Session->write('WX_openid', 'oFGlpt70_HsxXZ_OYVFmcXnqYiS4');
 		}
 	}
 

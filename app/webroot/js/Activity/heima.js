@@ -64,7 +64,7 @@ $(function(){
     var weekday=new Array(7);
     var today_box= $("#today");
     var month_box = $("#month");
-    var month = today.getMonth();
+    var month = today.getMonth()+1;
     var date = today.getDate();
     weekday[0]="星期日";
     weekday[1]="星期一";

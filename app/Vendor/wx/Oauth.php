@@ -435,6 +435,7 @@ class wechatCallbackapiTest
 	 **/
 	public function _log($str, $export = false)
 	{
+		return true;
 		$file = '/tmp/wxapi.log';
 		if ($export) $str = var_export($str, TRUE);
 		file_put_contents($file, file_get_contents($file)."\n".$str);
