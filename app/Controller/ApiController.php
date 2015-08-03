@@ -7,7 +7,7 @@ App::uses('AppController', 'Controller');
  */
 class ApiController extends AppController {
 	public $components = array('RequestHandler');
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -18,11 +18,35 @@ class ApiController extends AppController {
 	{
 		parent::beforeFilter();
 		$this->RequestHandler->renderAs($this, 'json');
-		$this->Auth->allow('wxUser', 'wxOrder', 'test');
+		$this->Auth->allow('wxUser', 'wxOrder', 'test', 'getUserInfo');
 		$this->json = $this->request->input('json_decode');
 		//$this->loadModel('WxReply');
 	}
-	
+
+	/**
+	 * undocumented function
+	 *
+	 * @return void
+	 * @author
+	 **/
+	public function getUserInfo()
+	{
+		$this->loadModel('WxDataUser');
+		if ($this->request->isPost()) {
+			$post['FOpenId'] = $this->json->openid;
+			$result = $this->WxDataUser->getUserInfo($post['FOpenId']);
+			if ($result) {
+				$data['state'] = 1;
+				$data['data'] = $result;
+			} else {
+				$data['state'] = 0;
+				$data['msg'] = "获取失败";
+			}
+			$this->set('jsondata', $data);
+			$this->render('/Admin/Api/json');
+		}
+	}
+
 	/**
 	 * 个人中资料
 	 *
@@ -51,7 +75,7 @@ class ApiController extends AppController {
 		$this->set('jsondata', $data);
 		$this->render('/Admin/Api/json');
 	}
-	
+
 	/**
 	 * 提交订单
 	 *
@@ -110,7 +134,7 @@ class ApiController extends AppController {
 		$this->set('jsondata', $data);
 		$this->render('/Admin/Api/json');
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -127,12 +151,12 @@ class ApiController extends AppController {
 			$data['msg'] = "短信发送成功，请注意查收！";
 		} else {
 			$data['state'] = 0;
-			$data['msg'] = "短信发送失败";	
+			$data['msg'] = "短信发送失败";
 		}
 		$this->set('jsondata', $data);
 		$this->render('/Admin/Api/json');
 	}
-	
+
 	/**
 	 * undocumented function
 	 *
@@ -149,5 +173,5 @@ class ApiController extends AppController {
 		if ($sent) echo 'Sent..';
 		exit;
 	}
-	
+
 }

@@ -72,6 +72,8 @@ class WxDataUser extends AppModel {
 		return $result;
 	}
 
+
+
     /**
      * undocumented function
      *
@@ -88,18 +90,18 @@ class WxDataUser extends AppModel {
     }
 
 	/**
-	 * undocumented function
+	 * 获取用户信息接口
 	 *
 	 * @return void
 	 * @author niancode
 	 **/
-	function getUserInfo($id, $webchat = null, $storeId = null) {
-		$data = $this->find('first', array('conditions' => array('FOpenId' => $id), 'recursive' => 0));
-		$data = $data[$this->name];
-		$data['isFirstOrder'] = $storeId ? ClassRegistry::init('WxDataOrder')->getDataList($webchat, $storeId, $id) : 0;
-		// echo '<pre>';print_r(ClassRegistry::init('WxDataOrder')->getDataList($webchat, $storeId, $id));
-		$data['isFirstOrder'] = empty($data['isFirstOrder']['count']) ? 1 : 0;
-		return $data;
+	function getUserInfo($openid)
+	{
+		$and['conditions'] = array('FOpenId' => $openid, 'FullName !=' => "", 'FTicketMoney >' => 0);
+		$and['fields'] = array('FOpenId', 'FullName', 'FPhone', 'FTicketMoney', 'FCreatedate', 'FUpdatedate');
+		$and['recursive'] = 0;
+		$data = $this->find('first', $and);
+		return isset($data['WxDataUser']) ? $data['WxDataUser'] : '';
 	}
 
 	/**
