@@ -33,7 +33,7 @@ class ApiController extends AppController {
 	{
 		$this->loadModel('WxDataUser');
 		if ($this->request->isPost()) {
-			$post['FOpenId'] = $this->json->openid;
+			$post['FOpenId'] = $this->request->data['openid'];
 			$result = $this->WxDataUser->getUserInfo($post['FOpenId']);
 			if ($result) {
 				$data['state'] = 1;
