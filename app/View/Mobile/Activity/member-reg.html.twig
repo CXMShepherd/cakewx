@@ -24,9 +24,15 @@
                 </div>
                 <div class="ui-big-space"></div>
                 {% if user['FIsMember'] == 0 %}
-                <div class="join cf">{{ image('activity/join.png') }}</div>
-                <div class="ui-middle-space"></div>
-                       <form action="" class="form" method="post" id="editForm">
+                    <div class="join cf">{{ image('activity/join.png') }}</div>
+                    <div class="join cf" style="color:red;height:24px;font-size:26px;margin:40px 0px 50px;text-align:center">该活动已经结束，谢谢您的参与！</div>
+                    <div style="padding:0px 40px;">
+                    <a href="http://apply.iheima.com/#wechat_redirect"><button type="button" class="submit cf ruhui">立即入会</button></a>
+                    <button type="button" class="submit cf" id="shareout">立即分享</button>
+                    </div>
+                {# <div class="join cf">{{ image('activity/join.png') }}</div>
+                <div class="ui-middle-space"></div> #}
+                      {#  <form action="" class="form" method="post" id="editForm">
                             <div class="formitem cf">
                                 <div class="leftlabel name">姓名</div>
                                 <div class="formobject"><input type="text" name="name" placeholder="请填写你的姓名"   datatype="/^[\u4E00-\u9FA5\uf900-\ufa2d]{2,15}$/" nullmsg="姓名不可以为空" errormsg="姓名至少2个字,最多15个字！"></div>
@@ -35,11 +41,10 @@
                                 <div class="leftlabel mobile">电话</div>
                                 <div class="formobject"><input type="text" datatype="m" nullmsg="手机号码不能为空" errormsg="请输入正确的手机号码" name="mobile" placeholder="请填写你的手机号码"></div>
                             </div>
-                            
+
                                 <button type="submit" class="submit cf">提交</button>
                                 <button type="button" class="submit cf" id="shareout">分享</button>
-                            
-                        </form>
+                        </form> #}
                     {% else %}
                         <div style="padding:0px 40px;">
                         <a href="http://apply.iheima.com/#wechat_redirect"><button type="button" class="submit cf ruhui">立即入会</button></a>
