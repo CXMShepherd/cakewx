@@ -51,8 +51,3 @@ v1.5 预计要更新的功能
 ## 链接
 
   * **官方网站**: [http://cakewx.com](http://cakewx.com)
-  * 微社区-豆芽 [http://www.zaiwx.com/](http://www.zaiwx.com)
-  * Apche [http://www.apache.org](http://www.apache.org)
-  * PHP [http://www.php.net](http://www.php.net)
-  * MySql [http://www.mysql.com](http://www.mysql.com)
-  * CakePhp [http://www.cakephp.org](http://www.cakephp.org)
